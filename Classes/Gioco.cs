@@ -10,10 +10,12 @@ namespace Classes
         public List<Giocatore> Giocatori { get; set; }
         public Mazzo Mazzo { get; set; }
         public Mazziere Mazziere { get; set; }
+        public int NumMazziIniziali { get; set; }
         public Gioco(int giocatori, int numMazzi=6) 
         {
             Mazzo = new Mazzo();
             Mazzo.CreaMazzo(numMazzi);
+            NumMazziIniziali = numMazzi;
             Giocatori = new List<Giocatore>();
             for (int i = 0; i < giocatori; i++)
             {

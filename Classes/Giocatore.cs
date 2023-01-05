@@ -23,6 +23,9 @@ namespace Classes
         {
             Carta carta = Gioco.Mazzo.pescaCarta();
             Carte.Add(carta);
+            if (Gioco.Mazzo.Carte.Count == 0)
+                Gioco.Mazzo.CreaMazzo(Gioco.NumMazziIniziali);
+
             return carta;
         }
 
