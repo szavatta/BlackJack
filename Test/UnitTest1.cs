@@ -33,8 +33,9 @@ namespace Test
         {
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
+            int totale = 0;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 Gioco gioco = Giocata(100);
 
@@ -44,10 +45,11 @@ namespace Test
 
                 vinteGiocatori += numeroGiocatoriVincenti;
                 vinteMazziere += numeroGiocatoriPerdenti;
+                totale += gioco.Giocatori.Count;
             }
 
 
-            Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}");
+            Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}, perc. mazziere: {Math.Round((decimal)vinteMazziere*100/(vinteMazziere+vinteGiocatori),0)}%");
         }
 
 
