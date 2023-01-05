@@ -55,8 +55,8 @@ namespace Test
             }
             TestContext.WriteLine($"mazziere ha un punteggio di {gioco.Mazziere.Punteggio()}");
     
-            int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() < 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
-            int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() < 21).Count();
+            int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
+            int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21).Count();
             TestContext.WriteLine($"numero giocatori vincenti: {numeroGiocatoriVincenti}");
             TestContext.WriteLine($"numero giocatori perdenti: {gioco.Giocatori.Count - numeroGiocatoriVincenti - numeroGiocatoriPari}");
             TestContext.WriteLine($"numero giocatori in pareggio: {numeroGiocatoriPari}");
