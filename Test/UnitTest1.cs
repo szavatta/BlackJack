@@ -150,8 +150,8 @@ namespace Test
                 perdente.SoldiTotali -= perdente.PuntataCorrente;
             }
 
-            //if (giocatoriVincenti.Count() + giocatoriPerdenti.Count() + giocatoriPari.Count() != gioco.Giocatori.Count())
-            //    throw new Exception("Non corrispondono i giocatori");
+            if (giocatoriVincenti.Count() + giocatoriPerdenti.Count() + giocatoriPari.Count() != gioco.Giocatori.Count())
+                throw new Exception("Non corrispondono i giocatori");
 
             return gioco;
         }
