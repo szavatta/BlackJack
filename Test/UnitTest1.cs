@@ -16,7 +16,7 @@ namespace Test
         [Test]
         public void Test1()
         {
-            Gioco gioco = Giocata(new Gioco(10,30));
+            Gioco gioco = Giocata(new Gioco(10,1));
 
             //setto i soldi e la puntata di ogni giocatore
             foreach (var giocatore in gioco.Giocatori)
