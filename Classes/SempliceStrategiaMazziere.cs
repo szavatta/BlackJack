@@ -6,16 +6,12 @@ namespace Classes
 {
     class SempliceStrategiaMazziere : StrategiaMazziere
     {
-        public Mazziere.puntata strategy(Mazziere mazziere)
+        public Mazziere.Puntata Strategy(Mazziere mazziere)
         {
             if (mazziere.Punteggio() < 17)
-            {
-                return Mazziere.puntata.chiama;
-            }
+                return Mazziere.Puntata.Chiama;
             else
-            {
-                return Mazziere.puntata.stai;
-            }
+                return Mazziere.Puntata.Stai;
         }
     }
 }

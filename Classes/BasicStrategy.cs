@@ -7,7 +7,7 @@ namespace Classes
 {
     public class BasicStrategy : StrategiaGiocatore
     {
-        public override Giocatore.puntata strategy(Giocatore giocatore, Mazziere mazziere)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere)
         {
             int pg= giocatore.Punteggio();
             int pm = mazziere.Carte.First().Valore;
@@ -20,7 +20,7 @@ namespace Classes
                     pg == 9 && pm != 6 ||
                     pg == 8 && pm >= 7 && pm <= 8)
                 {
-                    return Giocatore.puntata.stai;
+                    return Giocatore.Puntata.Stai;
                 }
                 else if (pg == 9 && pm == 6 ||
                          pg == 8 && pm <= 6 ||
@@ -29,11 +29,11 @@ namespace Classes
                          pg <= 4 && pg >= 3 && pm >= 5 && pm <= 6
                         )
                 {
-                    return Giocatore.puntata.raddoppia;
+                    return Giocatore.Puntata.Raddoppia;
                 }
                 else 
                 {
-                    return Giocatore.puntata.chiama;
+                    return Giocatore.Puntata.Chiama;
                 }
             }
 
@@ -41,7 +41,7 @@ namespace Classes
                 pg >= 13 && pm <= 6 ||
                 pg == 12 && pm >= 4 && pm <= 6)
             {
-                return Giocatore.puntata.stai;
+                return Giocatore.Puntata.Stai;
             }
             if (pg >= 12 && pm>=7 ||
                      pg ==12 && pm>=2 && pm<=3 ||
@@ -49,11 +49,11 @@ namespace Classes
                      pg == 9 && (pm==2 || pm >=7) ||
                      pg <= 8)
             {
-                return Giocatore.puntata.chiama;
+                return Giocatore.Puntata.Chiama;
             }
             else
             {
-                return Giocatore.puntata.raddoppia;
+                return Giocatore.Puntata.Raddoppia;
             }
         }
     }

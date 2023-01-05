@@ -6,17 +6,12 @@ namespace Classes
 {
     class SempliceStrategiaGiocatore : StrategiaGiocatore
     {
-        public override Giocatore.puntata strategy(Giocatore giocatore, Mazziere mazziere)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere)
         {
-
             if (giocatore.Punteggio() < 17)
-            {
-                return Giocatore.puntata.chiama;
-            }
+                return Giocatore.Puntata.Chiama;
             else
-            {
-                return Giocatore.puntata.stai;
-            }
+                return Giocatore.Puntata.Stai;
         }
     }
 }

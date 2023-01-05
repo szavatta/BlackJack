@@ -21,8 +21,8 @@ namespace Test
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco));
 
-            gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
-            gioco.Mazziere.SoldiTotali = 100;
+            //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
+            //gioco.Mazziere.SoldiTotali = 100;
 
             for (int i = 0; i < 10000; i++)
             {
@@ -34,14 +34,12 @@ namespace Test
                     gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21);
 
                 var giocatoriPerdenti = gioco.Giocatori.Where(q =>
-                    q.Punteggio() > 21 || (q.Punteggio() < gioco.Mazziere.Punteggio() && gioco.Mazziere.Punteggio() < 21));
+                    q.Punteggio() > 21 || (q.Punteggio() < gioco.Mazziere.Punteggio() && gioco.Mazziere.Punteggio() <= 21));
 
 
                 TestContext.Write("vincente: [ ");
                 foreach (var vincente in giocatoriVincenti)
                 {
-                    gioco.Mazziere.SoldiTotali -= vincente.PuntataCorrente;
-                    vincente.SoldiTotali += vincente.PuntataCorrente;
                     TestContext.Write($"{vincente}, ");
                 }
                 TestContext.WriteLine("]");
@@ -49,8 +47,6 @@ namespace Test
                 TestContext.Write("perdente: [ ");
                 foreach (var perdente in giocatoriPerdenti)
                 {
-                    gioco.Mazziere.SoldiTotali += perdente.PuntataCorrente;
-                    perdente.SoldiTotali -= perdente.PuntataCorrente;
                     TestContext.Write($"{perdente}, ");
                 }
                 TestContext.WriteLine("]");
@@ -116,25 +112,46 @@ namespace Test
                 giocatore.Pesca();
             }
             gioco.Mazziere.Pesca();
-            int count = 0;
+            
             foreach (Giocatore giocatore in gioco.Giocatori)
             {
-
-                count++;
-                while (giocatore.Strategia.strategy(giocatore, gioco.Mazziere) == Giocatore.puntata.chiama)
+                while (giocatore.Strategia.Strategy(giocatore, gioco.Mazziere) == Giocatore.Puntata.Chiama)
                 {
                     giocatore.Pesca();
                 }
-                if (giocatore.Strategia.strategy(giocatore, gioco.Mazziere) == Giocatore.puntata.raddoppia) 
+                if (giocatore.Strategia.Strategy(giocatore, gioco.Mazziere) == Giocatore.Puntata.Raddoppia) 
                 {
                     giocatore.PuntataCorrente *= 2;
                 }
             }
-            while (gioco.Mazziere.Strategia.strategy(gioco.Mazziere) == Mazziere.puntata.chiama)
+            while (gioco.Mazziere.Strategia.Strategy(gioco.Mazziere) == Mazziere.Puntata.Chiama)
             {
                 gioco.Mazziere.Pesca();
-                
             }
+
+            var giocatoriVincenti = gioco.Giocatori.Where(q =>
+                q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21));
+
+            var giocatoriPari =
+                gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21);
+
+            var giocatoriPerdenti = gioco.Giocatori.Where(q =>
+                q.Punteggio() > 21 || (q.Punteggio() < gioco.Mazziere.Punteggio() && gioco.Mazziere.Punteggio() <= 21));
+
+            foreach (var vincente in giocatoriVincenti)
+            {
+                gioco.Mazziere.SoldiTotali -= vincente.PuntataCorrente;
+                vincente.SoldiTotali += vincente.PuntataCorrente;
+            }
+
+            foreach (var perdente in giocatoriPerdenti)
+            {
+                gioco.Mazziere.SoldiTotali += perdente.PuntataCorrente;
+                perdente.SoldiTotali -= perdente.PuntataCorrente;
+            }
+
+            //if (giocatoriVincenti.Count() + giocatoriPerdenti.Count() + giocatoriPari.Count() != gioco.Giocatori.Count())
+            //    throw new Exception("Non corrispondono i giocatori");
 
             return gioco;
         }

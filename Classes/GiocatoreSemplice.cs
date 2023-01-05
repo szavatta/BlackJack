@@ -34,23 +34,23 @@ namespace Classes
         public int Punteggio()
         {
             List<Carta> carte2 = new List<Carta>(Carte);
-            carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso14);
+            carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso11);
             int punt11 = carte2.Select(q => q.Valore).Sum();
             if (punt11 > 21)
                 return Carte.Select(q => q.Valore).Sum();
             else
                 return punt11;
         }
-        public enum puntata
+        public enum Puntata
         {
-            chiama = 0,
-            stai = 1,
-            raddoppia = 2,
-            dividi = 3
+            Chiama = 0,
+            Stai = 1,
+            Raddoppia = 2,
+            Dividi = 3
         }
         public override string ToString()
         {
-            return $"Name: {Nome}, " +
+            return $"Nome: {Nome}, " +
                     $"Soldi Totali: {SoldiTotali}";
         }
 

@@ -6,6 +6,6 @@ namespace Classes
 {
     public interface StrategiaMazziere
     {
-        public Mazziere.puntata strategy(Mazziere mazziere);
+        public Mazziere.Puntata Strategy(Mazziere mazziere);
     }
 }
