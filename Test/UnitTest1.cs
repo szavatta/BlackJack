@@ -128,7 +128,7 @@ namespace Test
                 }
                 //TestContext.WriteLine($"giocatore numero {count} ha un punteggio di {giocatore.Punteggio()}");
             }
-            while (gioco.Mazziere.Punteggio() < 17)
+            while (gioco.Mazziere.Strategia.strategy(gioco.Mazziere) == Mazziere.puntata.chiama)
             {
                 gioco.Mazziere.Pesca();
                 //if (gioco.Mazziere.Punteggio() > 21)

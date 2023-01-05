@@ -4,8 +4,19 @@ using System.Text;
 
 namespace Classes
 {
-    public class Mazziere : Giocatore
+    public class Mazziere : GiocatoreSemplice
     {
-        public Mazziere(Gioco gioco) : base(gioco) { }
+        public StrategiaMazziere Strategia { get; set; }
+
+        public Mazziere(Gioco gioco) : base(gioco)
+        {
+            Strategia = new SempliceStrategiaMazziere();
+        }
+
+        public enum puntata
+        {
+            chiama = 0,
+            stai = 1,
+        }
     }
 }
