@@ -24,7 +24,7 @@ namespace Classes
         {
             Carta carta = Gioco.Mazzo.pescaCarta();
             Carte.Add(carta);
-            if (Gioco.Mazzo.Carte.Count == 0)
+            if (Gioco.Mazzo.Carte.Count < 10)
                 Gioco.Mazzo.CreaMazzo(Gioco.NumMazziIniziali);
 
             return carta;
@@ -33,6 +33,12 @@ namespace Classes
         public int Punteggio()
         {
             int punt = Carte.Select(q => q.Valore).Sum();
+            List<Carta> carte2 = new List<Carta>(Carte);
+            carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso14);
+            int punt2 = carte2.Select(q => q.Valore).Sum();
+            if (punt2 > punt && punt2 <= 21)
+                punt = punt2;
+
             //TODO: Gestire il punteggio con Asso che vale 11
 
             return punt;

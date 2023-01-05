@@ -2,6 +2,7 @@ using Classes;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace Test
@@ -48,6 +49,9 @@ namespace Test
                 totale += gioco.Giocatori.Count;
             }
 
+            TestContext.WriteLine($"Vincite mazziere: {vinteMazziere}");
+            TestContext.WriteLine($"vincite giocatori: {vinteGiocatori}");
+            TestContext.WriteLine($"perc. mazziere: {Math.Round((decimal)vinteMazziere * 100 / (vinteMazziere + vinteGiocatori), 0)}%");
 
             Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}, perc. mazziere: {Math.Round((decimal)vinteMazziere*100/(vinteMazziere+vinteGiocatori),0)}%");
         }

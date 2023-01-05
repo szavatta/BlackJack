@@ -11,7 +11,9 @@ namespace Classes
 
         public void CreaMazzo(int numMazzi = 1, bool mischia = true)
         {
-            Carte = new List<Carta>();
+            if (Carte == null)
+                Carte = new List<Carta>();
+
             for (int j = 0; j < numMazzi; j++)
             {
                 for (int i = 1; i <= 4; i++)
