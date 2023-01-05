@@ -32,6 +32,11 @@ namespace Classes
             }
         }
         public Carta pescaCarta() {
+            if (Carte.Count == 0)
+            {
+                CreaMazzo();
+            }
+
             Carta carta = Carte.FirstOrDefault();
             Carte.RemoveAt(0);
             return carta;

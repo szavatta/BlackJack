@@ -8,9 +8,11 @@ namespace Classes
 {
     public class Giocatore
     {
-        List<Carta> Carte { get; set; }
-        Gioco Gioco { get; set; }
+        public List<Carta> Carte { get; set; }
+        public Gioco Gioco { get; set; }
         public String Nome { get; set; }
+        public int PuntataCorrente { get; set; }
+        public int SoldiTotali { get; set; }
 
 
         public Giocatore(Gioco gioco) 
@@ -29,7 +31,6 @@ namespace Classes
 
             return carta;
         }
-
         public int Punteggio()
         {
             int punt = Carte.Select(q => q.Valore).Sum();
@@ -43,5 +44,20 @@ namespace Classes
 
             return punt;
         }
+        public enum puntata
+    {
+        chiama = 0,
+        stai = 1,
+        raddoppia = 2,
+        dividi = 3
     }
+    public override string ToString()
+    {
+        return $"Name: {Nome}, " +
+               $"Soldi Totali: {SoldiTotali}";
+    }
+
+    }
+
+
 }

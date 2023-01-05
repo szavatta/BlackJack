@@ -17,15 +17,57 @@ namespace Test
         [Test]
         public void Test1()
         {
-            Gioco gioco = Giocata(10);
-    
-            int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
-            int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21).Count();
-            //TestContext.WriteLine($"numero giocatori vincenti: {numeroGiocatoriVincenti}");
-            //TestContext.WriteLine($"numero giocatori perdenti: {gioco.Giocatori.Count - numeroGiocatoriVincenti - numeroGiocatoriPari}");
-            //TestContext.WriteLine($"numero giocatori in pareggio: {numeroGiocatoriPari}");
+            Gioco gioco = Giocata(new Gioco(10,1));
+
+            //setto i soldi e la puntata di ogni giocatore
+            foreach (var giocatore in gioco.Giocatori)
+            {
+                giocatore.PuntataCorrente = 5_000; //5€
+                giocatore.SoldiTotali = 100_000;   //100€
+            }
+            for (int i = 0; i < 100; i++)
+            {
+                gioco = Giocata(gioco);
+                var giocatoriVincenti = gioco.Giocatori.Where(q =>
+                    q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21));
+
+                var giocatoriPari =
+                    gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21);
+
+                var giocatoriPerdenti = gioco.Giocatori.Where(q =>
+                    q.Punteggio() > 21 || (q.Punteggio() < gioco.Mazziere.Punteggio() && gioco.Mazziere.Punteggio() < 21));
 
 
+                TestContext.Write("vincente: [ ");
+                foreach (var vincente in giocatoriVincenti)
+                {
+                    gioco.Mazziere.SoldiTotali -= vincente.PuntataCorrente;
+                    vincente.SoldiTotali += vincente.PuntataCorrente;
+                    TestContext.Write($"{vincente}, ");
+                }
+                TestContext.WriteLine("]");
+
+                TestContext.Write("perdente: [ ");
+                foreach (var perdente in giocatoriPerdenti)
+                {
+                    gioco.Mazziere.SoldiTotali += perdente.PuntataCorrente;
+                    perdente.SoldiTotali -= perdente.PuntataCorrente;
+                    TestContext.Write($"{perdente}, ");
+                }
+                TestContext.WriteLine("]");
+
+                TestContext.Write("pareggio: [ ");
+                foreach (var pareggio in giocatoriPari)
+                {
+                    TestContext.Write($"{pareggio}, ");
+                }
+                TestContext.WriteLine("]");
+
+                TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
+
+                gioco.Mazziere.Carte.RemoveAll(q => true);
+                gioco.Giocatori.ForEach(q => q.Carte.RemoveAll(c =>true));
+            }
             Assert.Pass();
         }
 
@@ -38,7 +80,7 @@ namespace Test
 
             for (int i = 0; i < 1000; i++)
             {
-                Gioco gioco = Giocata(100);
+                Gioco gioco = Giocata(new Gioco(10));
 
                 int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
                 int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21).Count();
@@ -59,12 +101,8 @@ namespace Test
 
 
 
-        private Gioco Giocata(int numGiocatori)
+        private Gioco Giocata(Gioco gioco)
         {
-            Gioco gioco = new Gioco(numGiocatori);
-            //Gioco gioco2 = (Gioco)gioco.Clone();
-            ////ripartire da qui per ripetere la stessa situazione
-            //gioco = (Gioco)gioco2.Clone();
             foreach (Giocatore giocatore in gioco.Giocatori)
             {
                 giocatore.Pesca();
