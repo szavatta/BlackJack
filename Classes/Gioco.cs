@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Classes
 {
-    public class Gioco
+    public class Gioco : ICloneable
     {
         public List<Giocatore> Giocatori { get; set; }
         public Mazzo Mazzo { get; set; }
@@ -21,6 +21,17 @@ namespace Classes
             }
             Mazziere = new Mazziere(this);
             
+        }
+
+        public object Clone()
+        {
+            // Crea una copia dell'oggetto
+            Gioco copy = (Gioco)this.MemberwiseClone();
+
+            // Copia gli oggetti interni, se necessario
+            // ...
+
+            return copy;
         }
 
 

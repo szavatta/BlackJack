@@ -1,6 +1,7 @@
 using Classes;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Test
@@ -17,6 +18,9 @@ namespace Test
         {
 
             Gioco gioco = new Gioco(5);
+            Gioco gioco2 = (Gioco)gioco.Clone();
+            //ripartire da qui per ripetere la stessa situazione
+            gioco = (Gioco)gioco2.Clone(); 
             foreach (Giocatore giocatore in gioco.Giocatori)
             {
                 giocatore.Pesca();
@@ -51,14 +55,11 @@ namespace Test
             }
             TestContext.WriteLine($"mazziere ha un punteggio di {gioco.Mazziere.Punteggio()}");
     
-            int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() > gioco.Mazziere.Punteggio() && q.Punteggio() < 21).Count();
+            int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() < 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
             int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() < 21).Count();
             TestContext.WriteLine($"numero giocatori vincenti: {numeroGiocatoriVincenti}");
             TestContext.WriteLine($"numero giocatori perdenti: {gioco.Giocatori.Count - numeroGiocatoriVincenti - numeroGiocatoriPari}");
             TestContext.WriteLine($"numero giocatori in pareggio: {numeroGiocatoriPari}");
-
-
-
 
 
             Assert.Pass();
