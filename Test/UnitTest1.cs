@@ -118,7 +118,7 @@ namespace Test
             {
 
                 count++;
-                while (giocatore.Punteggio() < 17)
+                while (giocatore.Strategia.strategy(giocatore, gioco.Mazziere) == Giocatore.puntata.chiama)
                 {
                     giocatore.Pesca();
                     //if (giocatore.Punteggio() > 21)

@@ -13,10 +13,11 @@ namespace Classes
         public String Nome { get; set; }
         public int PuntataCorrente { get; set; }
         public int SoldiTotali { get; set; }
+        public Strategy Strategia { get; set; }
 
-
-        public Giocatore(Gioco gioco) 
+        public Giocatore(Gioco gioco)
         {
+            Strategia = new SimpleStrategy();
             Carte = new List<Carta>();
             Gioco = gioco;
             Nome = $"Giocatore {gioco.Giocatori.Count + 1}";
@@ -41,21 +42,20 @@ namespace Classes
                 punt = punt2;
 
             //TODO: Gestire il punteggio con Asso che vale 11
-
             return punt;
-        }
+        } 
         public enum puntata
-    {
-        chiama = 0,
-        stai = 1,
-        raddoppia = 2,
-        dividi = 3
-    }
-    public override string ToString()
-    {
-        return $"Name: {Nome}, " +
-               $"Soldi Totali: {SoldiTotali}";
-    }
+        {
+            chiama = 0,
+            stai = 1,
+            raddoppia = 2,
+            dividi = 3
+        }
+        public override string ToString()
+        {
+            return $"Name: {Nome}, " +
+                   $"Soldi Totali: {SoldiTotali}";
+        }
 
     }
 
