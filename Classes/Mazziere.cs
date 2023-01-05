@@ -13,7 +13,7 @@ namespace Classes
             Strategia = new SempliceStrategiaMazziere();
         }
 
-        public enum puntata
+        public new enum puntata
         {
             chiama = 0,
             stai = 1,

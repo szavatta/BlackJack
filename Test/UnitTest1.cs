@@ -17,15 +17,14 @@ namespace Test
         [Test]
         public void Test1()
         {
-            Gioco gioco = Giocata(new Gioco(10,1));
+            Gioco gioco = Giocata(new Gioco(0,1));
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+            gioco.Giocatori.Add(new Giocatore(gioco));
 
-            //setto i soldi e la puntata di ogni giocatore
-            foreach (var giocatore in gioco.Giocatori)
-            {
-                giocatore.PuntataCorrente = 5_000; //5€
-                giocatore.SoldiTotali = 100_000;   //100€
-            }
-            for (int i = 0; i < 100; i++)
+            gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
+            gioco.Mazziere.SoldiTotali = 100;
+
+            for (int i = 0; i < 10000; i++)
             {
                 gioco = Giocata(gioco);
                 var giocatoriVincenti = gioco.Giocatori.Where(q =>
@@ -65,9 +64,8 @@ namespace Test
 
                 TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
 
-                gioco.Mazziere.Carte.RemoveAll(q => true);
-                gioco.Giocatori.ForEach(q => q.Carte.RemoveAll(c =>true));
             }
+
             Assert.Pass();
         }
 
@@ -77,10 +75,11 @@ namespace Test
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
             int totale = 0;
+            Gioco gioco = new Gioco(10);
 
             for (int i = 0; i < 1000; i++)
             {
-                Gioco gioco = Giocata(new Gioco(10));
+                gioco = Giocata(gioco);
 
                 int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
                 int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21).Count();
@@ -103,6 +102,10 @@ namespace Test
 
         private Gioco Giocata(Gioco gioco)
         {
+            gioco.Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            gioco.Mazziere.Carte = new List<Carta>();
+            gioco.Giocatori.ForEach(q => q.PuntataCorrente = 5);
+
             foreach (Giocatore giocatore in gioco.Giocatori)
             {
                 giocatore.Pesca();
@@ -121,22 +124,17 @@ namespace Test
                 while (giocatore.Strategia.strategy(giocatore, gioco.Mazziere) == Giocatore.puntata.chiama)
                 {
                     giocatore.Pesca();
-                    //if (giocatore.Punteggio() > 21)
-                    //{
-                    //    TestContext.WriteLine($"giocatore numero {count} ha sforato");
-                    //}
                 }
-                //TestContext.WriteLine($"giocatore numero {count} ha un punteggio di {giocatore.Punteggio()}");
+                if (giocatore.Strategia.strategy(giocatore, gioco.Mazziere) == Giocatore.puntata.raddoppia) 
+                {
+                    giocatore.PuntataCorrente *= 2;
+                }
             }
             while (gioco.Mazziere.Strategia.strategy(gioco.Mazziere) == Mazziere.puntata.chiama)
             {
                 gioco.Mazziere.Pesca();
-                //if (gioco.Mazziere.Punteggio() > 21)
-                //{
-                //    TestContext.WriteLine($"il mazziere ha sforato");
-                //}
+                
             }
-            //TestContext.WriteLine($"mazziere ha un punteggio di {gioco.Mazziere.Punteggio()}");
 
             return gioco;
         }
