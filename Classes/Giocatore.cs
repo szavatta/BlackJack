@@ -17,6 +17,7 @@ namespace Classes
         {
             Carte = new List<Carta>();
             Gioco = gioco;
+            Nome = $"Giocatore {gioco.Giocatori.Count + 1}";
         }
 
         public Carta Pesca()
@@ -29,6 +30,12 @@ namespace Classes
             return carta;
         }
 
-        public int Punteggio() => Carte.Select(q => q.Valore).Sum();
+        public int Punteggio()
+        {
+            int punt = Carte.Select(q => q.Valore).Sum();
+            //TODO: Gestire il punteggio con Asso che vale 11
+
+            return punt;
+        }
     }
 }
