@@ -16,7 +16,7 @@ namespace Test
         [Test]
         public void Test1()
         {
-            Gioco gioco = Giocata(new Gioco(10));
+            Gioco gioco = Giocata(new Gioco(10,30));
 
             //setto i soldi e la puntata di ogni giocatore
             foreach (var giocatore in gioco.Giocatori)
@@ -24,7 +24,7 @@ namespace Test
                 giocatore.PuntataCorrente = 5_000; //5€
                 giocatore.SoldiTotali = 100_000;   //100€
             }
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 gioco = Giocata(gioco);
                 var giocatoriVincenti = gioco.Giocatori.Where(q =>
