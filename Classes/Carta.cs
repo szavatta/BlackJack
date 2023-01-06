@@ -11,7 +11,7 @@ namespace Classes
         {
             Numero = numero;
             Seme = seme;
-            PathImage = $"carte/{(int)seme}-{(numero == NumeroCarta.Asso11 ? 1 : (int)numero)}.png";
+            PathImage = $"carte/{((int)numero)}.png";
         }
 
         private byte[] _Immagine { get; set; }
@@ -24,7 +24,7 @@ namespace Classes
             set
             {
                 _numero = value;
-                NumeroString = _numero == NumeroCarta.Asso11 ? NumeroCarta.Asso.ToString() : _numero.ToString();
+                NumeroString = _numero.ToString();
                 Valore = GetValore();
             }
         }
@@ -82,6 +82,8 @@ namespace Classes
 
         private int GetValore()
         {
+            if ((int)Numero == 1)
+                return 11;
             if ((int)Numero <= 10)
                 return (int)Numero;
             else if ((int)Numero < 14)
@@ -105,8 +107,6 @@ namespace Classes
             Jack = 11,
             Donna = 12,
             Re = 13,
-            [Description("Asso")]
-            Asso11 = 14
         }
 
         public override bool Equals(object obj)

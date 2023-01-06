@@ -38,12 +38,14 @@ namespace Classes
         public int CalcolaPunteggio()
         {
             List<Carta> carte2 = new List<Carta>(Carte);
-            carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso11);
             int punt11 = carte2.Select(q => q.Valore).Sum();
             if (punt11 > 21)
             {
-                carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso11).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso);
-                return carte2.Select(q => q.Valore).Sum();
+                var res= carte2.Select(q => q.Valore).Sum();
+                if (carte2.Select(q => q.Numero).Contains(Carta.NumeroCarta.Asso)) 
+                    res -= 10;
+
+                return res;
             }
             else
                 return punt11;
