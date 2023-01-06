@@ -23,11 +23,19 @@ namespace BlackJack.Controllers
 
         public IActionResult Index()
         {
-            //Gioco gioco = new Gioco(0,1);
-            //gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
-            //gioco.Giocatori.Add(new Giocatore(gioco));
-            //gioco.Giocata();
-            //HttpContext.Session.SetObject("Gioco", gioco);
+            Gioco gioco = new Gioco(0, 0);
+
+            gioco.Mazziere.SoldiTotali = 100;
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+
+            string json = JsonConvert.SerializeObject(gioco);
+
+            HttpContext.Session.SetString("Gioco", json);
 
             return View();
         }
@@ -46,17 +54,22 @@ namespace BlackJack.Controllers
         public JsonResult GetGioco()
         {
             //Gioco gioco = HttpContext.Session.GetObject<Gioco>("Gioco");
+            //string json = HttpContext.Session.GetString("Gioco");
+            //Gioco gioco = (Gioco)JsonConvert.DeserializeObject(json);
             Gioco gioco = new Gioco(0, 0);
 
             gioco.Mazziere.SoldiTotali = 100;
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
             gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
             gioco.Giocata();
 
-            //gioco.Mazziere.Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso11).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso);
-            //gioco.Giocatori.ForEach(q => q.Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso11).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso));
-
             string json = JsonConvert.SerializeObject(gioco);
+
+            //HttpContext.Session.Set("Gioco", json);
 
             return Json(json);
         }

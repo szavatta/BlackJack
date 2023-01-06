@@ -7,19 +7,21 @@
     <input type="button" id="btnGioco" value="GIOCO" class="btn btn-info" />
 
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
 
         </div>
-        <div id="mazziere" class="col-lg-4">
+        <div id="mazziere" class="col-lg-6 p-2">
             <div id="nome-mazziere"></div>
+            <div id="cassa-mazziere"></div>
             <div id="carte-mazziere" class="d-flex justify-content-center"></div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
 
         </div>
-        <div id="giocatori" class="col-lg12 d-flex mt-5">
-            <div class="giocatorestamp col-lg-6 d-none">
+        <div id="giocatori" class="col-lg-12 mt-5 row">
+            <div class="giocatorestamp col-lg-6 d-none p-2 border border-light">
                 <div class="nome-giocatore"></div>
+                <div class="cassa-giocatore"></div>
                 <div class="carte-giocatore d-flex justify-content-center"></div>
             </div>
         </div>
@@ -43,25 +45,33 @@
                 }
             });
         })
+
+        $("#btnGioco").click();
     })
 
     function DisegnaTavolo(partita) {
         PulisceTavolo();
         $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
+        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali);
         partita.Mazziere.Carte.forEach(function (carta) {
             $("#carte-mazziere").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero  + ".png'></div>");
         })
         if (partita.Mazziere.Punteggio > 21) {
-            $("#nome-mazziere").addClass("back-red");
+            $("#mazziere").addClass("back-red");
         }
         partita.Giocatori.forEach(function (giocatore) {
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
+            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali);
             giocatore.Carte.forEach(function (carta) {
                 div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
             if (giocatore.Punteggio > 21) {
-                div.find(".nome-giocatore").addClass("back-red");
+                div.addClass("back-red");
+            } else if (giocatore.Punteggio > partita.Mazziere.Punteggio || partita.Mazziere.Punteggio > 21) {
+                div.addClass("back-green");
+            } else if (giocatore.Punteggio < partita.Mazziere.Punteggio && partita.Mazziere.Punteggio <= 21) {
+                div.addClass("back-grey");
             }
             $("#giocatori").append(div);
 
@@ -73,6 +83,7 @@
         $("#nome-mazziere").html("");
         $("#carte-mazziere").html("");
         $(".giocatore").remove();
+        $(".back-red").removeClass("back-red");
     }
 
 </script>

@@ -71,5 +71,11 @@ body {
 }
 
 .back-red {
-    background-color:red;
+    background-color: red;
+}
+.back-green {
+    background-color: green;
+}
+.back-grey {
+    background-color: grey;
 }
