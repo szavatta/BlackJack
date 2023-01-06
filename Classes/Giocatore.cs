@@ -11,8 +11,10 @@ namespace Classes
     {
         public StrategiaGiocatore Strategia { get; set; }
 
-        public Giocatore(Gioco gioco, StrategiaGiocatore strategia = null) : base(gioco)
+        public Giocatore(Gioco gioco, StrategiaGiocatore strategia = null, double soldi = 0) : base(gioco)
         {
+            SoldiTotali = soldi;
+
             if (strategia == null)
                 Strategia = new SempliceStrategiaGiocatore();
             else

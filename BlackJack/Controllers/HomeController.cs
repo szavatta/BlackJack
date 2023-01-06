@@ -3,6 +3,7 @@ using Classes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,10 +23,13 @@ namespace BlackJack.Controllers
 
         public IActionResult Index()
         {
-            Gioco gioco = new Gioco(2);
-            HttpContext.Session.SetObject("Gioco", gioco);
+            //Gioco gioco = new Gioco(0,1);
+            //gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+            //gioco.Giocatori.Add(new Giocatore(gioco));
+            //gioco.Giocata();
+            //HttpContext.Session.SetObject("Gioco", gioco);
 
-            return View(gioco);
+            return View();
         }
 
         public IActionResult Privacy()
@@ -41,8 +45,16 @@ namespace BlackJack.Controllers
 
         public JsonResult GetGioco()
         {
+            //Gioco gioco = HttpContext.Session.GetObject<Gioco>("Gioco");
+            Gioco gioco = new Gioco(0, 1);
+            gioco.Mazziere.SoldiTotali = 100;
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+            gioco.Giocata();
 
-            return Json(true);
+            string json = JsonConvert.SerializeObject(gioco);
+
+            return Json(json);
         }
     }
 }

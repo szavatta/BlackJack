@@ -75,7 +75,7 @@ namespace Test
 
             for (int i = 0; i < 1000; i++)
             {
-                gioco = Giocata(gioco);
+                gioco.Giocata();
 
                 int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
                 int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21).Count();
