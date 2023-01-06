@@ -1,4 +1,5 @@
 ﻿using Classes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,11 @@ using System.Text;
 
 namespace Classes
 {
+    [Serializable]
     public abstract class GiocatoreSemplice
     {
         public List<Carta> Carte { get; set; }
+        [JsonIgnore]
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
         public double PuntataCorrente { get; set; }

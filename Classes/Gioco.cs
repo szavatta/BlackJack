@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Classes
 {
+    [Serializable]
     public class Gioco : ICloneable
     {
         public List<Giocatore> Giocatori { get; set; }

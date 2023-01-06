@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Classes
 {
+    [Serializable]
     public class Giocatore : GiocatoreSemplice
     {
         public StrategiaGiocatore Strategia { get; set; }
