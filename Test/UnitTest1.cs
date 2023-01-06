@@ -15,9 +15,10 @@ namespace Test
         }
 
         [Test]
-        public void Test1()
+        public void TestGiocate()
         {
-            Gioco gioco = Giocata(new Gioco(0,1));
+            Gioco gioco = new Gioco(0, 1);
+            gioco.Giocata();
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco));
 
@@ -26,15 +27,15 @@ namespace Test
 
             for (int i = 0; i < 10000; i++)
             {
-                gioco = Giocata(gioco);
+                gioco.Giocata();
                 var giocatoriVincenti = gioco.Giocatori.Where(q =>
-                    q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21));
+                    q.Punteggio <= 21 && (q.Punteggio > gioco.Mazziere.Punteggio || gioco.Mazziere.Punteggio > 21));
 
                 var giocatoriPari =
-                    gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21);
+                    gioco.Giocatori.Where(q => q.Punteggio == gioco.Mazziere.Punteggio && q.Punteggio <= 21);
 
                 var giocatoriPerdenti = gioco.Giocatori.Where(q =>
-                    q.Punteggio() > 21 || (q.Punteggio() < gioco.Mazziere.Punteggio() && gioco.Mazziere.Punteggio() <= 21));
+                    q.Punteggio > 21 || (q.Punteggio < gioco.Mazziere.Punteggio && gioco.Mazziere.Punteggio <= 21));
 
 
                 TestContext.Write("vincente: [ ");
@@ -66,7 +67,7 @@ namespace Test
         }
 
         [Test]
-        public void Test2()
+        public void TestGiocate2()
         {
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
@@ -77,8 +78,8 @@ namespace Test
             {
                 gioco.Giocata();
 
-                int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21)).Count();
-                int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21).Count();
+                int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio <= 21 && (q.Punteggio > gioco.Mazziere.Punteggio || gioco.Mazziere.Punteggio > 21)).Count();
+                int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio == gioco.Mazziere.Punteggio && q.Punteggio <= 21).Count();
                 int numeroGiocatoriPerdenti = gioco.Giocatori.Count - numeroGiocatoriVincenti - numeroGiocatoriPari;
 
                 vinteGiocatori += numeroGiocatoriVincenti;
@@ -93,67 +94,63 @@ namespace Test
             Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}, perc. mazziere: {Math.Round((decimal)vinteMazziere*100/(vinteMazziere+vinteGiocatori),0)}%");
         }
 
-
-
-
-        private Gioco Giocata(Gioco gioco)
+        [Test]
+        public void Test1() 
         {
-            gioco.Giocatori.ForEach(q => q.Carte = new List<Carta>());
-            gioco.Mazziere.Carte = new List<Carta>();
-            gioco.Giocatori.ForEach(q => q.PuntataCorrente = 5);
-
-            foreach (Giocatore giocatore in gioco.Giocatori)
+            Gioco gioco = new Gioco(2, 0);
+            for (int i = 0; i < 4; i++)
             {
-                giocatore.Pesca();
-            }
-            gioco.Mazziere.Pesca();
-            foreach (Giocatore giocatore in gioco.Giocatori)
-            {
-                giocatore.Pesca();
-            }
-            gioco.Mazziere.Pesca();
-            
-            foreach (Giocatore giocatore in gioco.Giocatori)
-            {
-                while (giocatore.Strategia.Strategy(giocatore, gioco.Mazziere) == Giocatore.Puntata.Chiama)
-                {
-                    giocatore.Pesca();
-                }
-                if (giocatore.Strategia.Strategy(giocatore, gioco.Mazziere) == Giocatore.Puntata.Raddoppia) 
-                {
-                    giocatore.PuntataCorrente *= 2;
-                }
-            }
-            while (gioco.Mazziere.Strategia.Strategy(gioco.Mazziere) == Mazziere.Puntata.Chiama)
-            {
-                gioco.Mazziere.Pesca();
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Fiori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Nove, Carta.SemeCarta.Fiori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Fiori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
             }
 
-            var giocatoriVincenti = gioco.Giocatori.Where(q =>
-                q.Punteggio() <= 21 && (q.Punteggio() > gioco.Mazziere.Punteggio() || gioco.Mazziere.Punteggio() > 21));
+            gioco.Giocata();
 
-            var giocatoriPari =
-                gioco.Giocatori.Where(q => q.Punteggio() == gioco.Mazziere.Punteggio() && q.Punteggio() <= 21);
-
-            var giocatoriPerdenti = gioco.Giocatori.Where(q =>
-                q.Punteggio() > 21 || (q.Punteggio() < gioco.Mazziere.Punteggio() && gioco.Mazziere.Punteggio() <= 21));
-
-            foreach (var vincente in giocatoriVincenti)
-            {
-                gioco.Mazziere.SoldiTotali -= vincente.PuntataCorrente;
-                vincente.SoldiTotali += vincente.PuntataCorrente;
-            }
-
-            foreach (var perdente in giocatoriPerdenti)
-            {
-                gioco.Mazziere.SoldiTotali += perdente.PuntataCorrente;
-                perdente.SoldiTotali -= perdente.PuntataCorrente;
-            }
-
-            if (giocatoriVincenti.Count() + giocatoriPerdenti.Count() + giocatoriPari.Count() != gioco.Giocatori.Count())
-                throw new Exception("Non corrispondono i giocatori");
-
-            return gioco;
+            Assert.AreEqual(21, gioco.Mazziere.Carte.Select(q=>q.Valore).Sum());
         }
+
+        [Test]
+        public void Test2()
+        {
+            Gioco gioco = new Gioco(2, 0);
+            for (int i = 0; i < 4; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Re, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Jack, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sei, Carta.SemeCarta.Quadri));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Nove, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+
+            }
+
+            gioco.Giocata();
+
+            Assert.AreEqual(21, gioco.Mazziere.Carte.Select(q => q.Valore).Sum());
+            Assert.AreEqual(21, gioco.Giocatori[0].Carte.Select(q => q.Valore).Sum());
+        }
+
+
+
     }
 }

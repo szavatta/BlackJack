@@ -6,6 +6,25 @@
 
     <input type="button" id="btnGioco" value="GIOCO" class="btn btn-info" />
 
+    <div class="row">
+        <div class="col-lg-4">
+
+        </div>
+        <div id="mazziere" class="col-lg-4">
+            <div id="nome-mazziere"></div>
+            <div id="carte-mazziere" class="d-flex justify-content-center"></div>
+        </div>
+        <div class="col-lg-4">
+
+        </div>
+        <div id="giocatori" class="col-lg12 d-flex mt-5">
+            <div class="giocatorestamp col-lg-4 d-none">
+                <div class="nome-giocatore"></div>
+                <div class="carte-giocatore d-flex justify-content-center"></div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script>
     $(document).ready(function () {
@@ -16,7 +35,8 @@
                 url: "/Home/GetGioco",
                 data: {},
                 success: function (risultato) {
-                    let a =JSON.parse(risultato);
+                    let partita = JSON.parse(risultato);
+                    DisegnaTavolo(partita);
                 },
                 error: function (risultato) {
                     console.log(risultato);
@@ -24,4 +44,28 @@
             });
         })
     })
+
+    function DisegnaTavolo(partita) {
+        PulisceTavolo();
+        $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
+        partita.Mazziere.Carte.forEach(function (carta) {
+            $("#carte-mazziere").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero  + ".png'></div>");
+        })
+        partita.Giocatori.forEach(function (giocatore) {
+            let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
+            div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
+            giocatore.Carte.forEach(function (carta) {
+                div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+            })
+            $("#giocatori").append(div);
+        })
+
+    }
+
+    function PulisceTavolo() {
+        $("#nome-mazziere").html("");
+        $("#carte-mazziere").html("");
+        $(".giocatore").remove();
+    }
+
 </script>

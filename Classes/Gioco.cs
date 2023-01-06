@@ -29,11 +29,7 @@ namespace Classes
 
         public object Clone()
         {
-            // Crea una copia dell'oggetto
             Gioco copy = (Gioco)this.MemberwiseClone();
-
-            // Copia gli oggetti interni, se necessario
-            // ...
 
             return copy;
         }
@@ -64,6 +60,7 @@ namespace Classes
                 if (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Raddoppia)
                 {
                     giocatore.PuntataCorrente *= 2;
+                    giocatore.Pesca();
                 }
             }
             while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
@@ -72,13 +69,13 @@ namespace Classes
             }
 
             var giocatoriVincenti = Giocatori.Where(q =>
-                q.Punteggio() <= 21 && (q.Punteggio() > Mazziere.Punteggio() || Mazziere.Punteggio() > 21));
+                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21));
 
             var giocatoriPari =
-                Giocatori.Where(q => q.Punteggio() == Mazziere.Punteggio() && q.Punteggio() <= 21);
+                Giocatori.Where(q => q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21);
 
             var giocatoriPerdenti = Giocatori.Where(q =>
-                q.Punteggio() > 21 || (q.Punteggio() < Mazziere.Punteggio() && Mazziere.Punteggio() <= 21));
+                q.Punteggio > 21 || (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21));
 
             foreach (var vincente in giocatoriVincenti)
             {

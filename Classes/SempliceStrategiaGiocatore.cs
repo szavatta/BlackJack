@@ -8,7 +8,7 @@ namespace Classes
     {
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere)
         {
-            if (giocatore.Punteggio() < 17)
+            if (giocatore.Punteggio < 17)
                 return Giocatore.Puntata.Chiama;
             else
                 return Giocatore.Puntata.Stai;

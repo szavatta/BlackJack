@@ -11,6 +11,7 @@ namespace Classes
         public Mazziere(Gioco gioco) : base(gioco)
         {
             Strategia = new SempliceStrategiaMazziere();
+            Nome = "Mazziere";
         }
 
         public new enum Puntata

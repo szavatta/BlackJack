@@ -16,6 +16,7 @@ namespace Classes
         public String Nome { get; set; }
         public double PuntataCorrente { get; set; }
         public double SoldiTotali { get; set; }
+        public int Punteggio => CalcolaPunteggio();
 
 
         public GiocatoreSemplice(Gioco gioco)
@@ -34,13 +35,16 @@ namespace Classes
 
             return carta;
         }
-        public int Punteggio()
+        public int CalcolaPunteggio()
         {
             List<Carta> carte2 = new List<Carta>(Carte);
             carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso11);
             int punt11 = carte2.Select(q => q.Valore).Sum();
             if (punt11 > 21)
-                return Carte.Select(q => q.Valore).Sum();
+            {
+                carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso11).ToList().ForEach(q => q.Numero = Carta.NumeroCarta.Asso);
+                return carte2.Select(q => q.Valore).Sum();
+            }
             else
                 return punt11;
         }

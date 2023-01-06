@@ -8,7 +8,7 @@ namespace Classes
     {
         public Mazziere.Puntata Strategy(Mazziere mazziere)
         {
-            if (mazziere.Punteggio() < 17)
+            if (mazziere.Punteggio < 17)
                 return Mazziere.Puntata.Chiama;
             else
                 return Mazziere.Puntata.Stai;

@@ -9,7 +9,7 @@ namespace Classes
     {
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere)
         {
-            int pg= giocatore.Punteggio();
+            int pg= giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
 
             bool assoConDueCarte = giocatore.Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() == 1 && giocatore.Carte.Count == 2;
