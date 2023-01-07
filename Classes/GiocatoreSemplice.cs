@@ -41,10 +41,10 @@ namespace Classes
             if (punt11 > 21)
             {
                 var res= carte2.Select(q => q.Valore).Sum();
-                if (carte2.Select(q => q.Numero).Contains(Carta.NumeroCarta.Asso)) 
+                if (carte2.Select(q => q.Numero).Contains(Carta.NumeroCarta.Asso))
                     res -= 10;
 
-                //io lo farei così perchè bisogna togliere 10 per ogni asso
+                //io lo farei così perchè bisogna togliere 10 per ogni asso, guarda il Test3
                 //res -= carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() * 10;
 
                 return res;
