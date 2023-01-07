@@ -23,7 +23,6 @@ namespace Classes
         {
             Carte = new List<Carta>();
             Gioco = gioco;
-            Nome = $"Giocatore {gioco.Giocatori.Count + 1}";
         }
 
         public Carta Pesca()
@@ -44,6 +43,9 @@ namespace Classes
                 var res= carte2.Select(q => q.Valore).Sum();
                 if (carte2.Select(q => q.Numero).Contains(Carta.NumeroCarta.Asso)) 
                     res -= 10;
+
+                //io lo farei così perchè bisogna togliere 10 per ogni asso
+                //res -= carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() * 10;
 
                 return res;
             }

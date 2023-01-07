@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Classes
 {
+    [Serializable]
     public class Mazziere : GiocatoreSemplice
     {
+        [JsonIgnore]
         public StrategiaMazziere Strategia { get; set; }
 
         public Mazziere(Gioco gioco) : base(gioco)

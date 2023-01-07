@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Classes
 {
+    [Serializable]
     public class BasicStrategy : StrategiaGiocatore
     {
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere)

@@ -33,9 +33,8 @@ namespace BlackJack.Controllers
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
             gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
 
-            string json = JsonConvert.SerializeObject(gioco);
-
-            HttpContext.Session.SetString("Gioco", json);
+            //HttpContext.Session.SetObject("Gioco", gioco);
+            //Gioco g = HttpContext.Session.GetObject<Gioco>("Gioco");
 
             return View();
         }
@@ -68,6 +67,7 @@ namespace BlackJack.Controllers
             gioco.Giocata();
 
             string json = JsonConvert.SerializeObject(gioco);
+            //Gioco g = JsonConvert.DeserializeObject<Gioco>(json);
 
             //HttpContext.Session.Set("Gioco", json);
 
