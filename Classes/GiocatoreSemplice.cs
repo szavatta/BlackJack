@@ -27,7 +27,7 @@ namespace Classes
 
         public Carta Pesca()
         {
-            Carta carta = Gioco.Mazzo.pescaCarta();
+            Carta carta = Gioco.Mazzo.PescaCarta();
             Carte.Add(carta);
             if (Gioco.Mazzo.Carte.Count < 10)
                 Gioco.Mazzo.CreaMazzo(Gioco.NumMazziIniziali);

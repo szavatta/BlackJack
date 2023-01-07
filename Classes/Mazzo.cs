@@ -8,6 +8,7 @@ namespace Classes
     public class Mazzo
     {
         public List<Carta> Carte { get; set; }
+        public decimal Conteggio { get; set; }
 
         public void CreaMazzo(int numMazzi = 1, bool mischia = true)
         {
@@ -31,15 +32,21 @@ namespace Classes
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
-        public Carta pescaCarta() {
+        public Carta PescaCarta() 
+        {
             if (Carte.Count == 0)
-            {
                 CreaMazzo();
-            }
 
             Carta carta = Carte.FirstOrDefault();
             Carte.RemoveAt(0);
+            Conteggio += carta.Conteggio;
+
             return carta;
+        }
+
+        public override string ToString()
+        {
+            return "Conteggio: " + Conteggio;
         }
     }
 

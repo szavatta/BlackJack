@@ -13,5 +13,12 @@ namespace Classes
             else
                 return Giocatore.Puntata.Stai;
         }
+
+        public override int Puntata(int Conteggio)
+        {
+            return 100;
+        }
+
+
     }
 }

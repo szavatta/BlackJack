@@ -8,5 +8,6 @@ namespace Classes
     {
         public int moltiplicatore { get; set; } = 1;
         public abstract Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere);
+        public abstract int Puntata(int Conteggio);
     }
 }

@@ -57,5 +57,27 @@ namespace Classes
                 return Giocatore.Puntata.Raddoppia;
             }
         }
+
+        public override int Puntata(int Conteggio)
+        {
+            if (Conteggio <= -2)
+                return 0;
+            else if (Conteggio == -1)
+                return 10;
+            else if (Conteggio == 0)
+                return 10;
+            else if (Conteggio == 1)
+                return 50;
+            else if (Conteggio == 2)
+                return 100;
+            else if (Conteggio == 3)
+                return 150;
+            else if (Conteggio == 4)
+                return 200;
+            else //if (Conteggio >= 5)
+                return 250;
+
+        }
+
     }
 }
