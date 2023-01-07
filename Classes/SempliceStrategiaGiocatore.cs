@@ -14,9 +14,9 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override int Puntata(int Conteggio)
+        public override int Puntata(Mazzo mazzo)
         {
-            return 100;
+            return 5;
         }
 
 

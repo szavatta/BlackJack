@@ -8,10 +8,11 @@ namespace Classes
     public class Mazzo
     {
         public List<Carta> Carte { get; set; }
-        public decimal Conteggio { get; set; }
+        public int Conteggio { get; set; }
 
         public void CreaMazzo(int numMazzi = 1, bool mischia = true)
         {
+            Conteggio = 0;
             if (Carte == null)
                 Carte = new List<Carta>();
 
@@ -32,10 +33,10 @@ namespace Classes
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
-        public Carta PescaCarta() 
+        public Carta PescaCarta(int percMin = 20, bool mischia=true)
         {
-            if (Carte.Count == 0)
-                CreaMazzo();
+            if (Carte.Count <= percMin*Carte.Count/100)
+                CreaMazzo(mischia:mischia);
 
             Carta carta = Carte.FirstOrDefault();
             Carte.RemoveAt(0);

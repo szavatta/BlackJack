@@ -14,10 +14,10 @@ namespace Classes
         public Mazzo Mazzo { get; set; }
         public Mazziere Mazziere { get; set; }
         public int NumMazziIniziali { get; set; }
-        public Gioco(int giocatori, int numMazzi=6) 
+        public Gioco(int giocatori, int numMazzi=6, bool mischia = true) 
         {
             Mazzo = new Mazzo();
-            Mazzo.CreaMazzo(numMazzi);
+            Mazzo.CreaMazzo(numMazzi, mischia);
             NumMazziIniziali = numMazzi;
             Giocatori = new List<Giocatore>();
             for (int i = 0; i < giocatori; i++)
@@ -39,44 +39,44 @@ namespace Classes
         {
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.PuntataCorrente = 5);
+            Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(Mazzo));
 
             foreach (Giocatore giocatore in Giocatori)
             {
-                giocatore.Pesca();
+                giocatore.Pesca(mischia: false);
             }
-            Mazziere.Pesca();
+            Mazziere.Pesca(mischia:false);
             foreach (Giocatore giocatore in Giocatori)
             {
-                giocatore.Pesca();
+                giocatore.Pesca(mischia: false);
             }
-            Mazziere.Pesca();
+            Mazziere.Pesca(mischia:false);
 
             foreach (Giocatore giocatore in Giocatori)
             {
                 while (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Chiama)
                 {
-                    giocatore.Pesca();
+                    giocatore.Pesca(mischia:false);
                 }
                 if (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Raddoppia)
                 {
                     giocatore.PuntataCorrente *= 2;
-                    giocatore.Pesca();
+                    giocatore.Pesca(mischia:false);
                 }
             }
             while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
             {
-                Mazziere.Pesca();
+                Mazziere.Pesca(mischia:false);
             }
 
             var giocatoriVincenti = Giocatori.Where(q =>
-                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21));
+                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21)).ToList();
 
             var giocatoriPari =
-                Giocatori.Where(q => q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21);
+                Giocatori.Where(q => q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21).ToList();
 
             var giocatoriPerdenti = Giocatori.Where(q =>
-                q.Punteggio > 21 || (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21));
+                q.Punteggio > 21 || (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21)).ToList();
 
             foreach (var vincente in giocatoriVincenti)
             {

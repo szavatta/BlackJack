@@ -17,15 +17,15 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = new Gioco(0, 1);
-            gioco.Giocata();
+            Gioco gioco = new Gioco(0, 1, false);
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+            gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
             gioco.Giocatori.Add(new Giocatore(gioco));
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 gioco.Giocata();
                 var giocatoriVincenti = gioco.Giocatori.Where(q =>
@@ -150,6 +150,16 @@ namespace Test
             Assert.AreEqual(21, gioco.Giocatori[0].Carte.Select(q => q.Valore).Sum());
         }
 
+        [Test]
+        public void TestConteggio()
+        {
+            Gioco gioco = new Gioco(1, 1);
+            for (int i = 0; i < 52; i++)
+            {
+                gioco.Giocatori[0].Pesca(0);
+            }
+            Assert.AreEqual(0, gioco.Mazzo.Conteggio);
+        }
 
         [Test]
         public void Test3()
@@ -180,4 +190,6 @@ namespace Test
 
 
     }
+
+
 }

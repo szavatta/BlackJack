@@ -14,7 +14,7 @@ namespace Classes
         [JsonIgnore]
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
-        public double PuntataCorrente { get; set; }
+        public int PuntataCorrente { get; set; }
         public double SoldiTotali { get; set; }
         public int Punteggio => CalcolaPunteggio();
 
@@ -25,13 +25,10 @@ namespace Classes
             Gioco = gioco;
         }
 
-        public Carta Pesca()
+        public Carta Pesca(int percMin = 20, bool mischia = true)
         {
-            Carta carta = Gioco.Mazzo.PescaCarta();
-            Carte.Add(carta);
-            if (Gioco.Mazzo.Carte.Count < 10)
-                Gioco.Mazzo.CreaMazzo(Gioco.NumMazziIniziali);
-
+            Carta carta = Gioco.Mazzo.PescaCarta(percMin, mischia);
+            Carte.Add(carta);                
             return carta;
         }
         public int CalcolaPunteggio()
@@ -41,12 +38,7 @@ namespace Classes
             if (punt11 > 21)
             {
                 var res= carte2.Select(q => q.Valore).Sum();
-                if (carte2.Select(q => q.Numero).Contains(Carta.NumeroCarta.Asso))
-                    res -= 10;
-
-                //io lo farei così perchè bisogna togliere 10 per ogni asso, guarda il Test3
-                //res -= carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() * 10;
-
+                res -= carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() * 10;
                 return res;
             }
             else
