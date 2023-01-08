@@ -74,30 +74,49 @@ namespace Classes
                 Mazziere.Pesca();
             }
 
-            var giocatoriVincenti = Giocatori.Where(q =>
-                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21)).ToList();
 
-            var giocatoriPari =
-                Giocatori.Where(q => q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21).ToList();
-
-            var giocatoriPerdenti = Giocatori.Where(q =>
-                q.Punteggio > 21 || (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21)).ToList();
-
-            foreach (var vincente in giocatoriVincenti)
+            foreach (var vincente in GiocatoriVincenti())
             {
                 Mazziere.SoldiTotali -= vincente.PuntataCorrente;
                 vincente.SoldiTotali += vincente.PuntataCorrente;
             }
 
-            foreach (var perdente in giocatoriPerdenti)
+            foreach (var perdente in GiocatoriPerdenti())
             {
                 Mazziere.SoldiTotali += perdente.PuntataCorrente;
                 perdente.SoldiTotali -= perdente.PuntataCorrente;
             }
 
-            if (giocatoriVincenti.Count() + giocatoriPerdenti.Count() + giocatoriPari.Count() != Giocatori.Count())
+            if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
                 throw new Exception("Non corrispondono i giocatori");
 
+        }
+
+        public List<Giocatore> GiocatoriVincenti()
+        {
+            var ret = Giocatori.Where(q =>
+                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21)).ToList();
+
+            return ret;
+        }
+
+        public List<Giocatore> GiocatoriPari()
+        {
+            var ret = Giocatori.Where(q => 
+                q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21
+                ).ToList();
+
+            return ret;
+        }
+
+        public List<Giocatore> GiocatoriPerdenti()
+        {
+            var ret = Giocatori.Where(q =>
+                q.Punteggio > 21 || 
+                (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21)
+                ).ToList();
+
+            return ret;
         }
 
     }

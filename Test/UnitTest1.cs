@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Test
 {
-    public class Tests
+    public class Tests1
     {
         [SetUp]
         public void Setup()
@@ -28,32 +28,23 @@ namespace Test
             for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
-                var giocatoriVincenti = gioco.Giocatori.Where(q =>
-                    q.Punteggio <= 21 && (q.Punteggio > gioco.Mazziere.Punteggio || gioco.Mazziere.Punteggio > 21));
-
-                var giocatoriPari =
-                    gioco.Giocatori.Where(q => q.Punteggio == gioco.Mazziere.Punteggio && q.Punteggio <= 21);
-
-                var giocatoriPerdenti = gioco.Giocatori.Where(q =>
-                    q.Punteggio > 21 || (q.Punteggio < gioco.Mazziere.Punteggio && gioco.Mazziere.Punteggio <= 21));
-
 
                 TestContext.Write("vincente: [ ");
-                foreach (var vincente in giocatoriVincenti)
+                foreach (var vincente in gioco.GiocatoriVincenti())
                 {
                     TestContext.Write($"{vincente}, ");
                 }
                 TestContext.WriteLine("]");
 
                 TestContext.Write("perdente: [ ");
-                foreach (var perdente in giocatoriPerdenti)
+                foreach (var perdente in gioco.GiocatoriPerdenti())
                 {
                     TestContext.Write($"{perdente}, ");
                 }
                 TestContext.WriteLine("]");
 
                 TestContext.Write("pareggio: [ ");
-                foreach (var pareggio in giocatoriPari)
+                foreach (var pareggio in gioco.GiocatoriPari())
                 {
                     TestContext.Write($"{pareggio}, ");
                 }
@@ -79,12 +70,8 @@ namespace Test
             {
                 gioco.Giocata();
 
-                int numeroGiocatoriVincenti = gioco.Giocatori.Where(q => q.Punteggio <= 21 && (q.Punteggio > gioco.Mazziere.Punteggio || gioco.Mazziere.Punteggio > 21)).Count();
-                int numeroGiocatoriPari = gioco.Giocatori.Where(q => q.Punteggio == gioco.Mazziere.Punteggio && q.Punteggio <= 21).Count();
-                int numeroGiocatoriPerdenti = gioco.Giocatori.Count - numeroGiocatoriVincenti - numeroGiocatoriPari;
-
-                vinteGiocatori += numeroGiocatoriVincenti;
-                vinteMazziere += numeroGiocatoriPerdenti;
+                vinteGiocatori += gioco.GiocatoriVincenti().Count();
+                vinteMazziere += gioco.GiocatoriPerdenti().Count();
                 totale += gioco.Giocatori.Count;
             }
 
@@ -92,34 +79,40 @@ namespace Test
             TestContext.WriteLine($"vincite giocatori: {vinteGiocatori}");
             TestContext.WriteLine($"perc. mazziere: {Math.Round((decimal)vinteMazziere * 100 / (vinteMazziere + vinteGiocatori), 0)}%");
 
-            Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}, perc. mazziere: {Math.Round((decimal)vinteMazziere*100/(vinteMazziere+vinteGiocatori),0)}%");
+            Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}, perc. mazziere: {Math.Round((decimal)vinteMazziere * 100 / (vinteMazziere + vinteGiocatori), 0)}%");
         }
 
+
+    }
+
+    public class Tests2
+    {
+        [SetUp]
         [Test]
-        public void Test1() 
+        public void Test1()
         {
             Gioco gioco = new Gioco(2, 0);
             for (int i = 0; i < 4; i++)
             {
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Picche));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Picche));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Cuori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Cuori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Quadri));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Fiori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Picche));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Picche));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Nove, Carta.SemeCarta.Fiori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Fiori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Cuori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Quadri));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Picche));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Nove, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
             }
 
             gioco.Giocata();
 
-            Assert.AreEqual(21, gioco.Mazziere.Carte.Select(q=>q.Valore).Sum());
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
         }
 
         [Test]
@@ -147,8 +140,8 @@ namespace Test
 
             gioco.Giocata();
 
-            Assert.AreEqual(21, gioco.Mazziere.Carte.Select(q => q.Valore).Sum());
-            Assert.AreEqual(21, gioco.Giocatori[0].Carte.Select(q => q.Valore).Sum());
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
         }
 
         [Test]
@@ -189,8 +182,5 @@ namespace Test
             Assert.AreEqual(19, gioco.Giocatori[0].Punteggio);
         }
 
-
     }
-
-
 }
