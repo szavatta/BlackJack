@@ -41,7 +41,7 @@ namespace Classes
         {
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.Strategia.Puntata(PuntataMinima, 50, 0));
+            Giocatori.ForEach(q => q.PuntataCorrente =q.Strategia.Puntata(PuntataMinima, 50, 0));
 
             foreach (Giocatore giocatore in Giocatori)
             {
