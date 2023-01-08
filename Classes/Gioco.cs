@@ -14,8 +14,10 @@ namespace Classes
         public Mazzo Mazzo { get; set; }
         public Mazziere Mazziere { get; set; }
         public int NumMazziIniziali { get; set; }
-        public Gioco(int giocatori, int numMazzi=6, bool mischia = true) 
+        public int PuntataMinima { get; set; }
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true) 
         {
+            PuntataMinima = 5;
             Mazzo = new Mazzo();
             Mazzo.CreaMazzo(numMazzi, mischia);
             NumMazziIniziali = numMazzi;
@@ -39,7 +41,7 @@ namespace Classes
         {
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(Mazzo));
+            Giocatori.ForEach(q => q.Strategia.Puntata(PuntataMinima, 50, 0));
 
             foreach (Giocatore giocatore in Giocatori)
             {
@@ -54,11 +56,11 @@ namespace Classes
 
             foreach (Giocatore giocatore in Giocatori)
             {
-                while (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Chiama)
+                while (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.getTrueCount()) == Giocatore.Puntata.Chiama)
                 {
                     giocatore.Pesca(mischia:false);
                 }
-                if (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Raddoppia)
+                if (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.getTrueCount()) == Giocatore.Puntata.Raddoppia)
                 {
                     giocatore.PuntataCorrente *= 2;
                     giocatore.Pesca(mischia:false);
