@@ -17,17 +17,17 @@ namespace Classes
 
             if (assoConDueCarte) 
             {
-                if (pg >= 10 ||
-                    pg == 9 && pm != 6 ||
-                    pg == 8 && pm >= 7 && pm <= 8)
+                if (pg >= 20 ||
+                    pg == 19 && pm != 6 ||
+                    pg == 18 && pm >= 7 && pm <= 8)
                 {
                     return Giocatore.Puntata.Stai;
                 }
-                else if (pg == 9 && pm == 6 ||
-                         pg == 8 && pm <= 6 ||
-                         pg == 7 && pm >= 3 && pm <= 6 ||
-                         pg <= 6 && pg >= 5 && pm >= 4 && pm <= 6 ||
-                         pg <= 4 && pg >= 3 && pm >= 5 && pm <= 6
+                else if (pg == 19 && pm == 6 ||
+                         pg == 18 && pm <= 6 ||
+                         pg == 17 && pm >= 3 && pm <= 6 ||
+                         pg <= 16 && pg >= 15 && pm >= 4 && pm <= 6 ||
+                         pg <= 14 && pg >= 13 && pm >= 5 && pm <= 6
                         )
                 {
                     return Giocatore.Puntata.Raddoppia;
