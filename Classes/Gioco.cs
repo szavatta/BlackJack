@@ -15,8 +15,11 @@ namespace Classes
         public Mazziere Mazziere { get; set; }
         public int NumMazziIniziali { get; set; }
         public int PuntataMinima { get; set; }
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true) 
+        public bool Mischia { get; }
+
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true)
         {
+            Mischia = mischia;
             PuntataMinima = 5;
             Mazzo = new Mazzo();
             Mazzo.CreaMazzo(numMazzi, mischia);
@@ -45,30 +48,30 @@ namespace Classes
 
             foreach (Giocatore giocatore in Giocatori)
             {
-                giocatore.Pesca(mischia: false);
+                giocatore.Pesca();
             }
-            Mazziere.Pesca(mischia:false);
+            Mazziere.Pesca();
             foreach (Giocatore giocatore in Giocatori)
             {
-                giocatore.Pesca(mischia: false);
+                giocatore.Pesca();
             }
-            Mazziere.Pesca(mischia:false);
+            Mazziere.Pesca();
 
             foreach (Giocatore giocatore in Giocatori)
             {
                 while (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.getTrueCount()) == Giocatore.Puntata.Chiama)
                 {
-                    giocatore.Pesca(mischia:false);
+                    giocatore.Pesca();
                 }
                 if (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.getTrueCount()) == Giocatore.Puntata.Raddoppia)
                 {
                     giocatore.PuntataCorrente *= 2;
-                    giocatore.Pesca(mischia:false);
+                    giocatore.Pesca();
                 }
             }
             while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
             {
-                Mazziere.Pesca(mischia:false);
+                Mazziere.Pesca();
             }
 
             var giocatoriVincenti = Giocatori.Where(q =>
