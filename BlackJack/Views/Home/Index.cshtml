@@ -52,7 +52,7 @@
     function DisegnaTavolo(partita, trueCount) {
         PulisceTavolo();
         $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
-        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " True Count: " + trueCount);
+        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - True Count: " + trueCount + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta) {
             $("#carte-mazziere").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero  + ".png'></div>");
         })
@@ -62,7 +62,7 @@
         partita.Giocatori.forEach(function (giocatore) {
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
-            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " Puntata: " + giocatore.PuntataCorrente);
+            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
             giocatore.Carte.forEach(function (carta) {
                 div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })

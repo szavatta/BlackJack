@@ -16,6 +16,8 @@ namespace Classes
         public int NumMazziIniziali { get; set; }
         public int PuntataMinima { get; set; }
         public bool Mischia { get; }
+        public int Giri { get; set; }
+
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true)
         {
@@ -100,6 +102,8 @@ namespace Classes
             {
                 throw ex;
             }
+
+            Giri++;
         }
 
         public List<Giocatore> GiocatoriVincenti()
