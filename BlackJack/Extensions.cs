@@ -17,6 +17,13 @@ namespace BlackJack
         public static T GetObject<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
+
+            if (value != null)
+            {
+                var dyn = JsonConvert.DeserializeObject<dynamic>(value);
+                Classes.Gioco g = ((Newtonsoft.Json.Linq.JObject)dyn).ToObject<Classes.Gioco>();
+            }
+
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
     }

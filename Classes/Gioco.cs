@@ -44,7 +44,7 @@ namespace Classes
         {
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.PuntataCorrente =q.Strategia.Puntata(PuntataMinima, 50, Mazzo.GetTrueCount()));
+            Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(PuntataMinima, 50, Mazzo.GetTrueCount()));
 
             foreach (Giocatore giocatore in Giocatori)
             {
@@ -87,9 +87,19 @@ namespace Classes
                 perdente.SoldiTotali -= perdente.PuntataCorrente;
             }
 
-            if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
-                throw new Exception("Non corrispondono i giocatori");
+            GiocatoriVincenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Vinto);
+            GiocatoriPerdenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Perso);
+            GiocatoriPari().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Pari);
 
+            try
+            {
+                if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
+                    throw new Exception("Non corrispondono i giocatori");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public List<Giocatore> GiocatoriVincenti()

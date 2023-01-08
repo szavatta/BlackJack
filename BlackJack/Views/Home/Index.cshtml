@@ -37,11 +37,11 @@
                 url: "/Home/GetGioco",
                 data: {},
                 success: function (risultato) {
-                    let partita = JSON.parse(risultato);
-                    DisegnaTavolo(partita);
+                    let partita = JSON.parse(risultato.gioco);
+                    DisegnaTavolo(partita, risultato.trueCount);
                 },
-                error: function (risultato) {
-                    console.log(risultato);
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
                 }
             });
         })
@@ -49,10 +49,10 @@
         $("#btnGioco").click();
     })
 
-    function DisegnaTavolo(partita) {
+    function DisegnaTavolo(partita, trueCount) {
         PulisceTavolo();
         $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
-        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali);
+        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " True Count: " + trueCount);
         partita.Mazziere.Carte.forEach(function (carta) {
             $("#carte-mazziere").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero  + ".png'></div>");
         })
@@ -62,16 +62,14 @@
         partita.Giocatori.forEach(function (giocatore) {
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
-            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali);
+            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " Puntata: " + giocatore.PuntataCorrente);
             giocatore.Carte.forEach(function (carta) {
                 div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
-            if (giocatore.Punteggio > 21) {
-                div.addClass("back-red");
-            } else if (giocatore.Punteggio > partita.Mazziere.Punteggio || partita.Mazziere.Punteggio > 21) {
+            if (giocatore.Risultato == 0) {
                 div.addClass("back-green");
-            } else if (giocatore.Punteggio < partita.Mazziere.Punteggio && partita.Mazziere.Punteggio <= 21) {
-                div.addClass("back-grey");
+            } else if (giocatore.Risultato == 1) {
+                div.addClass("back-red");
             }
             $("#giocatori").append(div);
 

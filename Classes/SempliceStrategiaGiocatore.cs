@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Classes
 {
-    class SempliceStrategiaGiocatore : StrategiaGiocatore
+    public class SempliceStrategiaGiocatore : StrategiaGiocatore
     {
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {

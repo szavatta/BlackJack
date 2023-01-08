@@ -7,7 +7,6 @@ using System.Text;
 
 namespace Classes
 {
-    [Serializable]
     public abstract class GiocatoreSemplice
     {
         public List<Carta> Carte { get; set; }
@@ -59,7 +58,9 @@ namespace Classes
 
         public bool HasBlackJack()
         {
-            bool ret = Carte.Count() == 2 && Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso || q.Numero >= Carta.NumeroCarta.Dieci).Count() == 2;
+            bool ret = Carte.Count() == 2 
+                && Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() == 1 
+                && Carte.Where(q => q.Numero >= Carta.NumeroCarta.Dieci).Count() == 1;
 
             return ret;
         }

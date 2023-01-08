@@ -17,7 +17,7 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = new Gioco(0, 6);
+            Gioco gioco = new Gioco(0, 6, true);
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
             gioco.Giocatori.Add(new Giocatore(gioco));
@@ -252,6 +252,19 @@ namespace Test
             Assert.IsTrue(gioco.GiocatoriVincenti().Count() == 0);
             Assert.IsTrue(gioco.GiocatoriPerdenti().Count() == 1);
             Assert.IsTrue(gioco.GiocatoriPari().Count() == 0);
+        }
+        [Test]
+        public void TestCount()
+        {
+            Gioco gioco = new Gioco(0, 1, false);
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+
+            gioco.Giocata();
+            Assert.AreEqual(4, gioco.Mazzo.Conteggio);
+            gioco.Giocata();
+            Assert.AreEqual(2, gioco.Mazzo.Conteggio);
+            gioco.Giocata();
+            Assert.AreEqual(2, gioco.Mazzo.Conteggio);
         }
     }
 }

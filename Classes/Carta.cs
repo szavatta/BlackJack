@@ -7,6 +7,11 @@ namespace Classes
     [Serializable]
     public class Carta
     {
+        private byte[] _Immagine { get; set; }
+        private NumeroCarta _numero { get; set; }
+        public int Valore { get; set; }
+        public int Conteggio { get; set; }
+        public string NumeroString { get; set; }
         public Carta(NumeroCarta numero, SemeCarta seme)
         {
             Numero = numero;
@@ -18,7 +23,6 @@ namespace Classes
                 Conteggio = -1;
         }
 
-        private byte[] _Immagine { get; set; }
         public NumeroCarta Numero
         {
             get
@@ -32,10 +36,7 @@ namespace Classes
                 Valore = GetValore();
             }
         }
-        private NumeroCarta _numero { get; set; }
-        public int Valore { get; set; }
-        public int Conteggio { get; set; }
-        public string NumeroString { get; set; }
+
         public SemeCarta Seme
         {
             get
