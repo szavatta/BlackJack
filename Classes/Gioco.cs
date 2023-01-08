@@ -39,7 +39,7 @@ namespace Classes
         {
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.PuntataCorrente = 5);
+            Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(5, 50, 0));
 
             foreach (Giocatore giocatore in Giocatori)
             {
@@ -54,11 +54,11 @@ namespace Classes
 
             foreach (Giocatore giocatore in Giocatori)
             {
-                while (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Chiama)
+                while (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.getTrueCount()) == Giocatore.Puntata.Chiama)
                 {
                     giocatore.Pesca();
                 }
-                if (giocatore.Strategia.Strategy(giocatore, Mazziere) == Giocatore.Puntata.Raddoppia)
+                if (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.getTrueCount()) == Giocatore.Puntata.Raddoppia)
                 {
                     giocatore.PuntataCorrente *= 2;
                     giocatore.Pesca();

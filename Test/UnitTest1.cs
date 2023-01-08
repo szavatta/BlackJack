@@ -20,6 +20,7 @@ namespace Test
             Gioco gioco = new Gioco(0, 1);
             gioco.Giocata();
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+            gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
             gioco.Giocatori.Add(new Giocatore(gioco));
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);

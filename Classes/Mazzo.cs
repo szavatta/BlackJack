@@ -44,6 +44,8 @@ namespace Classes
             return carta;
         }
 
+        public int getTrueCount() => (int)(Conteggio / ((Carte.Count / 52)+1));
+
         public override string ToString()
         {
             return "Conteggio: " + Conteggio;

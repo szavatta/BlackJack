@@ -126,6 +126,11 @@ namespace Classes
             return ret;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override string ToString()
         {
             return $"{Numero} di {Seme}";

@@ -8,7 +8,7 @@ namespace Classes
     [Serializable]
     public class StrategiaConteggio : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             if (giocatore.Punteggio < 17)
                 return Giocatore.Puntata.Chiama;
@@ -16,25 +16,18 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override int Puntata(int Conteggio)
+        public override int Puntata(int puntataMinima, int puntataBase, int Conteggio)
         {
             if (Conteggio <= -2)
                 return 0;
             else if (Conteggio == -1)
-                return 10;
+                return puntataMinima;
             else if (Conteggio == 0)
-                return 10;
-            else if (Conteggio == 1)
-                return 50;
-            else if (Conteggio == 2)
-                return 100;
-            else if (Conteggio == 3)
-                return 150;
-            else if (Conteggio == 4)
-                return 200;
+                return puntataMinima;
+            else if (Conteggio>=1 && Conteggio<=4)
+                return puntataBase * Conteggio;
             else //if (Conteggio >= 5)
-                return 250;
-
+                return puntataBase*5;
         }
 
     }
