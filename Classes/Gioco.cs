@@ -67,7 +67,11 @@ namespace Classes
                 }
                 if (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Raddoppia)
                 {
-                    giocatore.PuntataCorrente *= 2;
+                    if (giocatore.Carte.Count == 2)
+                    {
+                        giocatore.PuntataCorrente *= 2;
+                    }
+
                     giocatore.Pesca();
                 }
             }
