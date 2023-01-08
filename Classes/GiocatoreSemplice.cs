@@ -57,6 +57,12 @@ namespace Classes
                     $"Soldi Totali: {SoldiTotali}";
         }
 
+        public bool HasBlackJack()
+        {
+            bool ret = Carte.Count() == 2 && Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso || q.Numero >= Carta.NumeroCarta.Dieci).Count() == 2;
+
+            return ret;
+        }
     }
 }
 

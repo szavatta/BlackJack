@@ -17,7 +17,7 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = new Gioco(0, 6, false);
+            Gioco gioco = new Gioco(0, 6);
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
             gioco.Giocatori.Add(new Giocatore(gioco));
@@ -51,7 +51,7 @@ namespace Test
                 TestContext.WriteLine("]");
 
                 TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
-                TestContext.WriteLine($"truecount: {gioco.Mazzo.getTrueCount()}");
+                TestContext.WriteLine($"truecount: {gioco.Mazzo.GetTrueCount()}");
 
             }
 
@@ -88,6 +88,10 @@ namespace Test
     public class Tests2
     {
         [SetUp]
+        public void Setup()
+        {
+        }
+
         [Test]
         public void Test1()
         {
@@ -182,5 +186,72 @@ namespace Test
             Assert.AreEqual(19, gioco.Giocatori[0].Punteggio);
         }
 
+        [Test]
+        public void TestBlackJack()
+        {
+            Gioco gioco = new Gioco(1, 0);
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Jack, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Donna, Carta.SemeCarta.Fiori));
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+            }
+            gioco.Giocata();
+
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.IsTrue(gioco.Mazziere.HasBlackJack());
+            Assert.IsTrue(gioco.Giocatori[0].HasBlackJack());
+
+        }
+
+        [Test]
+        public void TestBlackJack2()
+        {
+            Gioco gioco = new Gioco(1, 0);
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Donna, Carta.SemeCarta.Fiori));
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+            }
+            gioco.Giocata();
+
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.IsTrue(gioco.Mazziere.HasBlackJack());
+            Assert.IsTrue(gioco.Giocatori[0].HasBlackJack());
+            Assert.IsTrue(gioco.GiocatoriVincenti().Count() == 0);
+            Assert.IsTrue(gioco.GiocatoriPerdenti().Count() == 0);
+            Assert.IsTrue(gioco.GiocatoriPari().Count() == 1);
+        }
+
+        [Test]
+        public void TestBlackJack3()
+        {
+            Gioco gioco = new Gioco(1, 0);
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Donna, Carta.SemeCarta.Fiori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+            }
+            gioco.Giocata();
+
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.IsTrue(gioco.Mazziere.HasBlackJack());
+            Assert.IsFalse(gioco.Giocatori[0].HasBlackJack());
+            Assert.IsTrue(gioco.GiocatoriVincenti().Count() == 0);
+            Assert.IsTrue(gioco.GiocatoriPerdenti().Count() == 1);
+            Assert.IsTrue(gioco.GiocatoriPari().Count() == 0);
+        }
     }
 }
