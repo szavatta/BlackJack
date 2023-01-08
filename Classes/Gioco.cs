@@ -46,18 +46,18 @@ namespace Classes
             Mazziere.Carte = new List<Carta>();
             Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(PuntataMinima, 50, Mazzo.GetTrueCount()));
 
-            foreach (Giocatore giocatore in Giocatori)
+            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
             {
                 giocatore.Pesca();
             }
             Mazziere.Pesca();
-            foreach (Giocatore giocatore in Giocatori)
+            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
             {
                 giocatore.Pesca();
             }
             Mazziere.Pesca();
 
-            foreach (Giocatore giocatore in Giocatori)
+            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
             {
                 while (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Chiama)
                 {
@@ -105,7 +105,7 @@ namespace Classes
         public List<Giocatore> GiocatoriVincenti()
         {
             var ret = Giocatori.Where(q =>
-                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21) ||
+                q.PuntataCorrente > 0 && q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21) ||
                 q.HasBlackJack() && !Mazziere.HasBlackJack()
                 ).ToList();
 
@@ -114,7 +114,8 @@ namespace Classes
 
         public List<Giocatore> GiocatoriPari()
         {
-            var ret = Giocatori.Where(q => 
+            var ret = Giocatori.Where(q =>
+                q.PuntataCorrente == 0 || 
                 q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21 &&
                 !(q.HasBlackJack() ^ Mazziere.HasBlackJack())
                 ).ToList();
@@ -125,9 +126,10 @@ namespace Classes
         public List<Giocatore> GiocatoriPerdenti()
         {
             var ret = Giocatori.Where(q =>
-                q.Punteggio > 21 || 
+                q.PuntataCorrente > 0 && 
+                (q.Punteggio > 21 || 
                 (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21) ||
-                !q.HasBlackJack() && Mazziere.HasBlackJack()
+                !q.HasBlackJack() && Mazziere.HasBlackJack())
                 ).ToList();
 
             return ret;

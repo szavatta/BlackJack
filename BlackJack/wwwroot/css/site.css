@@ -72,10 +72,16 @@ body {
 
 .back-red {
     background-color: red;
+    color: white;
 }
 .back-green {
     background-color: green;
+    color: white;
 }
 .back-grey {
     background-color: grey;
+}
+
+.giocatore {
+    min-height: 216px;
 }
