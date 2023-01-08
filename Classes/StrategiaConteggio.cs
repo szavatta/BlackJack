@@ -19,7 +19,7 @@ namespace Classes
         public override int Puntata(int puntataMinima, int puntataBase, int Conteggio)
         {
             if (Conteggio <= -2)
-                return 0;
+                return puntataMinima;
             else if (Conteggio == -1)
                 return puntataMinima;
             else if (Conteggio == 0)

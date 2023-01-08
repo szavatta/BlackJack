@@ -38,6 +38,12 @@ namespace BlackJack.Controllers
             return View();
         }
 
+        public IActionResult TestCount()
+        {
+
+            return View();
+        }
+
         void SetSessionGioco(Gioco gioco)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings();
