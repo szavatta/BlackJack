@@ -17,7 +17,7 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = new Gioco(0, 1, false);
+            Gioco gioco = new Gioco(0, 6, false);
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
             gioco.Giocatori.Add(new Giocatore(gioco));
@@ -60,6 +60,7 @@ namespace Test
                 TestContext.WriteLine("]");
 
                 TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
+                TestContext.WriteLine($"truecount: {gioco.Mazzo.getTrueCount()}");
 
             }
 
