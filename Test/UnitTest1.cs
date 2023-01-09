@@ -266,5 +266,36 @@ namespace Test
             gioco.Giocata();
             Assert.AreEqual(2, gioco.Mazzo.Conteggio);
         }
+
+        [Test]
+        public void TestSplit()
+        {
+            Gioco gioco = new Gioco(0, 0, false);
+            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+            gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore()));
+            
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Re, Carta.SemeCarta.Cuori)); 
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sei, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sei, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Cuori));
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Cuori));
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Cuori));
+            gioco.Giocata();
+
+            Assert.AreEqual(0,gioco.Giocatori[0].SoldiTotali);
+            Assert.AreEqual(0, gioco.Giocatori[1].SoldiTotali);
+            Assert.AreEqual(0, gioco.Mazziere.SoldiTotali);
+
+        }
     }
 }

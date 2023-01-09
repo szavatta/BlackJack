@@ -8,10 +8,11 @@ using System.Text;
 namespace Classes
 {
     [Serializable]
-    public class Giocatore : GiocatoreSemplice
+    public class Giocatore : GiocatoreSemplice, ICloneable
     {
         [JsonIgnore]
         public StrategiaGiocatore Strategia { get; set; }
+        public Giocatore GiocatoreSplit { get; set; }
         public int TipoStrategia { get; set; }
         public EnumRisultato Risultato { get; set; }
 
@@ -39,6 +40,15 @@ namespace Classes
             Vinto = 0,
             Perso = 1,
             Pari = 2
+        }
+
+
+        public object Clone()
+        {
+            Giocatore giocatore = new Giocatore(Gioco, Strategia, SoldiTotali, Nome);
+            giocatore.Carte = new List<Carta>(this.Carte);
+            giocatore.PuntataCorrente = PuntataCorrente;
+            return giocatore;
         }
     }
 }

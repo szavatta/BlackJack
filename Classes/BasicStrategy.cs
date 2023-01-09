@@ -14,6 +14,13 @@ namespace Classes
             int pm = mazziere.Carte.First().Valore;
 
             bool assoConDueCarte = giocatore.Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() == 1 && giocatore.Carte.Count == 2;
+            bool stesseCarte = giocatore.Carte.Count == 2 && giocatore.Carte[0].Numero == giocatore.Carte[1].Numero;
+
+            if (stesseCarte)
+            {
+             
+                    return Giocatore.Puntata.Dividi;
+            }
 
             if (assoConDueCarte) 
             {
