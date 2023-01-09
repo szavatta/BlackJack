@@ -2,15 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div class="text-center container">
 
     <h1>TEST COUNT</h1>
 
-    <input type="button" id="btnGioco" value="TEST" class="btn btn-info" />
+    <input type="button" id="btnGioco" value="TEST" class="btn btn-info mb-2" />
 
-    <div id="carte" class="d-flex justify-content-center"></div>
+    <div id="carte" class="d-flex flex-wrap justify-content-center"></div>
 
-
+    <div class="mt-2">
+        <input type="text" id="txConteggio" class="form-control w-25" style="float: left" placeholder="Inserisci il conteggio" />
+        <input type="button" id="btnConteggio" value="Invia" class="btn btn-primaryt" style="float: left" />
+    </div>
 </div>
 <script>
     $(document).ready(function () {
@@ -29,10 +32,21 @@
                 }
             });
         })
+
+        $("#btnConteggio").click(function () {
+            if ($("#txConteggio").val() != $("#txConteggio").attr("cont")) {
+                alert("ERRATO. Il conteggo è " + $("#txConteggio").attr("cont"));
+            } else {
+                alert("CORRETTO");
+            }
+        })
+
     })
 
     function DisegnaTavolo(partita) {
-        partita.Giocatori[0].Carte.forEach(function (carta) {
+        $("#txConteggio").attr("cont", partita.Mazzo.Conteggio);
+        $("#carte").html("");
+        partita.Mazziere.Carte.forEach(function (carta) {
             $("#carte").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
         })
     }

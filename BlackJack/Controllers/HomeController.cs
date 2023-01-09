@@ -109,10 +109,10 @@ namespace BlackJack.Controllers
         [HttpPost]
         public JsonResult GetCarteTest()
         {
-            Gioco gioco = new Gioco(1);
+            Gioco gioco = new Gioco(0);
             for (int i = 0; i < 20; i++)
             {
-                gioco.Giocatori[0].Pesca();
+                gioco.Mazziere.Pesca();
             }
 
             return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
