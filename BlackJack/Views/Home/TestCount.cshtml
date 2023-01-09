@@ -6,13 +6,35 @@
 
     <h1>TEST COUNT</h1>
 
+    <input type="button" id="btnGioco" value="TEST" class="btn btn-info" />
+
+    <div id="carte" class="d-flex justify-content-center"></div>
 
 
 </div>
 <script>
     $(document).ready(function () {
 
+        $("#btnGioco").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GetCarteTest",
+                data: {},
+                success: function (risultato) {
+                    let partita = JSON.parse(risultato.gioco);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        })
     })
 
+    function DisegnaTavolo(partita) {
+        partita.Giocatori[0].Carte.forEach(function (carta) {
+            $("#carte").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+        })
+    }
 
 </script>

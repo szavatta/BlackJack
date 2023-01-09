@@ -105,5 +105,19 @@ namespace BlackJack.Controllers
 
             return Json(new { gioco = JsonConvert.SerializeObject(gioco), trueCount = gioco.Mazzo.GetTrueCount() });
         }
+
+        [HttpPost]
+        public JsonResult GetCarteTest()
+        {
+            Gioco gioco = new Gioco(1);
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Giocatori[0].Pesca();
+            }
+
+            return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
+        }
+
+
     }
 }
