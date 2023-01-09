@@ -18,8 +18,18 @@ namespace Classes
 
             if (stesseCarte)
             {
-             
+                if (giocatore.Carte[0].Numero == Carta.NumeroCarta.Asso
+                    || giocatore.Carte[0].Numero == Carta.NumeroCarta.Nove && mazziere.Carte[0].Numero != Carta.NumeroCarta.Sette && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Dieci
+                    || giocatore.Carte[0].Numero == Carta.NumeroCarta.Otto
+                    || giocatore.Carte[0].Numero == Carta.NumeroCarta.Sette && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sette 
+                    || giocatore.Carte[0].Numero == Carta.NumeroCarta.Sei && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sei && mazziere.Carte[0].Numero != Carta.NumeroCarta.Due
+                    || giocatore.Carte[0].Numero == Carta.NumeroCarta.Tre && mazziere.Carte[0].Numero >= Carta.NumeroCarta.Quattro && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sette
+                    || giocatore.Carte[0].Numero == Carta.NumeroCarta.Due && mazziere.Carte[0].Numero >= Carta.NumeroCarta.Quattro && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sette
+                    )
+                {
                     return Giocatore.Puntata.Dividi;
+                }
+
             }
 
             if (assoConDueCarte) 
