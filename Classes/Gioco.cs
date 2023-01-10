@@ -102,7 +102,7 @@ namespace Classes
 
             foreach (var vincente in GiocatoriVincenti())
             {
-                int paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
+                double paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
                 Mazziere.SoldiTotali -= paga;
                 vincente.SoldiTotali += paga;
                 
