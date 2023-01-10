@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace BlackJack
 {
     public class Startup
@@ -25,6 +26,7 @@ namespace BlackJack
         {
             services.AddControllersWithViews();
             services.AddSession();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

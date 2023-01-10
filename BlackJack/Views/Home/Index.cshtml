@@ -2,15 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div class="text-center row">
+    <div class="col-10">
 
-
+    </div>
+    <div id="div-partite" class="col-2">
+        
+    </div>
 </div>
 <script>
     $(document).ready(function () {
 
-
+        GetPartite()
     })
+
+    function GetPartite() {
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetPartite",
+            data: {
+            },
+            success: function (partite) {
+                let partite = JSON.parse(partite);
+                partite.forEach(function (partite) {
+                    $("#div-partite").append("<input type='button' value='" + partita.Nome + "' class='btn btn-info w-100' />");
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+
+    }
 
 
 </script>

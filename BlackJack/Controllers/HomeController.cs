@@ -8,13 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BlackJack.Controllers
 {
     public class HomeController : MasterController
     {
-        public static List<Gioco> Partite=new List<Gioco>();
         private readonly ILogger<HomeController> _logger;
         public HomeController(ILogger<HomeController> logger)
         {
@@ -34,8 +34,17 @@ namespace BlackJack.Controllers
 
         public IActionResult Index()
         {
-
+            Partite.Add(new Gioco(2));
+            Partite.Add(new Gioco(2));
+            
             return View();
+        }
+
+        public JsonResult GetPartite()
+        {
+            string json = JsonConvert.SerializeObject(Partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling  = ReferenceLoopHandling.Ignore });
+            
+            return Json(json);
         }
     }
 }

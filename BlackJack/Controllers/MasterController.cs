@@ -14,6 +14,7 @@ namespace BlackJack.Controllers
 {
     public class MasterController : Controller
     {
+        public static List<Gioco> Partite = new List<Gioco>();
 
     }
 }

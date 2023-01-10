@@ -17,12 +17,17 @@ namespace Classes
         public int PuntataMinima { get; set; }
         public bool Mischia { get; }
         public int Giri { get; set; }
+        public string Nome { get; set; }
         public List<Giocatore> GiocatoriSplit { get; set; }
 
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null)
         {
             GiocatoriSplit = new List<Giocatore>();
+            if (string.IsNullOrEmpty(nome))
+                Nome = "Partita";
+            else
+                Nome = nome;
             Mischia = mischia;
             PuntataMinima = 5;
             Mazzo = new Mazzo();
@@ -34,7 +39,6 @@ namespace Classes
                 Giocatori.Add(new Giocatore(this));
             }
             Mazziere = new Mazziere(this);
-            
         }
 
         public object Clone()
