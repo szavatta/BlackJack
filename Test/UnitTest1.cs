@@ -289,7 +289,7 @@ namespace Test
 
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Cuori));
 
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Cuori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Cuori));
             gioco.Giocata();
 
             Assert.AreEqual(0,gioco.Giocatori[0].SoldiTotali);

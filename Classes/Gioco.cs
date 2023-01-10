@@ -22,6 +22,7 @@ namespace Classes
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true)
         {
+            GiocatoriSplit = new List<Giocatore>();
             Mischia = mischia;
             PuntataMinima = 5;
             Mazzo = new Mazzo();
@@ -61,8 +62,8 @@ namespace Classes
 
             for (int i = 0;i<Giocatori.Count(); i++)
             {
-                if (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) ==
-                    Giocatore.Puntata.Dividi)
+                while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) ==
+                       Giocatore.Puntata.Dividi)
                 {
                     Giocatore clone = (Giocatore)Giocatori[i].Clone();
                     Giocatori[i].Carte.RemoveAt(0);
@@ -70,12 +71,13 @@ namespace Classes
                     clone.Carte.RemoveAt(1);
                     clone.GiocatoreSplit ??= Giocatori[i];
                     clone.SoldiTotali = 0;
-                    Giocatori.Insert(i+1, clone);
-                }
+                    Giocatori.Insert(i + 1, clone);
 
-                if (Giocatori[i].Carte.Count == 1)
-                {
-                    Giocatori[i].Pesca();
+
+                    if (Giocatori[i].Carte.Count == 1)
+                    {
+                        Giocatori[i].Pesca();
+                    }
                 }
 
                 while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Chiama)

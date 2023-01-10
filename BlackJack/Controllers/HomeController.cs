@@ -28,10 +28,12 @@ namespace BlackJack.Controllers
             gioco.Mazziere.SoldiTotali = 100;
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
+
             gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio(), soldi: 100));
             gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio(), soldi: 100));
-            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
-            gioco.Giocatori.Add(new Giocatore(gioco, soldi: 100));
+
+            gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore(), soldi: 100));
+            gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore(), soldi: 100));
 
             SetSessionGioco(gioco);
 
@@ -56,6 +58,7 @@ namespace BlackJack.Controllers
             var gi = JsonConvert.SerializeObject(gioco, settings);
             HttpContext.Session.SetString("Gioco", gi);
             gioco.Giocatori = giocatori;
+            gioco.Giocatori.AddRange(gioco.GiocatoriSplit);
         }
 
         Gioco GetSessionGioco()
