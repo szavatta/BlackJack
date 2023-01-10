@@ -106,6 +106,7 @@ namespace Classes
 
             foreach (var vincente in GiocatoriVincenti())
             {
+                vincente.ManiVinte++;
                 double paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
                 Mazziere.SoldiTotali -= paga;
                 vincente.SoldiTotali += paga;
@@ -114,12 +115,15 @@ namespace Classes
 
             foreach (var perdente in GiocatoriPerdenti())
             {
+                perdente.ManiPerse++;
                 Mazziere.SoldiTotali += perdente.PuntataCorrente;
                 perdente.SoldiTotali -= perdente.PuntataCorrente;
             }
 
             foreach (var giocatore in Giocatori.Where(q => q.GiocatoreSplit != null))
             {
+                giocatore.GiocatoreSplit.ManiVinte += giocatore.ManiVinte;
+                giocatore.GiocatoreSplit.ManiPerse += giocatore.ManiPerse;
                 giocatore.GiocatoreSplit.SoldiTotali += giocatore.SoldiTotali;
             }
 

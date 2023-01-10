@@ -26,6 +26,7 @@
             <div class="giocatorestamp col-lg-6 d-none p-2 border border-light">
                 <div class="nome-giocatore"></div>
                 <div class="cassa-giocatore"></div>
+                <div class="perc"></div>
                 <div class="carte-giocatore d-flex justify-content-center"></div>
             </div>
         </div>
@@ -69,6 +70,7 @@
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte-giocatore.ManiPerse) * 100 / partita.Giri)+"% - perse: "+ Math.round(giocatore.ManiPerse * 100 / partita.Giri)+"%");
             giocatore.Carte.forEach(function (carta) {
                 div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
