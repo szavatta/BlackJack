@@ -3,91 +3,14 @@
 }
 
 <div class="text-center">
-    <div class="mb-2 d-flex justify-content-center">
-        <input type="button" id="btnGioco" value="GIOCO" class="btn btn-info" />
-        <input type="text" id="txNumGiri" class="form-control w-25" placeholder="Numero giocate"/>
-    </div>
 
-
-
-    <div class="row">
-        <div class="col-lg-3">
-
-        </div>
-        <div id="mazziere" class="col-lg-6 p-2">
-            <div id="nome-mazziere"></div>
-            <div id="cassa-mazziere"></div>
-            <div id="carte-mazziere" class="d-flex justify-content-center"></div>
-        </div>
-        <div class="col-lg-3">
-
-        </div>
-        <div id="giocatori" class="col-lg-12 mt-5 row">
-            <div class="giocatorestamp col-lg-6 d-none p-2 border border-light">
-                <div class="nome-giocatore"></div>
-                <div class="cassa-giocatore"></div>
-                <div class="carte-giocatore d-flex justify-content-center"></div>
-            </div>
-        </div>
-    </div>
 
 </div>
 <script>
     $(document).ready(function () {
 
-        $("#btnGioco").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "/Home/GetGioco",
-                data: {
-                    numGiri: $("#txNumGiri").val()
-                },
-                success: function (risultato) {
-                    let partita = JSON.parse(risultato.gioco);
-                    DisegnaTavolo(partita, risultato.trueCount);
-                    $("#txNumGiri").val("");
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                }
-            });
-        })
 
     })
 
-    function DisegnaTavolo(partita, trueCount) {
-        PulisceTavolo();
-        $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
-        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - True Count: " + trueCount + " - Giri: " + partita.Giri);
-        partita.Mazziere.Carte.forEach(function (carta) {
-            $("#carte-mazziere").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero  + ".png'></div>");
-        })
-        if (partita.Mazziere.Punteggio > 21) {
-            $("#mazziere").addClass("back-red");
-        }
-        partita.Giocatori.forEach(function (giocatore) {
-            let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
-            div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
-            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
-            giocatore.Carte.forEach(function (carta) {
-                div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
-            })
-            if (giocatore.Risultato == 0) {
-                div.addClass("back-green");
-            } else if (giocatore.Risultato == 1) {
-                div.addClass("back-red");
-            }
-            $("#giocatori").append(div);
-
-        })
-
-    }
-
-    function PulisceTavolo() {
-        $("#nome-mazziere").html("");
-        $("#carte-mazziere").html("");
-        $(".giocatore").remove();
-        $(".back-red").removeClass("back-red");
-    }
 
 </script>

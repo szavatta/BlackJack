@@ -21,7 +21,7 @@
         $("#btnGioco").click(function () {
             $.ajax({
                 type: "POST",
-                url: "/Home/GetCarteTest",
+                url: "/Test/GetCarteTest",
                 data: {},
                 success: function (risultato) {
                     let partita = JSON.parse(risultato.gioco);
