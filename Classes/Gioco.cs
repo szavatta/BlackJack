@@ -91,7 +91,7 @@ namespace Classes
                 if (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Raddoppia)
                 {
 
-                    if (Giocatori[i].Carte.Count == 2 && Giocatori[i].GiocatoreSplit == null)
+                    if (Giocatori[i].Carte.Count == 2)
                     {
                         Giocatori[i].PuntataCorrente *= 2;
                     }
@@ -106,8 +106,9 @@ namespace Classes
 
             foreach (var vincente in GiocatoriVincenti())
             {
-                Mazziere.SoldiTotali -= vincente.PuntataCorrente;
-                vincente.SoldiTotali += vincente.PuntataCorrente;
+                double paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
+                Mazziere.SoldiTotali -= paga;
+                vincente.SoldiTotali += paga;
                 
             }
 
