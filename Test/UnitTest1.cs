@@ -297,5 +297,27 @@ namespace Test
             Assert.AreEqual(0, gioco.Mazziere.SoldiTotali);
 
         }
+
+        [Test]
+        public void TestDueAssi()
+        {
+            Gioco gioco = new Gioco(1, 0);
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Donna, Carta.SemeCarta.Fiori));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Nove, Carta.SemeCarta.Fiori));
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Cuori));
+            }
+            gioco.Giocata();
+
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.IsTrue(gioco.Mazziere.HasBlackJack());
+            Assert.False(gioco.Giocatori[0].HasBlackJack());
+
+        }
     }
 }
