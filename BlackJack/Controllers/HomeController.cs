@@ -16,7 +16,7 @@ namespace BlackJack.Controllers
     {
         public static List<Gioco> Partite=new List<Gioco>();
         private readonly ILogger<HomeController> _logger;
-
+        public static List<Gioco> Partite;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
