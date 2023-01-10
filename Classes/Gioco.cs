@@ -18,6 +18,7 @@ namespace Classes
         public bool Mischia { get; }
         public int Giri { get; set; }
         public string Nome { get; set; }
+        public string Id { get; set; }
         public List<Giocatore> GiocatoriSplit { get; set; }
 
 
@@ -28,6 +29,7 @@ namespace Classes
                 Nome = "Partita";
             else
                 Nome = nome;
+            Id = DateTime.Now.Ticks.ToString();
             Mischia = mischia;
             PuntataMinima = 5;
             Mazzo = new Mazzo();

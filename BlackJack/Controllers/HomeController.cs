@@ -38,9 +38,9 @@ namespace BlackJack.Controllers
             return View();
         }
 
-        public IActionResult Partita(int? idPartita)
+        public IActionResult Partita(string id)
         {
-            Gioco gioco = Partite[idPartita.Value];
+            Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
 
             return View(gioco);
         }
@@ -58,7 +58,7 @@ namespace BlackJack.Controllers
             gioco.Giocatori[0].Nome = nome;
             Partite.Add(gioco);
 
-            return Json(true);
+            return Json(gioco.Id);
         }
 
     }

@@ -21,14 +21,20 @@
                 data: {
                     nome: $("#txtNomePartita").val()
                 },
-                success: function (risultato) {
+                success: function (id) {
                     GetPartite();
                     $("#txtNomePartita").val("");
+                    location.href = "/Home/Partita?id=" + id
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 }
             });
+        });
+
+        $(document).on("click", ".btnPartita", function () {
+            let id = $(this).attr("idPartita");
+            location.href = "/Home/Partita?id=" + id
         });
 
         GetPartite()
@@ -45,7 +51,7 @@
                 let partite = JSON.parse(json);
                 $(".btnPartita").remove();
                 partite.forEach(function (item) {
-                    $("#div-partite").prepend("<input type='button' value='" + item.Nome + "' class='btn btn-success btnPartita w-100 mb-1' />");
+                    $("#div-partite").prepend("<input type='button' value='" + item.Nome + "' idPartita='" + item.Id + "' class='btn btn-success btnPartita w-100 mb-1' />");
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
