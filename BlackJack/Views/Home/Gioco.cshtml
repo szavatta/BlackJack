@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center row">
+    <div class="col-10">
+        <div class="col-lg-3">
+
+        </div>
+        <div id="mazziere" class="col-lg-6 p-2">
+            <div id="nome-mazziere"></div>
+            <div id="cassa-mazziere"></div>
+            <div id="carte-mazziere" class="d-flex justify-content-center"></div>
+        </div>
+        <div class="col-lg-3">
+
+        </div>
+
+        <div id="giocatori" class="col-lg-12 mt-5 row">
+            <div class="giocatorestamp col-lg-6 d-none p-2 border border-light">
+                <div class="nome-giocatore"></div>
+                <div class="cassa-giocatore"></div>
+                <div class="carte-giocatore d-flex justify-content-center"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+        GetPartita()
+    })
+
+    function GetPartita() {
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetPartita",
+            data: {
+                idPartita: 1
+            },
+            success: function (json) {
+                let partita = JSON.parse(json);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+
+    }
+
+
+</script>

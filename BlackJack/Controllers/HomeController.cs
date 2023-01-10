@@ -34,10 +34,15 @@ namespace BlackJack.Controllers
 
         public IActionResult Index()
         {
-            Partite.Add(new Gioco(2));
-            Partite.Add(new Gioco(2));
             
             return View();
+        }
+
+        public IActionResult Partita(int? idPartita)
+        {
+            Gioco gioco = Partite[idPartita.Value];
+
+            return View(gioco);
         }
 
         public JsonResult GetPartite()
@@ -46,5 +51,15 @@ namespace BlackJack.Controllers
             
             return Json(json);
         }
+
+        public JsonResult NuovaPartita(string nome)
+        {
+            Gioco gioco = new Gioco(1, nome: "Partita " + (Partite.Count + 1));
+            gioco.Giocatori[0].Nome = nome;
+            Partite.Add(gioco);
+
+            return Json(true);
+        }
+
     }
 }

@@ -7,11 +7,29 @@
 
     </div>
     <div id="div-partite" class="col-2">
-        
+        <input type='text' id='txtNomePartita' value='' class='form-control w-100 mb-1' placeholder="Nome giocatore" />
+        <input type='button' id='btnNuovaPartita' value='Nuova partita' class='btn btn-info w-100 mb-1' />
     </div>
 </div>
 <script>
     $(document).ready(function () {
+
+        $("#btnNuovaPartita").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/NuovaPartita",
+                data: {
+                    nome: $("#txtNomePartita").val()
+                },
+                success: function (risultato) {
+                    GetPartite();
+                    $("#txtNomePartita").val("");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
 
         GetPartite()
     })
@@ -23,10 +41,11 @@
             url: "/Home/GetPartite",
             data: {
             },
-            success: function (partite) {
-                let partite = JSON.parse(partite);
-                partite.forEach(function (partite) {
-                    $("#div-partite").append("<input type='button' value='" + partita.Nome + "' class='btn btn-info w-100' />");
+            success: function (json) {
+                let partite = JSON.parse(json);
+                $(".btnPartita").remove();
+                partite.forEach(function (item) {
+                    $("#div-partite").prepend("<input type='button' value='" + item.Nome + "' class='btn btn-success btnPartita w-100 mb-1' />");
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
