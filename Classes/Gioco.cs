@@ -10,6 +10,7 @@ namespace Classes
     [Serializable]
     public class Gioco : ICloneable
     {
+        public string Nome { get; set; }
         public List<Giocatore> Giocatori { get; set; }
         public Mazzo Mazzo { get; set; }
         public Mazziere Mazziere { get; set; }
@@ -37,13 +38,13 @@ namespace Classes
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            Gioco copy = (Gioco)this.MemberwiseClone();
 
+            return copy;
         }
 
         public void Giocata()
         {
-            Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
             Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(PuntataMinima, 50, Mazzo.GetTrueCount()));
@@ -59,36 +60,20 @@ namespace Classes
             }
             Mazziere.Pesca();
 
-            for (int i = 0;i<Giocatori.Count(); i++)
+            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
             {
-                if (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) ==
-                    Giocatore.Puntata.Dividi)
+                while (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Chiama)
                 {
-                    Giocatore clone = (Giocatore)Giocatori[i].Clone();
-                    Giocatori[i].Carte.RemoveAt(0);
-                    clone.Carte.RemoveAt(1);
-                    clone.GiocatoreSplit ??= Giocatori[i];
-                    clone.SoldiTotali = 0;
-                    Giocatori.Insert(i+1, clone);
+                    giocatore.Pesca();
                 }
-
-                if (Giocatori[i].Carte.Count == 1)
+                if (giocatore.Strategia.Strategy(giocatore, Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Raddoppia)
                 {
-                    Giocatori[i].Pesca();
-                }
-
-                while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Chiama)
-                {
-                    Giocatori[i].Pesca();
-                }
-                if (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Raddoppia)
-                {
-
-                    if (Giocatori[i].Carte.Count == 2 && Giocatori[i].GiocatoreSplit == null)
+                    if (giocatore.Carte.Count == 2)
                     {
-                        Giocatori[i].PuntataCorrente *= 2;
+                        giocatore.PuntataCorrente *= 2;
                     }
-                    Giocatori[i].Pesca();
+
+                    giocatore.Pesca();
                 }
             }
             while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
@@ -101,7 +86,6 @@ namespace Classes
             {
                 Mazziere.SoldiTotali -= vincente.PuntataCorrente;
                 vincente.SoldiTotali += vincente.PuntataCorrente;
-                
             }
 
             foreach (var perdente in GiocatoriPerdenti())
@@ -109,16 +93,6 @@ namespace Classes
                 Mazziere.SoldiTotali += perdente.PuntataCorrente;
                 perdente.SoldiTotali -= perdente.PuntataCorrente;
             }
-
-            foreach (var giocatore in Giocatori.Where(q => q.GiocatoreSplit != null))
-            {
-                giocatore.GiocatoreSplit.SoldiTotali += giocatore.SoldiTotali;
-            }
-
-
-
-
-
 
             GiocatoriVincenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Vinto);
             GiocatoriPerdenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Perso);
