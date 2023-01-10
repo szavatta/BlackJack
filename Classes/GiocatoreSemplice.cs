@@ -30,7 +30,21 @@ namespace Classes
             Carte.Add(carta);                
             return carta;
         }
+
         public int CalcolaPunteggio()
+        {
+            List<Carta> carte2 = new List<Carta>(Carte);
+            int punt11 = carte2.Select(q => q.Valore).Sum();
+            for (int i = 0; i < carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count(); i++)
+            {
+                if (punt11 > 21)
+                    punt11 -= 10;
+            }
+
+            return punt11;
+        }
+
+        public int CalcolaPunteggioOld()
         {
             List<Carta> carte2 = new List<Carta>(Carte);
             int punt11 = carte2.Select(q => q.Valore).Sum();
@@ -43,6 +57,7 @@ namespace Classes
             else
                 return punt11;
         }
+
         public enum Puntata
         {
             Chiama = 0,
