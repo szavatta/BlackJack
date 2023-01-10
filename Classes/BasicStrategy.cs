@@ -67,7 +67,8 @@ namespace Classes
 
             if (pg >= 17
                 || pg == 13 && pm == 2 && conteggio > -1
-                || pg >= 13 && pm >=3 && pm <= 6
+                || pg >= 14 && pm == 2
+                || pg >= 13 && pm >= 3 && pm <= 6
                 || pg == 12 && pm == 2 && conteggio >=3
                 || pg == 12 && pm == 3 && conteggio >= 2
                 || pg == 12 && pm == 4 && conteggio > 0
