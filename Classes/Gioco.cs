@@ -17,6 +17,7 @@ namespace Classes
         public int PuntataMinima { get; set; }
         public bool Mischia { get; }
         public int Giri { get; set; }
+        public List<Giocatore> GiocatoriSplit { get; set; }
 
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true)
@@ -43,7 +44,6 @@ namespace Classes
 
         public void Giocata()
         {
-            Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
             Giocatori.ForEach(q => q.Carte = new List<Carta>());
             Mazziere.Carte = new List<Carta>();
             Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(PuntataMinima, 50, Mazzo.GetTrueCount()));
@@ -66,6 +66,7 @@ namespace Classes
                 {
                     Giocatore clone = (Giocatore)Giocatori[i].Clone();
                     Giocatori[i].Carte.RemoveAt(0);
+                    clone.Nome += " split";
                     clone.Carte.RemoveAt(1);
                     clone.GiocatoreSplit ??= Giocatori[i];
                     clone.SoldiTotali = 0;
@@ -115,14 +116,13 @@ namespace Classes
                 giocatore.GiocatoreSplit.SoldiTotali += giocatore.SoldiTotali;
             }
 
-
-
-
-
-
             GiocatoriVincenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Vinto);
             GiocatoriPerdenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Perso);
             GiocatoriPari().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Pari);
+
+            GiocatoriSplit = Giocatori.Where(q => q.GiocatoreSplit != null).ToList();
+
+            Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
 
             try
             {
