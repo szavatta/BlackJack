@@ -3,8 +3,12 @@
 }
 
 <div class="text-center">
+    <div class="mb-2 d-flex justify-content-center">
+        <input type="button" id="btnGioco" value="GIOCO" class="btn btn-info" />
+        <input type="text" id="txNumGiri" class="form-control w-25" placeholder="Numero giocate"/>
+    </div>
 
-    <input type="button" id="btnGioco" value="GIOCO" class="btn btn-info" />
+
 
     <div class="row">
         <div class="col-lg-3">
@@ -35,10 +39,13 @@
             $.ajax({
                 type: "POST",
                 url: "/Home/GetGioco",
-                data: {},
+                data: {
+                    numGiri: $("#txNumGiri").val()
+                },
                 success: function (risultato) {
                     let partita = JSON.parse(risultato.gioco);
                     DisegnaTavolo(partita, risultato.trueCount);
+                    $("#txNumGiri").val("");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);

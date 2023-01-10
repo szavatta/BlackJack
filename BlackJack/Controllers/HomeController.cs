@@ -95,11 +95,14 @@ namespace BlackJack.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetGioco()
+        public JsonResult GetGioco(int? numGiri)
         {
             Gioco gioco = GetSessionGioco();
-
-            gioco.Giocata();
+            int giri = numGiri ?? 1;
+            for (int i = 0; i < giri; i++)
+            {
+                gioco.Giocata();
+            }
 
             SetSessionGioco(gioco);
 
