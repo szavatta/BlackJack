@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Test Strategy";
+}
+
+<div class="text-center container">
+
+    <h1>TEST STRATEGY</h1>
+
+    <input type="button" id="btnGioco" value="TEST" class="btn btn-info mb-2" />
+    <div id="divConteggio">Conteggio: </div>
+
+    <div id="carteMazziere" class="d-flex flex-wrap justify-content-center"></div>
+
+    <div id="carteGiocatore" class="d-flex flex-wrap justify-content-center"></div>
+
+
+    <div class="mt-5">
+        <div id="btnStai" class="btn btn-primary d-inline mr-5">Stai</div>
+        <div id="btnChiama" class="btn btn-primary d-inline mr-5">Chiama</div>
+        <div id="btnRaddoppia"class="btn btn-primary d-inline mr-5">Raddoppia</div>
+        <div id="btnSplitta" class="btn btn-primary d-inline mr-5">Splitta</div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#btnGioco").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Test/GetCarteTestStrategy",
+                data: {},
+                success: function (risultato) {
+                    let partita = JSON.parse(risultato.gioco);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        })
+
+
+    })
+
+    function DisegnaTavolo(partita) {
+        $("#carteMazziere").html("");
+        $("#carteGiocatore").html("");
+        $("#divConteggio").html("");
+
+        $("#divConteggio").append("<div>" + partita.Mazzo.Conteggio + "</div>");
+        partita.Mazziere.Carte.forEach(function (carta) {
+            $("#carteMazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+        })
+        partita.Giocatori[0].Carte.forEach(function (carta) {
+            $("#carteGiocatore").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+        })
+    }
+
+</script>

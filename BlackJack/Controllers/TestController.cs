@@ -21,6 +21,11 @@ namespace BlackJack.Controllers
             return View();
         }
 
+        public IActionResult TestStrategy()
+        {
+
+            return View();
+        }
         public IActionResult Index()
         {
             Gioco gioco = new Gioco(0);
@@ -105,7 +110,18 @@ namespace BlackJack.Controllers
             {
                 gioco.Mazziere.Pesca();
             }
+            return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
+        }
 
+        [HttpPost]
+        public JsonResult GetCarteTestStrategy()
+        {
+            Gioco gioco = new Gioco(1);
+            gioco.Mazziere.Pesca();
+            gioco.Giocatori[0].Pesca();
+            gioco.Giocatori[0].Pesca();
+
+            gioco.Mazzo.Conteggio = (int) (new Random().Next() % 6);
             return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
         }
 
