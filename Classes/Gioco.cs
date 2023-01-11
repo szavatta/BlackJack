@@ -20,7 +20,7 @@ namespace Classes
         public string Nome { get; set; }
         public string Id { get; set; }
         public List<Giocatore> GiocatoriSplit { get; set; }
-
+        public string IdGiocatoreMano { get; set; }
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null)
         {
@@ -105,14 +105,30 @@ namespace Classes
                 Mazziere.Pesca();
             }
 
+            TerminaMano();
 
+            try
+            {
+                if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
+                    throw new Exception("Non corrispondono i giocatori");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            Giri++;
+        }
+
+        public void TerminaMano()
+        {
             foreach (var vincente in GiocatoriVincenti())
             {
                 vincente.ManiVinte++;
                 double paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
                 Mazziere.SoldiTotali -= paga;
                 vincente.SoldiTotali += paga;
-                
+
             }
 
             foreach (var perdente in GiocatoriPerdenti())
@@ -136,18 +152,6 @@ namespace Classes
             GiocatoriSplit = Giocatori.Where(q => q.GiocatoreSplit != null).ToList();
 
             Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
-
-            try
-            {
-                if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
-                    throw new Exception("Non corrispondono i giocatori");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            Giri++;
         }
 
         public void Inizializza()
@@ -169,6 +173,9 @@ namespace Classes
                 giocatore.Pesca();
             }
             Mazziere.Pesca();
+
+            if (Giocatori.Count > 0)
+                IdGiocatoreMano = Giocatori[0].Id;
         }
 
         public List<Giocatore> GiocatoriVincenti()

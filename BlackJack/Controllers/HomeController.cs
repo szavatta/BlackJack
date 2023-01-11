@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -75,6 +76,49 @@ namespace BlackJack.Controllers
 
             if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
                 gioco.DistribuisciCarteIniziali();
+
+            return Json(JsonGioco(gioco));
+        }
+
+        public JsonResult Stai(string id, string idGiocatore)
+        {
+            Gioco gioco = Stai(id, idGiocatore, true);
+
+            return Json(JsonGioco(gioco));
+        }
+
+        private Gioco Stai(string id, string idGiocatore, bool ret)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            Giocatore next = gioco.Giocatori.SkipWhile(q => q.Id != idGiocatore).Skip(1).FirstOrDefault();
+            if (next != null)
+            {
+                gioco.IdGiocatoreMano = next.Id;
+            }
+            else
+            {
+                gioco.IdGiocatoreMano = null;
+                gioco.Mazziere.CartaCoperta = false;
+                while (gioco.Mazziere.Strategia.Strategy(gioco.Mazziere) == Mazziere.Puntata.Chiama)
+                {
+                    gioco.Mazziere.Pesca();
+                }
+                gioco.TerminaMano();
+            }
+
+            return gioco;
+        }
+
+        public JsonResult Pesca(string id, string idGiocatore, int puntata)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            giocatore.Pesca();
+            if (giocatore.Punteggio > 21)
+            {
+                gioco = Stai(id, idGiocatore, true);
+            }
 
             return Json(JsonGioco(gioco));
         }

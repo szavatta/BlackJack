@@ -93,3 +93,7 @@ body {
 .txtPuntata {
     width: 70px;
 }
+
+.opzioni-giocatore input {
+    margin-left: 3px;
+}

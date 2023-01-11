@@ -18,6 +18,7 @@ namespace Classes
         public EnumRisultato Risultato { get; set; }
         public int ManiVinte { get; set; }
         public int ManiPerse { get; set; }
+        public bool HasRaddoppiato { get; set; }
 
         public Giocatore(Gioco gioco, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {

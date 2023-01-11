@@ -22,9 +22,11 @@
                 <div class="cassa-giocatore"></div>
                 <div class="carte-giocatore d-flex justify-content-center"></div>
                 <div class="opzioni-giocatore d-flex justify-content-center">
-                    <input type='text' value='' class='txtPuntata form-control ml-1' />
-                    <input type='button' value='Punta' class='btnPunta btn btn-info ml-1' />
-                    <input type='button' value='Stai' class='btnStai btn btn-info ml-1' />
+                    <input type='text' value='' class='txtPuntata form-control ml-1 d-none' />
+                    <input type='button' value='Punta' class='btnPunta btn btn-info d-none' />
+                    <input type='button' value='Pesca' class='btnPesca btn btn-info d-none' />
+                    <input type='button' value='Stai' class='btnStai btn btn-info d-none' />
+                    <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
                 </div>
             </div>
         </div>
@@ -40,12 +42,78 @@
     $(document).ready(function () {
 
         $(document).on("click", ".btnPunta", function () {
-            let idGiocatore = $(this).attr("idGiocatore");
+            let idGiocatore = $(this).parent().attr("idGiocatore");
             let puntata = $(this).parent().find(".txtPuntata").val();
 
             $.ajax({
                 type: "POST",
                 url: "/Home/Punta",
+                data: {
+                    id: idPartita,
+                    idGiocatore: idGiocatore,
+                    puntata: puntata
+                },
+                success: function (json) {
+                    let partita = JSON.parse(json);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
+
+        $(document).on("click", ".btnStai", function () {
+            let idGiocatore = $(this).parent().attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Stai",
+                data: {
+                    id: idPartita,
+                    idGiocatore: idGiocatore,
+                    puntata: puntata
+                },
+                success: function (json) {
+                    let partita = JSON.parse(json);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
+
+        $(document).on("click", ".btnRaddoppia", function () {
+            let idGiocatore = $(this).parent().attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Raddoppia",
+                data: {
+                    id: idPartita,
+                    idGiocatore: idGiocatore,
+                    puntata: puntata
+                },
+                success: function (json) {
+                    let partita = JSON.parse(json);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
+
+        $(document).on("click", ".btnPesca", function () {
+            let idGiocatore = $(this).parent().attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Pesca",
                 data: {
                     id: idPartita,
                     idGiocatore: idGiocatore,
@@ -89,9 +157,9 @@
         $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta, index) {
             if (partita.Mazziere.CartaCoperta == true && index == 0) {
-                $("#carte-mazziere").append("<div><img src='/Carte/retroblu.png'></div>");
+                $("#carte-mazziere").append("<div><img src='a/Carte/retroblu.png'></div>");
             } else {
-                $("#carte-mazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+                $("#carte-mazziere").append("<div><img src='a/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             }
         })
         //if (partita.Mazziere.Punteggio > 21) {
@@ -99,12 +167,12 @@
         //}
         partita.Giocatori.forEach(function (giocatore) {
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
-            div.find(".btnPunta").attr("idGiocatore", giocatore.Id);
+            div.find(".btnPunta").parent().attr("idGiocatore", giocatore.Id);
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
             giocatore.Carte.forEach(function (carta) {
-                div.find(".carte-giocatore").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+                div.find(".carte-giocatore").append("<div><img src='a/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
             //if (giocatore.Risultato == 0) {
             //    div.addClass("back-green");
@@ -114,11 +182,23 @@
             if (giocatore.PuntataCorrente == 0) {
                 div.find(".txtPuntata").removeClass("d-none");
                 div.find(".btnPunta").removeClass("d-none");
-                div.find(".btnStai").addClass("d-none");
             } else {
                 div.find(".txtPuntata").addClass("d-none");
                 div.find(".btnPunta").addClass("d-none");
             }
+            if (giocatore.Id == partita.IdGiocatoreMano) {
+                div.find(".btnStai").removeClass("d-none");
+                div.find(".btnPesca").removeClass("d-none");
+            } else {
+                div.find(".btnStai").addClass("d-none");
+                div.find(".btnPesca").addClass("d-none");
+            }
+            if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Carte.length == 2 && giocatore.HasRaddoppiato == false) {
+                div.find(".btnRaddoppia").removeClass("d-none");
+            } else {
+                div.find(".btnRaddoppia").addClass("d-none");
+            }
+
             $("#giocatori").append(div);
 
         })
