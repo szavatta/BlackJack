@@ -89,9 +89,9 @@
         $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta, index) {
             if (partita.Mazziere.CartaCoperta == true && index == 0) {
-                $("#carte-mazziere").append("<div><img src='a/Carte/retroblu.png'></div>");
+                $("#carte-mazziere").append("<div><img src='/Carte/retroblu.png'></div>");
             } else {
-                $("#carte-mazziere").append("<div><img src='a/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+                $("#carte-mazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             }
         })
         //if (partita.Mazziere.Punteggio > 21) {
@@ -104,7 +104,7 @@
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
             giocatore.Carte.forEach(function (carta) {
-                div.find(".carte-giocatore").append("<div><img src='a/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+                div.find(".carte-giocatore").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
             //if (giocatore.Risultato == 0) {
             //    div.addClass("back-green");
