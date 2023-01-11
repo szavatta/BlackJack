@@ -47,8 +47,16 @@ namespace BlackJack.Controllers
 
         public JsonResult GetPartite()
         {
-            string json = JsonConvert.SerializeObject(Partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling  = ReferenceLoopHandling.Ignore });
-            
+            string json = JsonConvert.SerializeObject(Partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
+            return Json(json);
+        }
+
+        public JsonResult GetPartita(string id)
+        {
+            Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
+            string json = JsonConvert.SerializeObject(gioco, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
             return Json(json);
         }
 
@@ -56,7 +64,24 @@ namespace BlackJack.Controllers
         {
             Gioco gioco = new Gioco(1, nome: "Partita " + (Partite.Count + 1));
             gioco.Giocatori[0].Nome = nome;
+
+            gioco.Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            gioco.Mazziere.Carte = new List<Carta>();
+            gioco.Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(gioco.PuntataMinima, 50, gioco.Mazzo.GetTrueCount()));
+
+            foreach (Giocatore giocatore in gioco.Giocatori.Where(q => q.PuntataCorrente > 0))
+            {
+                giocatore.Pesca();
+            }
+            gioco.Mazziere.Pesca();
+            foreach (Giocatore giocatore in gioco.Giocatori.Where(q => q.PuntataCorrente > 0))
+            {
+                giocatore.Pesca();
+            }
+            gioco.Mazziere.Pesca();
+
             Partite.Add(gioco);
+
 
             return Json(gioco.Id);
         }

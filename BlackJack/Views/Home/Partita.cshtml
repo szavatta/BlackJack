@@ -3,7 +3,7 @@
 }
 
 <div class="text-center row">
-    <div class="col-10">
+    <div class="col-lg-10">
         <div class="col-lg-3">
 
         </div>
@@ -35,20 +35,61 @@
 
     function GetPartita() {
 
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let id = urlParams.get('id');
+
         $.ajax({
             type: "POST",
             url: "/Home/GetPartita",
             data: {
-                idPartita: 1
+                id: id
             },
             success: function (json) {
                 let partita = JSON.parse(json);
+                DisegnaTavolo(partita);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
             }
         });
 
+    }
+
+    function DisegnaTavolo(partita, trueCount) {
+        PulisceTavolo();
+        $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
+        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - True Count: " + trueCount + " - Giri: " + partita.Giri);
+        partita.Mazziere.Carte.forEach(function (carta) {
+            $("#carte-mazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+        })
+        if (partita.Mazziere.Punteggio > 21) {
+            $("#mazziere").addClass("back-red");
+        }
+        partita.Giocatori.forEach(function (giocatore) {
+            let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
+            div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
+            div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
+            giocatore.Carte.forEach(function (carta) {
+                div.find(".carte-giocatore").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+            })
+            if (giocatore.Risultato == 0) {
+                div.addClass("back-green");
+            } else if (giocatore.Risultato == 1) {
+                div.addClass("back-red");
+            }
+            $("#giocatori").append(div);
+
+        })
+
+    }
+
+    function PulisceTavolo() {
+        $("#nome-mazziere").html("");
+        $("#carte-mazziere").html("");
+        $(".giocatore").remove();
+        $(".back-red").removeClass("back-red");
     }
 
 
