@@ -150,6 +150,27 @@ namespace Classes
             Giri++;
         }
 
+        public void Inizializza()
+        {
+            Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            Mazziere.Carte = new List<Carta>();
+            Mazziere.CartaCoperta = true;
+        }
+
+        public void DistribuisciCarteIniziali()
+        {
+            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
+            {
+                giocatore.Pesca();
+            }
+            Mazziere.Pesca();
+            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
+            {
+                giocatore.Pesca();
+            }
+            Mazziere.Pesca();
+        }
+
         public List<Giocatore> GiocatoriVincenti()
         {
             var ret = Giocatori.Where(q =>

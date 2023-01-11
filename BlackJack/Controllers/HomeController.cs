@@ -47,45 +47,41 @@ namespace BlackJack.Controllers
 
         public JsonResult GetPartite()
         {
-            string json = JsonConvert.SerializeObject(Partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-
-            return Json(json);
+            return Json(JsonPartite(Partite));
         }
 
         public JsonResult GetPartita(string id)
         {
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
-            string json = JsonConvert.SerializeObject(gioco, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-            return Json(json);
+            return Json(JsonGioco(gioco));
         }
 
         public JsonResult NuovaPartita(string nome)
         {
             Gioco gioco = new Gioco(1, nome: "Partita " + (Partite.Count + 1));
             gioco.Giocatori[0].Nome = nome;
-
-            gioco.Giocatori.ForEach(q => q.Carte = new List<Carta>());
-            gioco.Mazziere.Carte = new List<Carta>();
-            gioco.Mazziere.CartaCoperta = true;
-            gioco.Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(gioco.PuntataMinima, 50, gioco.Mazzo.GetTrueCount()));
-
-            foreach (Giocatore giocatore in gioco.Giocatori.Where(q => q.PuntataCorrente > 0))
-            {
-                giocatore.Pesca();
-            }
-            gioco.Mazziere.Pesca();
-            foreach (Giocatore giocatore in gioco.Giocatori.Where(q => q.PuntataCorrente > 0))
-            {
-                giocatore.Pesca();
-            }
-            gioco.Mazziere.Pesca();
-
+            gioco.Inizializza();
             Partite.Add(gioco);
-
 
             return Json(gioco.Id);
         }
+
+        public JsonResult Punta(string id, string idGiocatore, int puntata)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            giocatore.PuntataCorrente = puntata;
+
+            if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
+                gioco.DistribuisciCarteIniziali();
+
+            return Json(JsonGioco(gioco));
+        }
+
+        string JsonGioco(Gioco gioco) => JsonConvert.SerializeObject(gioco, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        string JsonPartite(List<Gioco> partite) => JsonConvert.SerializeObject(partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
 
     }
 }

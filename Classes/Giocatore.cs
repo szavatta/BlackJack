@@ -10,6 +10,7 @@ namespace Classes
     [Serializable]
     public class Giocatore : GiocatoreSemplice, ICloneable
     {
+        public string Id { get; set; }
         [JsonIgnore]
         public StrategiaGiocatore Strategia { get; set; }
         public Giocatore GiocatoreSplit { get; set; }
@@ -21,6 +22,7 @@ namespace Classes
         public Giocatore(Gioco gioco, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
+            Id = DateTime.Now.Ticks.ToString();
 
             if (strategia is Classes.BasicStrategy)
                 TipoStrategia = 0;

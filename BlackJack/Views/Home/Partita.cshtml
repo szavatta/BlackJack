@@ -21,29 +21,56 @@
                 <div class="nome-giocatore"></div>
                 <div class="cassa-giocatore"></div>
                 <div class="carte-giocatore d-flex justify-content-center"></div>
+                <div class="opzioni-giocatore d-flex justify-content-center">
+                    <input type='text' value='' class='txtPuntata form-control ml-1' />
+                    <input type='button' value='Punta' class='btnPunta btn btn-info ml-1' />
+                    <input type='button' value='Stai' class='btnStai btn btn-info ml-1' />
+                </div>
             </div>
         </div>
 
     </div>
 </div>
 <script>
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    let idPartita = urlParams.get('id');
+
     $(document).ready(function () {
 
+        $(document).on("click", ".btnPunta", function () {
+            let idGiocatore = $(this).attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Punta",
+                data: {
+                    id: idPartita,
+                    idGiocatore: idGiocatore,
+                    puntata: puntata
+                },
+                success: function (json) {
+                    let partita = JSON.parse(json);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
 
         GetPartita()
     })
 
     function GetPartita() {
 
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        let id = urlParams.get('id');
-
         $.ajax({
             type: "POST",
             url: "/Home/GetPartita",
             data: {
-                id: id
+                id: idPartita
             },
             success: function (json) {
                 let partita = JSON.parse(json);
@@ -62,26 +89,35 @@
         $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta, index) {
             if (partita.Mazziere.CartaCoperta == true && index == 0) {
-                $("#carte-mazziere").append("<div><img src='/Carte/retroblu.png'></div>");
+                $("#carte-mazziere").append("<div><img src='a/Carte/retroblu.png'></div>");
             } else {
-                $("#carte-mazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+                $("#carte-mazziere").append("<div><img src='a/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             }
         })
-        if (partita.Mazziere.Punteggio > 21) {
-            $("#mazziere").addClass("back-red");
-        }
+        //if (partita.Mazziere.Punteggio > 21) {
+        //    $("#mazziere").addClass("back-red");
+        //}
         partita.Giocatori.forEach(function (giocatore) {
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
+            div.find(".btnPunta").attr("idGiocatore", giocatore.Id);
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
             giocatore.Carte.forEach(function (carta) {
-                div.find(".carte-giocatore").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+                div.find(".carte-giocatore").append("<div><img src='a/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
-            if (giocatore.Risultato == 0) {
-                div.addClass("back-green");
-            } else if (giocatore.Risultato == 1) {
-                div.addClass("back-red");
+            //if (giocatore.Risultato == 0) {
+            //    div.addClass("back-green");
+            //} else if (giocatore.Risultato == 1) {
+            //    div.addClass("back-red");
+            //}
+            if (giocatore.PuntataCorrente == 0) {
+                div.find(".txtPuntata").removeClass("d-none");
+                div.find(".btnPunta").removeClass("d-none");
+                div.find(".btnStai").addClass("d-none");
+            } else {
+                div.find(".txtPuntata").addClass("d-none");
+                div.find(".btnPunta").addClass("d-none");
             }
             $("#giocatori").append(div);
 
@@ -93,7 +129,7 @@
         $("#nome-mazziere").html("");
         $("#carte-mazziere").html("");
         $(".giocatore").remove();
-        $(".back-red").removeClass("back-red");
+        //$(".back-red").removeClass("back-red");
     }
 
 

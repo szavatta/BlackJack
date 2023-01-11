@@ -85,3 +85,11 @@ body {
 .giocatore {
     min-height: 216px;
 }
+
+.carte-giocatore, #carte-mazziere {
+    min-height: 160px;
+}
+
+.txtPuntata {
+    width: 70px;
+}
