@@ -21,6 +21,7 @@ namespace Classes
         public string Id { get; set; }
         public List<Giocatore> GiocatoriSplit { get; set; }
         public string IdGiocatoreMano { get; set; }
+        public bool Iniziato { get; set; }
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null)
         {

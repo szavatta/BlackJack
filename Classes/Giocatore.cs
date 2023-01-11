@@ -20,7 +20,7 @@ namespace Classes
         public int ManiPerse { get; set; }
         public bool HasRaddoppiato { get; set; }
 
-        public Giocatore(Gioco gioco, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
+        public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
             Id = DateTime.Now.Ticks.ToString();
