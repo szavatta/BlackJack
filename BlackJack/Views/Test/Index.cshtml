@@ -8,8 +8,6 @@
         <input type="text" id="txNumGiri" class="form-control w-25" placeholder="Numero giocate"/>
     </div>
 
-
-
     <div class="row">
         <div class="col-lg-3">
 
@@ -70,7 +68,7 @@
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
-            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte-giocatore.ManiPerse) * 100 / partita.Giri)+"% - perse: "+ Math.round(giocatore.ManiPerse * 100 / partita.Giri)+"%");
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(partita.Giri-giocatore.ManiVinte-giocatore.ManiPerse) * 100 / partita.Giri)+"% - perse: "+ Math.round(giocatore.ManiPerse * 100 / partita.Giri)+"%");
             giocatore.Carte.forEach(function (carta) {
                 div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
