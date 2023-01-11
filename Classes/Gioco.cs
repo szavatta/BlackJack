@@ -157,9 +157,14 @@ namespace Classes
 
         public void Inizializza()
         {
-            Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            foreach(Giocatore g in Giocatori)
+            {
+                g.Carte = new List<Carta>();
+                g.PuntataCorrente = 0;
+            }
             Mazziere.Carte = new List<Carta>();
             Mazziere.CartaCoperta = true;
+            Giri++;
         }
 
         public void DistribuisciCarteIniziali()

@@ -166,6 +166,14 @@ namespace BlackJack.Controllers
             return Json(JsonGioco(gioco));
         }
 
+        public JsonResult NuovaMano(string id)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            gioco.Inizializza();
+
+            return Json(JsonGioco(gioco));
+        }
+
         string JsonGioco(Gioco gioco) => JsonConvert.SerializeObject(gioco, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
         string JsonPartite(List<Gioco> partite) => JsonConvert.SerializeObject(partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 

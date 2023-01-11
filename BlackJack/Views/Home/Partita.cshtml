@@ -14,7 +14,7 @@
             <div id="cassa-mazziere"></div>
             <div id="carte-mazziere" class="d-flex justify-content-center"></div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3 div-partecipa">
             <input type='text' value='' class='txtNomeGiocatore form-control ml-1 d-none' placeholder="Nome giocatore" />
             <input type='button' value='Partecipa' class='btnPartecipa btn btn-info d-none' />
         </div>
@@ -162,7 +162,7 @@
                 url: "/Home/Partecipa",
                 data: {
                     id: idPartita,
-                    nome: $(".NomeGiocatore").val()
+                    nome: $(".txtNomeGiocatore").val()
                 },
                 success: function (json) {
                     let partita = JSON.parse(json);
@@ -210,7 +210,7 @@
         //if (partita.Mazziere.Punteggio > 21) {
         //    $("#mazziere").addClass("back-red");
         //}
-        let partecipa = false;
+        let presenteg = false;
         partita.Giocatori.forEach(function (giocatore) {
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".btnPunta").parent().attr("idGiocatore", giocatore.Id);
@@ -248,20 +248,20 @@
                     div.find(".btnRaddoppia").addClass("d-none");
                 }
             }
-            if (giocatore.Id == $("#IdGiocatore").val() && !partita.Iniziato) {
-                partecipa=true;
+            if (giocatore.Id == $("#IdGiocatore").val()) {
+                presenteg=true;
             }
 
             $("#giocatori").append(div);
 
         })
 
-        if (partecipa) {
-            $(".btnPartecipa").addClass("d-none");
-            $(".txtNomeGiocatore").addClass("d-none");
-        } else {
+        if (!presenteg && !partita.Iniziato) {
             $(".btnPartecipa").removeClass("d-none");
             $(".txtNomeGiocatore").removeClass("d-none");
+        } else {
+            $(".btnPartecipa").addClass("d-none");
+            $(".txtNomeGiocatore").addClass("d-none");
         }
 
     }
@@ -271,6 +271,25 @@
         $("#carte-mazziere").html("");
         $(".giocatore").remove();
         //$(".back-red").removeClass("back-red");
+    }
+
+    function NuovaMano() {
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/NuovaMano",
+            data: {
+                id: idPartita
+            },
+            success: function (json) {
+                let partita = JSON.parse(json);
+                DisegnaTavolo(partita);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+
     }
 
 
