@@ -67,6 +67,7 @@ namespace BlackJack.Controllers
 
             gioco.Giocatori.ForEach(q => q.Carte = new List<Carta>());
             gioco.Mazziere.Carte = new List<Carta>();
+            gioco.Mazziere.CartaCoperta = true;
             gioco.Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(gioco.PuntataMinima, 50, gioco.Mazzo.GetTrueCount()));
 
             foreach (Giocatore giocatore in gioco.Giocatori.Where(q => q.PuntataCorrente > 0))

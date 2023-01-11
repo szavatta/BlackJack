@@ -58,10 +58,14 @@
 
     function DisegnaTavolo(partita, trueCount) {
         PulisceTavolo();
-        $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
-        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - True Count: " + trueCount + " - Giri: " + partita.Giri);
-        partita.Mazziere.Carte.forEach(function (carta) {
-            $("#carte-mazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+        $("#nome-mazziere").html(partita.Mazziere.Nome + (partita.Mazziere.CartaCoperta == false ? " punti: " + partita.Mazziere.Punteggio : ""));
+        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
+        partita.Mazziere.Carte.forEach(function (carta, index) {
+            if (partita.Mazziere.CartaCoperta == true && index == 0) {
+                $("#carte-mazziere").append("<div><img src='/Carte/retroblu.png'></div>");
+            } else {
+                $("#carte-mazziere").append("<div><img src='/Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
+            }
         })
         if (partita.Mazziere.Punteggio > 21) {
             $("#mazziere").addClass("back-red");

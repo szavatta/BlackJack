@@ -8,6 +8,7 @@ namespace Classes
     [Serializable]
     public class Mazziere : GiocatoreSemplice
     {
+        public bool CartaCoperta { get; set; }
         [JsonIgnore]
         public StrategiaMazziere Strategia { get; set; }
 
