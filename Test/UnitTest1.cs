@@ -17,7 +17,7 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = new Gioco(0, 6, true);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(6).AggiungiMischiata(true).build();
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
             gioco.Giocatori.Add(new Giocatore(gioco));
@@ -64,7 +64,7 @@ namespace Test
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
             int totale = 0;
-            Gioco gioco = new Gioco(10);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(10).build();
 
             for (int i = 0; i < 1000; i++)
             {
@@ -95,7 +95,7 @@ namespace Test
         [Test]
         public void Test1()
         {
-            Gioco gioco = new Gioco(2, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
             for (int i = 0; i < 4; i++)
             {
                 gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Picche));
@@ -122,7 +122,7 @@ namespace Test
         [Test]
         public void Test2()
         {
-            Gioco gioco = new Gioco(2, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
             for (int i = 0; i < 4; i++)
             {
                 gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
@@ -151,7 +151,7 @@ namespace Test
         [Test]
         public void TestConteggio()
         {
-            Gioco gioco = new Gioco(1, 1);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(1).build();
             for (int i = 0; i < 52; i++)
             {
                 gioco.Giocatori[0].Pesca(0);
@@ -162,7 +162,7 @@ namespace Test
         [Test]
         public void Test3()
         {
-            Gioco gioco = new Gioco(2, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
@@ -189,7 +189,7 @@ namespace Test
         [Test]
         public void TestBlackJack()
         {
-            Gioco gioco = new Gioco(1, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Jack, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
@@ -210,7 +210,7 @@ namespace Test
         [Test]
         public void TestBlackJack2()
         {
-            Gioco gioco = new Gioco(1, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
@@ -233,7 +233,7 @@ namespace Test
         [Test]
         public void TestBlackJack3()
         {
-            Gioco gioco = new Gioco(1, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
@@ -256,7 +256,7 @@ namespace Test
         [Test]
         public void TestCount()
         {
-            Gioco gioco = new Gioco(0, 1, false);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(1).AggiungiMischiata(false).build();
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
 
             gioco.Giocata();
@@ -270,7 +270,7 @@ namespace Test
         [Test]
         public void TestSplit()
         {
-            Gioco gioco = new Gioco(0, 0, false);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiMischiata(false).build();
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
             gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore()));
             
@@ -301,7 +301,7 @@ namespace Test
         [Test]
         public void TestDueAssi()
         {
-            Gioco gioco = new Gioco(1, 0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));

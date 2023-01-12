@@ -28,7 +28,7 @@ namespace BlackJack.Controllers
         }
         public IActionResult Index()
         {
-            Gioco gioco = new Gioco(0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
 
             gioco.Mazziere.SoldiTotali = 100;
             gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
@@ -105,7 +105,7 @@ namespace BlackJack.Controllers
         [HttpPost]
         public JsonResult GetCarteTest()
         {
-            Gioco gioco = new Gioco(0);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
             for (int i = 0; i < 20; i++)
             {
                 gioco.Mazziere.Pesca();
@@ -116,7 +116,7 @@ namespace BlackJack.Controllers
         [HttpPost]
         public JsonResult GetCarteTestStrategy()
         {
-            Gioco gioco = new Gioco(1);
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).build();
             gioco.Mazziere.Pesca();
             gioco.Giocatori[0].Pesca();
             gioco.Giocatori[0].Pesca();

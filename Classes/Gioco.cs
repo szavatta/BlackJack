@@ -23,25 +23,25 @@ namespace Classes
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5)
         {
             GiocatoriSplit = new List<Giocatore>();
+            Mazziere = new Mazziere(this);
+            Giocatori = new List<Giocatore>();
+            Id = DateTime.Now.Ticks.ToString();
+            Mazzo = new Mazzo();
+            PuntataMinima = puntataMinima;
+            NumMazziIniziali = numMazzi;
+            Mischia = mischia;
+            Mazzo.CreaMazzo(numMazzi, mischia);
             if (string.IsNullOrEmpty(nome))
                 Nome = "Partita";
             else
                 Nome = nome;
-            Id = DateTime.Now.Ticks.ToString();
-            Mischia = mischia;
-            PuntataMinima = 5;
-            Mazzo = new Mazzo();
-            Mazzo.CreaMazzo(numMazzi, mischia);
-            NumMazziIniziali = numMazzi;
-            Giocatori = new List<Giocatore>();
             for (int i = 0; i < giocatori; i++)
             {
                 Giocatori.Add(new Giocatore(this));
             }
-            Mazziere = new Mazziere(this);
         }
 
         public object Clone()
