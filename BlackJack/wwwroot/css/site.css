@@ -97,3 +97,7 @@ body {
 .opzioni-giocatore input {
     margin-left: 3px;
 }
+
+.container-100 {
+    max-width: none;
+}

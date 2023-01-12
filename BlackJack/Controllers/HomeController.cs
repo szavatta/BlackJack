@@ -17,6 +17,7 @@ namespace BlackJack.Controllers
     public class HomeController : MasterController
     {
         private readonly ILogger<HomeController> _logger;
+        static bool Stop = false;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -86,33 +87,11 @@ namespace BlackJack.Controllers
 
         public JsonResult Stai(string id, string idGiocatore)
         {
-            Gioco gioco = Stai(id, idGiocatore, true);
-            gioco.Iniziato = true;
-
-            return Json(JsonGioco(gioco));
-        }
-
-        private Gioco Stai(string id, string idGiocatore, bool ret)
-        {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            Giocatore next = gioco.Giocatori.SkipWhile(q => q.Id != idGiocatore).Skip(1).FirstOrDefault();
-            if (next != null)
-            {
-                gioco.IdGiocatoreMano = next.Id;
-            }
-            else
-            {
-                gioco.IdGiocatoreMano = null;
-                gioco.Mazziere.CartaCoperta = false;
-                while (gioco.Mazziere.Strategia.Strategy(gioco.Mazziere) == Mazziere.Puntata.Chiama)
-                {
-                    gioco.Mazziere.Pesca();
-                }
-                gioco.TerminaMano();
-            }
+            giocatore.Stai();
 
-            return gioco;
+            return Json(JsonGioco(gioco));
         }
 
         public JsonResult Pesca(string id, string idGiocatore, int puntata)
@@ -121,10 +100,6 @@ namespace BlackJack.Controllers
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             giocatore.Pesca();
-            if (giocatore.Punteggio > 21)
-            {
-                gioco = Stai(id, idGiocatore, true);
-            }
 
             return Json(JsonGioco(gioco));
         }
@@ -134,8 +109,7 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            giocatore.PuntataCorrente *= 2;
-            giocatore.HasRaddoppiato = true;
+            giocatore.Raddoppia();
 
             return Json(JsonGioco(gioco));
         }
@@ -163,7 +137,7 @@ namespace BlackJack.Controllers
             giocatore.Id = idGiocatore;
             gioco.Giocatori.Add(giocatore);
 
-            return Json(JsonGioco(gioco));
+            return Json(new { json = JsonGioco(gioco), idGiocatore = idGiocatore });
         }
 
         public JsonResult NuovaMano(string id)
@@ -172,6 +146,17 @@ namespace BlackJack.Controllers
             gioco.Inizializza();
 
             return Json(JsonGioco(gioco));
+        }
+
+        public JsonResult GetStop()
+        {
+            return Json(Stop);
+        }
+
+        public JsonResult SetStop(bool stop)
+        {
+            Stop = stop;
+            return Json(true);
         }
 
         string JsonGioco(Gioco gioco) => JsonConvert.SerializeObject(gioco, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });

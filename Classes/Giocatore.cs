@@ -18,7 +18,6 @@ namespace Classes
         public EnumRisultato Risultato { get; set; }
         public int ManiVinte { get; set; }
         public int ManiPerse { get; set; }
-        public bool HasRaddoppiato { get; set; }
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
@@ -47,6 +46,17 @@ namespace Classes
             Pari = 2
         }
 
+        public void Raddoppia()
+        {
+            PuntataCorrente *= 2;
+            Pesca();
+        }
+
+        public void Stai()
+        {
+            Gioco.Iniziato = true;
+            Gioco.PassaMano(this);
+        }
 
         public object Clone()
         {
@@ -54,6 +64,16 @@ namespace Classes
             giocatore.Carte = new List<Carta>(this.Carte);
             giocatore.PuntataCorrente = PuntataCorrente;
             return giocatore;
+        }
+
+        public override Carta Pesca(int percMin = 20)
+        {
+            Carta carta = base.Pesca(percMin);
+
+            if (Punteggio > 21)
+                Stai();
+
+            return carta;
         }
     }
 }

@@ -24,10 +24,11 @@ namespace Classes
             Gioco = gioco;
         }
 
-        public Carta Pesca(int percMin = 20)
+        public virtual Carta Pesca(int percMin = 20)
         {
             Carta carta = Gioco.Mazzo.PescaCarta(percMin, Gioco.Mischia);
-            Carte.Add(carta);                
+            Carte.Add(carta);
+
             return carta;
         }
 

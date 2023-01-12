@@ -129,7 +129,6 @@ namespace Classes
                 double paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
                 Mazziere.SoldiTotali -= paga;
                 vincente.SoldiTotali += paga;
-
             }
 
             foreach (var perdente in GiocatoriPerdenti())
@@ -203,6 +202,25 @@ namespace Classes
                 ).ToList();
 
             return ret;
+        }
+
+        public void PassaMano(Giocatore giocatore)
+        {
+            Giocatore next = Giocatori.SkipWhile(q => q.Id != giocatore.Id).Skip(1).FirstOrDefault();
+            if (next != null)
+            {
+                IdGiocatoreMano = next.Id;
+            }
+            else
+            {
+                IdGiocatoreMano = null;
+                Mazziere.CartaCoperta = false;
+                while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
+                {
+                    Mazziere.Pesca();
+                }
+                TerminaMano();
+            }
         }
 
         public List<Giocatore> GiocatoriPerdenti()
