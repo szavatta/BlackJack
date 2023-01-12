@@ -78,8 +78,6 @@ namespace Classes
             catch { }
             return ret;
         }
-
-
         public enum SemeCarta
         {
             Cuori = 1,
@@ -87,7 +85,6 @@ namespace Classes
             Fiori = 3,
             Picche = 4
         }
-
         private int GetValore()
         {
             if ((int)Numero == 1)
@@ -99,7 +96,6 @@ namespace Classes
             else
                 return 11;
         }
-
         public enum NumeroCarta
         {
             Asso = 1,
@@ -116,7 +112,6 @@ namespace Classes
             Donna = 12,
             Re = 13,
         }
-
         public override bool Equals(object obj)
         {
             bool ret = false;
@@ -128,17 +123,14 @@ namespace Classes
 
             return ret;
         }
-
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-
         public override string ToString()
         {
             return $"{Numero} di {Seme}";
         }
-
     }
 
 }

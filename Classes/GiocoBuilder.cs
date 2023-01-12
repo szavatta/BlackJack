@@ -7,17 +7,10 @@ namespace Classes
     public class GiocoBuilder
     {
         private int NumGiocatori { get; set; }
-        private Mazzo Mazzo { get; set; }
-        private Mazziere Mazziere { get; set; }
         private int NumMazziIniziali { get; set; }
         private int PuntataMinima { get; set; }
         private bool Mischia { get; set; }
-        private int Giri { get; set; }
         private string Nome { get; set; }
-        private string Id { get; set; }
-        private List<Giocatore> GiocatoriSplit { get; set; }
-        private string IdGiocatoreMano { get; set; }
-        private bool Iniziato { get; set; }
 
         private GiocoBuilder()
         {

@@ -16,6 +16,7 @@ namespace Classes
         {
             Strategia = new SempliceStrategiaMazziere();
             Nome = "Mazziere";
+            Carte = new List<Carta>();
         }
 
         public new enum Puntata
