@@ -65,19 +65,7 @@ namespace Classes
             {
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
                 {
-                    Giocatore clone = (Giocatore)Giocatori[i].Clone();
-                    Giocatori[i].Carte.RemoveAt(0);
-                    clone.Nome += " split";
-                    clone.Carte.RemoveAt(1);
-                    clone.GiocatoreSplit ??= Giocatori[i];
-                    clone.SoldiTotali = 0;
-                    Giocatori.Insert(i + 1, clone);
-
-
-                    if (Giocatori[i].Carte.Count == 1)
-                    {
-                        Giocatori[i].Pesca();
-                    }
+                    Dividi(i);
                 }
 
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
@@ -86,12 +74,7 @@ namespace Classes
                 }
                 if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
                 {
-
-                    if (Giocatori[i].Carte.Count == 2)
-                    {
-                        Giocatori[i].PuntataCorrente *= 2;
-                    }
-                    Giocatori[i].Pesca();
+                    Raddoppia(i);
                 }
             }
             while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
@@ -112,6 +95,33 @@ namespace Classes
             }
 
             Giri++;
+        }
+
+        private void Raddoppia(int i)
+        {
+            if (Giocatori[i].Carte.Count == 2)
+            {
+                Giocatori[i].PuntataCorrente *= 2;
+            }
+
+            Giocatori[i].Pesca();
+        }
+
+        private void Dividi(int i)
+        {
+            Giocatore clone = (Giocatore)Giocatori[i].Clone();
+            Giocatori[i].Carte.RemoveAt(0);
+            clone.Nome += " split";
+            clone.Carte.RemoveAt(1);
+            clone.GiocatoreSplit ??= Giocatori[i];
+            clone.SoldiTotali = 0;
+            Giocatori.Insert(i + 1, clone);
+
+
+            if (Giocatori[i].Carte.Count == 1)
+            {
+                Giocatori[i].Pesca();
+            }
         }
 
         public void TerminaMano()
