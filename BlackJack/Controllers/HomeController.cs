@@ -124,6 +124,17 @@ namespace BlackJack.Controllers
             return Json(JsonGioco(gioco));
         }
 
+        public JsonResult Split(string id, string idGiocatore)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            gioco.Iniziato = true;
+            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            giocatore.Split();
+
+            return Json(JsonGioco(gioco));
+        }
+
+
         public JsonResult Partecipa(string id, string nome)
         {
             string idGiocatore = HttpContext.Session.GetString("IdGiocatore");

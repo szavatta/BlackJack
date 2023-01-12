@@ -18,6 +18,7 @@ namespace Classes
         public EnumRisultato Risultato { get; set; }
         public int ManiVinte { get; set; }
         public int ManiPerse { get; set; }
+        public bool CanSplit { get; set; }
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
@@ -58,6 +59,25 @@ namespace Classes
             Gioco.PassaMano(this);
         }
 
+        public void Split()
+        {
+            Giocatore clone = (Giocatore)this.Clone();
+            Carte.RemoveAt(0);
+            clone.Nome += " split";
+            clone.Id = DateTime.Now.Ticks.ToString();
+            clone.Carte.RemoveAt(1);
+            clone.GiocatoreSplit ??= this;
+            clone.SoldiTotali = 0;
+            for (int i = 0; i < Gioco.Giocatori.Count; i++)
+            {
+                if (Gioco.Giocatori[i].Id == Id)
+                {
+                    Gioco.Giocatori.Insert(i + 1, clone);
+                    break;
+                }
+            }
+        }
+
         public object Clone()
         {
             Giocatore giocatore = new Giocatore(Gioco, Strategia, SoldiTotali, Nome);
@@ -70,6 +90,11 @@ namespace Classes
         {
             Carta carta = base.Pesca(percMin);
 
+            if (Carte.Count == 2 && Carte[0].Numero == Carte[1].Numero)
+                CanSplit = true;
+            else
+                CanSplit = false;
+            
             if (Punteggio > 21)
                 Stai();
 

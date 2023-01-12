@@ -31,6 +31,7 @@
                     <input type='button' value='Stai' class='btnStai btn btn-info d-none' />
                     <input type='button' value='Abbandona' class='btnAbbandona btn btn-info d-none' />
                     <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
+                    <input type='button' value='Split' class='btnSplit btn btn-info d-none' />
                 </div>
             </div>
         </div>
@@ -179,6 +180,28 @@
             });
         });
 
+        $(document).on("click", ".btnSplit", function () {
+
+            let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Split",
+                data: {
+                    id: idPartita,
+                    idGiocatore: idGiocatore
+                },
+                success: function (json) {
+                    let partita = JSON.parse(json);
+                    DisegnaTavolo(partita);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
+
         GetPartita()
     })
 
@@ -257,6 +280,12 @@
                 } else {
                     div.find(".btnRaddoppia").addClass("d-none");
                 }
+                if (giocatore.CanSplit == true) {
+                    div.find(".btnSplit").removeClass("d-none");
+                } else {
+                    div.find(".btnSplit").addClass("d-none");
+                }
+
             }
             if (giocatore.Id == $("#IdGiocatore").val()) {
                 presenteg=true;
