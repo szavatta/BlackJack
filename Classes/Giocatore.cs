@@ -20,6 +20,7 @@ namespace Classes
         public int ManiPerse { get; set; }
         public bool CanSplit { get; set; }
 
+
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
             Carte = new List<Carta>();
@@ -79,6 +80,11 @@ namespace Classes
         public void Punta()
         {
             PuntataCorrente = Strategia.Puntata(Gioco.PuntataMinima, 50, Gioco.Mazzo.GetTrueCount());
+        }
+
+        public Puntata Scelta()
+        {
+            return Strategia.Strategy(this, Gioco.Mazziere, Gioco.Mazzo.GetTrueCount());
         }
 
         public object Clone()

@@ -23,6 +23,7 @@ namespace Classes
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
 
+
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5)
         {
             GiocatoriSplit = new List<Giocatore>();
@@ -62,8 +63,7 @@ namespace Classes
 
             for (int i = 0;i<Giocatori.Count(); i++)
             {
-                while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) ==
-                       Giocatore.Puntata.Dividi)
+                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
                 {
                     Giocatore clone = (Giocatore)Giocatori[i].Clone();
                     Giocatori[i].Carte.RemoveAt(0);
@@ -80,11 +80,11 @@ namespace Classes
                     }
                 }
 
-                while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Chiama)
+                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
                 {
                     Giocatori[i].Pesca();
                 }
-                if (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Raddoppia)
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
                 {
 
                     if (Giocatori[i].Carte.Count == 2)
