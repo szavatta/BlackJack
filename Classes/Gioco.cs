@@ -163,6 +163,7 @@ namespace Classes
             }
             Mazziere.Carte = new List<Carta>();
             Mazziere.CartaCoperta = true;
+            Iniziato = false;
             Giri++;
         }
 

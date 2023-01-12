@@ -29,7 +29,7 @@
                     <input type='button' value='Punta' class='btnPunta btn btn-info d-none' />
                     <input type='button' value='Pesca' class='btnPesca btn btn-info d-none' />
                     <input type='button' value='Stai' class='btnStai btn btn-info d-none' />
-                    <input type='button' value='Abbandona' class='btnAbbandona btn btn-info d-none' />
+                    <input type='button' value='Esci' class='btnEsci btn btn-info d-none' />
                     <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
                     <input type='button' value='Split' class='btnSplit btn btn-info d-none' />
                 </div>
@@ -120,13 +120,13 @@
             });
         });
 
-        $(document).on("click", ".btnAbbandona", function () {
+        $(document).on("click", ".btnEsci", function () {
             let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
             let puntata = $(this).parent().find(".txtPuntata").val();
 
             $.ajax({
                 type: "POST",
-                url: "/Home/Abbandona",
+                url: "/Home/Esci",
                 data: {
                     id: idPartita,
                     idGiocatore: idGiocatore,
@@ -233,9 +233,9 @@
         $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta, index) {
             if (partita.Mazziere.CartaCoperta == true && index == 1) {
-                $("#carte-mazziere").append("<div><img src='/Carte/retroblu.png'></div>");
+                $("#carte-mazziere").append("<div class='carta'><img src='/Carte/retroblu.png'></div>");
             } else {
-                $("#carte-mazziere").append("<div><img src='/" + carta.PathImage + "' title='" + carta.Nome + "''></div>");
+                $("#carte-mazziere").append("<div class='carta'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "''></div>");
             }
         })
         //if (partita.Mazziere.Punteggio > 21) {
@@ -254,7 +254,7 @@
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
             div.find(".carte-giocatore").empty();
             giocatore.Carte.forEach(function (carta) {
-                div.find(".carte-giocatore").append("<div><img src='/" + carta.PathImage + "' title='" + carta.Nome + "''></div>");
+                div.find(".carte-giocatore").append("<div class='carta'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "''></div>");
             })
             //if (giocatore.Risultato == 0) {
             //    div.addClass("back-green");
@@ -265,11 +265,11 @@
                 if (giocatore.PuntataCorrente == 0) {
                     div.find(".txtPuntata").removeClass("d-none");
                     div.find(".btnPunta").removeClass("d-none");
-                    div.find(".btnAbbandona").removeClass("d-none");
+                    div.find(".btnEsci").removeClass("d-none");
                 } else {
                     div.find(".txtPuntata").addClass("d-none");
                     div.find(".btnPunta").addClass("d-none");
-                    div.find(".btnAbbandona").addClass("d-none");
+                    div.find(".btnEsci").addClass("d-none");
                 }
                 if (giocatore.Id == partita.IdGiocatoreMano) {
                     div.find(".btnStai").removeClass("d-none");
@@ -312,6 +312,18 @@
             $(".btnPartecipa").addClass("d-none");
             $(".txtNomeGiocatore").addClass("d-none");
         }
+
+        //elimina i box
+        $(".giocatore").map(function () {
+            return $(this).attr("idgiocatore");
+        }).get().forEach(function (item) {
+            if (!partita.Giocatori.map(function (item) {
+                return item.Id;
+            }).includes(item)) {
+                $("[idGiocatore='" + item + "']").remove();
+            }
+        });
+
 
         if (!partita.Mazziere.CartaCoperta) {
             VisualizzaVincitori(partita);

@@ -103,3 +103,7 @@ body {
 .container-100 {
     max-width: none;
 }
+
+.carta {
+    position: relative;
+}

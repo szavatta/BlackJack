@@ -47,19 +47,35 @@ namespace Classes
             Pari = 2
         }
 
-        public void Raddoppia()
+        public Giocatore Raddoppia()
         {
             PuntataCorrente *= 2;
             Pesca();
+            return this;
         }
 
-        public void Stai()
+        public Giocatore Stai()
         {
             Gioco.Iniziato = true;
             Gioco.PassaMano(this);
+            return this;
         }
 
-        public void Split()
+        public Giocatore Punta(int puntata)
+        {
+            Gioco.Iniziato = true;
+            PuntataCorrente = puntata;
+            return this;
+        }
+
+        public Giocatore Esci()
+        {
+            Gioco.Iniziato = true;
+            Gioco.Giocatori.Remove(this);
+            return this;
+        }
+
+        public Giocatore Split()
         {
             CanSplit = false;
             Giocatore clone = (Giocatore)this.Clone();
@@ -77,6 +93,7 @@ namespace Classes
                     break;
                 }
             }
+            return this;
         }
 
         public object Clone()

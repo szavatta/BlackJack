@@ -11,7 +11,7 @@ namespace Classes
         private Mazziere Mazziere { get; set; }
         private int NumMazziIniziali { get; set; }
         private int PuntataMinima { get; set; }
-        private bool Mischia { get; set; }
+        private bool Mischia { get; set; } = true;
         private int Giri { get; set; }
         private string Nome { get; set; }
         private string Id { get; set; }

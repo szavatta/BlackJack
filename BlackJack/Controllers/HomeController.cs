@@ -64,10 +64,10 @@ namespace BlackJack.Controllers
             Gioco gioco = GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome("Partita")
-                .AggiungiMazzi(Partite.Count + 1)
+                .AggiungiMazzi(6)
                 .build();
 
-           // gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
+            gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
             Giocatore giocatore = new Giocatore(gioco, nome: nome);
             gioco.Giocatori.Add(giocatore);
 
@@ -83,7 +83,7 @@ namespace BlackJack.Controllers
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            giocatore.PuntataCorrente = puntata;
+            giocatore.Punta(puntata);
 
             if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
                 gioco.DistribuisciCarteIniziali();
@@ -115,17 +115,20 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            giocatore.Raddoppia();
+            giocatore.Raddoppia().Stai();
 
             return Json(JsonGioco(gioco));
         }
 
-        public JsonResult Abbandona(string id, string idGiocatore)
+        public JsonResult Esci(string id, string idGiocatore)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            gioco.Giocatori.Remove(giocatore);
+            giocatore.Esci();
+
+            if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
+                gioco.DistribuisciCarteIniziali();
 
             return Json(JsonGioco(gioco));
         }
