@@ -57,28 +57,13 @@ namespace Classes
 
             for (int i = 0;i<Giocatori.Count(); i++)
             {
-                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
-                {
-                    Dividi(i);
-                }
-
-                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
-                {
-                    Giocatori[i].Pesca();
-                }
-
-                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
-                {
-                    Raddoppia(i);
-                }
+                GiocataGiocatore(i);
             }
             while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
             {
                 Mazziere.Pesca();
             }
-
             TerminaMano();
-
             try
             {
                 if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
@@ -88,8 +73,25 @@ namespace Classes
             {
                 throw ex;
             }
-
             Giri++;
+        }
+
+        private void GiocataGiocatore(int i)
+        {
+            while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
+            {
+                Dividi(i);
+            }
+
+            while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
+            {
+                Giocatori[i].Pesca();
+            }
+
+            if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
+            {
+                Raddoppia(i);
+            }
         }
 
         private void GiocataIniziale()
