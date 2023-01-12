@@ -62,6 +62,7 @@ namespace BlackJack.Controllers
         public JsonResult NuovaPartita(string nome)
         {
             Gioco gioco = new Gioco(0, nome: "Partita " + (Partite.Count + 1));
+           // gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
             Giocatore giocatore = new Giocatore(gioco, nome: nome);
             gioco.Giocatori.Add(giocatore);
 

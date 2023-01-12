@@ -61,6 +61,7 @@ namespace Classes
 
         public void Split()
         {
+            CanSplit = false;
             Giocatore clone = (Giocatore)this.Clone();
             Carte.RemoveAt(0);
             clone.Nome += " split";

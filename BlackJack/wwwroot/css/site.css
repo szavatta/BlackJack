@@ -81,7 +81,9 @@ body {
 .back-grey {
     background-color: grey;
 }
-
+.back-azure {
+    background-color: aquamarine;
+}
 .giocatore {
     min-height: 216px;
 }

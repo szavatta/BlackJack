@@ -7,6 +7,7 @@ namespace Classes
     [Serializable]
     public class Carta
     {
+        public string Nome { get; set; }
         private byte[] _Immagine { get; set; }
         private NumeroCarta _numero { get; set; }
         public int Valore { get; set; }
@@ -16,7 +17,8 @@ namespace Classes
         {
             Numero = numero;
             Seme = seme;
-            PathImage = $"carte/{((int)numero)}.png";
+            PathImage = $"Carte/{((int)seme)}-{((int)numero)}.png";
+            Nome = this.ToString();
             if (numero >= NumeroCarta.Due && numero <= NumeroCarta.Sei)
                 Conteggio = 1;
             else if (numero >= NumeroCarta.Dieci || numero == NumeroCarta.Asso)
