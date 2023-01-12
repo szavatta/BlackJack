@@ -17,7 +17,7 @@ namespace Classes
         {
             Numero = numero;
             Seme = seme;
-            PathImage = $"carte/{((int)numero)}.png";
+            PathImage = $"Carte/{((int)seme)}-{((int)numero)}.png";
             Nome = this.ToString();
             if (numero >= NumeroCarta.Due && numero <= NumeroCarta.Sei)
                 Conteggio = 1;
