@@ -79,7 +79,6 @@ namespace Classes
         public void Punta()
         {
             PuntataCorrente = Strategia.Puntata(Gioco.PuntataMinima, 50, Gioco.Mazzo.GetTrueCount());
-            Carte = new List<Carta>();
         }
 
         public object Clone()

@@ -52,8 +52,9 @@ namespace Classes
 
         public void Giocata()
         {
-            Giocatori.ForEach(q=>q.Punta());
             Mazziere.Carte = new List<Carta>();
+            Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            Giocatori.ForEach(q=>q.Punta());
             Giocatori.Where(q => q.PuntataCorrente>0).ToList().ForEach(q => q.Pesca());
             Mazziere.Pesca();
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
