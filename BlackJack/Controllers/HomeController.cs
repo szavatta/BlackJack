@@ -130,8 +130,9 @@ namespace BlackJack.Controllers
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             giocatore.Split();
+            Giocatore gsplit = gioco.Giocatori.SkipWhile(q => q.Id != idGiocatore).Skip(1).FirstOrDefault();
 
-            return Json(JsonGioco(gioco));
+            return Json(new { json = JsonGioco(gioco), idGiocatore = gsplit.Id });
         }
 
 

@@ -192,8 +192,9 @@
                     id: idPartita,
                     idGiocatore: idGiocatore
                 },
-                success: function (json) {
-                    let partita = JSON.parse(json);
+                success: function (data) {
+                    $("#IdGiocatore").val($("#IdGiocatore").val() + "-" + data.idGiocatore);
+                    let partita = JSON.parse(data.json);
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -258,7 +259,7 @@
             //} else if (giocatore.Risultato == 1) {
             //    div.addClass("back-red");
             //}
-            if (giocatore.Id == $("#IdGiocatore").val()) {
+            if ($("#IdGiocatore").val().includes(giocatore.Id)) {
                 if (giocatore.PuntataCorrente == 0) {
                     div.find(".txtPuntata").removeClass("d-none");
                     div.find(".btnPunta").removeClass("d-none");
