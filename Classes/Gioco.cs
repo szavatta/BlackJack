@@ -53,13 +53,7 @@ namespace Classes
 
         public void Giocata()
         {
-            Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.Carte = new List<Carta>());
-            Giocatori.ForEach(q=>q.Punta());
-            Giocatori.Where(q => q.PuntataCorrente>0).ToList().ForEach(q => q.Pesca());
-            Mazziere.Pesca();
-            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
-            Mazziere.Pesca();
+            GiocataIniziale();
 
             for (int i = 0;i<Giocatori.Count(); i++)
             {
@@ -72,12 +66,13 @@ namespace Classes
                 {
                     Giocatori[i].Pesca();
                 }
+
                 if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
                 {
                     Raddoppia(i);
                 }
             }
-            while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
+            while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
             {
                 Mazziere.Pesca();
             }
@@ -95,6 +90,17 @@ namespace Classes
             }
 
             Giri++;
+        }
+
+        private void GiocataIniziale()
+        {
+            Mazziere.Carte = new List<Carta>();
+            Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            Giocatori.ForEach(q => q.Punta());
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
+            Mazziere.Pesca();
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
+            Mazziere.Pesca();
         }
 
         private void Raddoppia(int i)

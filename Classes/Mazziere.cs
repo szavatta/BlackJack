@@ -24,5 +24,10 @@ namespace Classes
             Chiama = 0,
             Stai = 1,
         }
+
+        public Puntata Scelta()
+        {
+            return this.Strategia.Strategy(this);
+        }
     }
 }
