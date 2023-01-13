@@ -41,7 +41,7 @@ namespace Classes
                 Nome = nome;
             for (int i = 0; i < giocatori; i++)
             {
-                Giocatori.Add(new Giocatore(this));
+                Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(this).build());
             }
         }
 

@@ -68,7 +68,7 @@ namespace BlackJack.Controllers
                 .build();
 
             gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
-            Giocatore giocatore = new Giocatore(gioco, nome: nome);
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiNome(nome).build();
             gioco.Giocatori.Add(giocatore);
 
             gioco.Inizializza();
@@ -154,7 +154,7 @@ namespace BlackJack.Controllers
                 HttpContext.Session.SetString("IdGiocatore", idGiocatore);
             }
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
-            Giocatore giocatore = new Giocatore(gioco, nome: nome);
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiNome(nome).build();
             giocatore.Id = idGiocatore;
             gioco.Giocatori.Add(giocatore);
 
