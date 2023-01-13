@@ -46,7 +46,7 @@
     const urlParams = new URLSearchParams(queryString);
     let idPartita = urlParams.get('id');
 
-    //SetInterval();
+    SetInterval();
 
     $(document).ready(function () {
 
@@ -256,7 +256,7 @@
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
             div.find(".carte-giocatore").empty();
             giocatore.Carte.forEach(function (carta, index) {
-                let left = index * 50 + 170 - giocatore.Carte.length * 25 + (($(document).width() / 4 - 430)/2);
+                let left = index * 50 + 170 - giocatore.Carte.length * 25 + ((div.closest(".giocatore").width() - 400)/2);
                 div.find(".carte-giocatore")
                     .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
             })
