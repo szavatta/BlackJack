@@ -23,6 +23,7 @@ namespace Classes
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
 
+
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5)
         {
             GiocatoriSplit = new List<Giocatore>();
@@ -30,10 +31,10 @@ namespace Classes
             Giocatori = new List<Giocatore>();
             Id = DateTime.Now.Ticks.ToString();
             Mazzo = new Mazzo();
-            PuntataMinima = puntataMinima;
-            NumMazziIniziali = numMazzi;
             Mischia = mischia;
             Mazzo.CreaMazzo(numMazzi, mischia);
+            PuntataMinima = puntataMinima;
+            NumMazziIniziali = numMazzi;
             if (string.IsNullOrEmpty(nome))
                 Nome = "Partita";
             else
@@ -52,62 +53,17 @@ namespace Classes
 
         public void Giocata()
         {
-            Giocatori.ForEach(q => q.Carte = new List<Carta>());
-            Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.PuntataCorrente = q.Strategia.Puntata(PuntataMinima, 50, Mazzo.GetTrueCount()));
-
-            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
-            {
-                giocatore.Pesca();
-            }
-            Mazziere.Pesca();
-            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
-            {
-                giocatore.Pesca();
-            }
-            Mazziere.Pesca();
+            GiocataIniziale();
 
             for (int i = 0;i<Giocatori.Count(); i++)
             {
-                while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) ==
-                       Giocatore.Puntata.Dividi)
-                {
-                    Giocatore clone = (Giocatore)Giocatori[i].Clone();
-                    Giocatori[i].Carte.RemoveAt(0);
-                    clone.Nome += " split";
-                    clone.Carte.RemoveAt(1);
-                    clone.GiocatoreSplit ??= Giocatori[i];
-                    clone.SoldiTotali = 0;
-                    Giocatori.Insert(i + 1, clone);
-
-
-                    if (Giocatori[i].Carte.Count == 1)
-                    {
-                        Giocatori[i].Pesca();
-                    }
-                }
-
-                while (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Chiama)
-                {
-                    Giocatori[i].Pesca();
-                }
-                if (Giocatori[i].Strategia.Strategy(Giocatori[i], Mazziere, Mazzo.GetTrueCount()) == Giocatore.Puntata.Raddoppia)
-                {
-
-                    if (Giocatori[i].Carte.Count == 2)
-                    {
-                        Giocatori[i].PuntataCorrente *= 2;
-                    }
-                    Giocatori[i].Pesca();
-                }
+                GiocataGiocatore(i);
             }
-            while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
+            while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
             {
                 Mazziere.Pesca();
             }
-
             TerminaMano();
-
             try
             {
                 if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
@@ -117,8 +73,63 @@ namespace Classes
             {
                 throw ex;
             }
-
             Giri++;
+        }
+
+        private void GiocataGiocatore(int i)
+        {
+            while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
+            {
+                Dividi(i);
+            }
+
+            while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
+            {
+                Giocatori[i].Pesca();
+            }
+
+            if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
+            {
+                Raddoppia(i);
+            }
+        }
+
+        private void GiocataIniziale()
+        {
+            Mazziere.Carte = new List<Carta>();
+            Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            Giocatori.ForEach(q => q.Punta());
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
+            Mazziere.Pesca();
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
+            Mazziere.Pesca();
+        }
+
+        private void Raddoppia(int i)
+        {
+            if (Giocatori[i].Carte.Count == 2)
+            {
+                Giocatori[i].PuntataCorrente *= 2;
+            }
+
+            Giocatori[i].Pesca();
+        }
+
+        private void Dividi(int i)
+        {
+            Giocatore clone = (Giocatore)Giocatori[i].Clone();
+            Giocatori[i].Carte.RemoveAt(0);
+            clone.Nome += " split";
+            clone.Carte.RemoveAt(1);
+            clone.GiocatoreSplit ??= Giocatori[i];
+            clone.SoldiTotali = 0;
+            Giocatori.Insert(i + 1, clone);
+
+
+            if (Giocatori[i].Carte.Count == 1)
+            {
+                Giocatori[i].Pesca();
+            }
         }
 
         public void TerminaMano()
@@ -184,6 +195,25 @@ namespace Classes
                 IdGiocatoreMano = Giocatori[0].Id;
         }
 
+        public void PassaMano(Giocatore giocatore)
+        {
+            Giocatore next = Giocatori.SkipWhile(q => q.Id != giocatore.Id).Skip(1).FirstOrDefault();
+            if (next != null)
+            {
+                IdGiocatoreMano = next.Id;
+            }
+            else
+            {
+                IdGiocatoreMano = null;
+                Mazziere.CartaCoperta = false;
+                while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
+                {
+                    Mazziere.Pesca();
+                }
+                TerminaMano();
+            }
+        }
+
         public List<Giocatore> GiocatoriVincenti()
         {
             var ret = Giocatori.Where(q =>
@@ -203,25 +233,6 @@ namespace Classes
                 ).ToList();
 
             return ret;
-        }
-
-        public void PassaMano(Giocatore giocatore)
-        {
-            Giocatore next = Giocatori.SkipWhile(q => q.Id != giocatore.Id).Skip(1).FirstOrDefault();
-            if (next != null)
-            {
-                IdGiocatoreMano = next.Id;
-            }
-            else
-            {
-                IdGiocatoreMano = null;
-                Mazziere.CartaCoperta = false;
-                while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
-                {
-                    Mazziere.Pesca();
-                }
-                TerminaMano();
-            }
         }
 
         public List<Giocatore> GiocatoriPerdenti()

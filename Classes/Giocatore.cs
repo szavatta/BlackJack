@@ -20,8 +20,10 @@ namespace Classes
         public int ManiPerse { get; set; }
         public bool CanSplit { get; set; }
 
+
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
+            Carte = new List<Carta>();
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
             Id = DateTime.Now.Ticks.ToString();
 
@@ -39,7 +41,6 @@ namespace Classes
             else
                 Strategia = strategia;
         }
-
         public enum EnumRisultato
         {
             Vinto = 0,
@@ -96,6 +97,16 @@ namespace Classes
             return this;
         }
 
+        public void Punta()
+        {
+            PuntataCorrente = Strategia.Puntata(Gioco.PuntataMinima, 50, Gioco.Mazzo.GetTrueCount());
+        }
+
+        public Puntata Scelta()
+        {
+            return Strategia.Strategy(this, Gioco.Mazziere, Gioco.Mazzo.GetTrueCount());
+        }
+
         public object Clone()
         {
             Giocatore giocatore = new Giocatore(Gioco, Strategia, SoldiTotali, Nome);
@@ -103,7 +114,6 @@ namespace Classes
             giocatore.PuntataCorrente = PuntataCorrente;
             return giocatore;
         }
-
         public override Carta Pesca(int percMin = 20)
         {
             Carta carta = base.Pesca(percMin);

@@ -16,12 +16,18 @@ namespace Classes
         {
             Strategia = new SempliceStrategiaMazziere();
             Nome = "Mazziere";
+            Carte = new List<Carta>();
         }
 
         public new enum Puntata
         {
             Chiama = 0,
             Stai = 1,
+        }
+
+        public Puntata Scelta()
+        {
+            return this.Strategia.Strategy(this);
         }
     }
 }
