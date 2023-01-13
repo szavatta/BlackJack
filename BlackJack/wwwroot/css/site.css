@@ -90,6 +90,7 @@ body {
 
 .carte-giocatore, #carte-mazziere {
     min-height: 160px;
+    position: relative;
 }
 
 .txtPuntata {
@@ -104,6 +105,6 @@ body {
     max-width: none;
 }
 
-.carta {
-    position: relative;
+.sormonta {
+    position: absolute;
 }
