@@ -94,6 +94,76 @@ namespace Test
             Assert.Pass($"Vincite mazziere: {vinteMazziere}, vincite giocatori: {vinteGiocatori}, perc. mazziere: {Math.Round((decimal)vinteMazziere * 100 / (vinteMazziere + vinteGiocatori), 0)}%");
         }
 
+        [Test]
+        public void TestGiocateTriplica()
+        {
+            int vinteGiocatori = 0;
+            int vinteMazziere = 0;
+            int totale = 0;
+            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(6).AggiungiPuntataMinima(20).build();
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaTriplica()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaDuplica()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
+            int puntatamassima = 0;
+            int perseconsecutive = 0;
+            int perseconsecutivemax = 0;
+            int puntatamassima2 = 0;
+            int perseconsecutive2 = 0;
+            int perseconsecutivemax2 = 0;
+
+            int mani = 10;
+            for (int i = 0; i < mani; i++)
+            {
+                gioco.Giocata();
+
+                Giocatore giocatore = gioco.Giocatori[0];
+                if (giocatore.PuntataCorrente > puntatamassima)
+                    puntatamassima = giocatore.PuntataCorrente;
+
+                if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
+                {
+                    perseconsecutive++;
+                    if (perseconsecutive > perseconsecutivemax)
+                        perseconsecutivemax = perseconsecutive;
+                }
+                else if (giocatore.Risultato == Giocatore.EnumRisultato.Vinto)
+                {
+                    perseconsecutive = 0;
+                }
+
+                giocatore = gioco.Giocatori[1];
+                if (giocatore.PuntataCorrente > puntatamassima2)
+                    puntatamassima2 = giocatore.PuntataCorrente;
+
+                if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
+                {
+                    perseconsecutive2++;
+                    if (perseconsecutive2 > perseconsecutivemax2)
+                        perseconsecutivemax2 = perseconsecutive2;
+                }
+                else if (giocatore.Risultato == Giocatore.EnumRisultato.Vinto)
+                {
+                    perseconsecutive2 = 0;
+                }
+
+
+                vinteGiocatori += gioco.GiocatoriVincenti().Count();
+                vinteMazziere += gioco.GiocatoriPerdenti().Count();
+                totale += gioco.Giocatori.Count;
+            }
+
+            TestContext.WriteLine($"Mani: {gioco.Giri}");
+            TestContext.WriteLine($"Vincita giocatore 1: {gioco.Giocatori[0].SoldiTotali}");
+            TestContext.WriteLine($"Puntata massima: {puntatamassima}");
+            TestContext.WriteLine($"Perdite consecutive: {perseconsecutivemax}");
+            TestContext.WriteLine($"Vincita giocatore 2: {gioco.Giocatori[1].SoldiTotali}");
+            TestContext.WriteLine($"Puntata massima: {puntatamassima2}");
+            TestContext.WriteLine($"Perdite consecutive: {perseconsecutivemax2}");
+            TestContext.WriteLine($"Vincita giocatore 3: {gioco.Giocatori[2].SoldiTotali}");
+
+        }
+
 
     }
 

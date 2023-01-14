@@ -27,6 +27,7 @@ namespace Classes
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
             Id = DateTime.Now.Ticks.ToString();
 
+
             if (strategia is Classes.BasicStrategy)
                 TipoStrategia = 0;
             else if (strategia is Classes.StrategiaConteggio)
@@ -43,9 +44,9 @@ namespace Classes
         }
         public enum EnumRisultato
         {
-            Vinto = 0,
-            Perso = 1,
-            Pari = 2
+            Pari = 0,
+            Vinto = 1,
+            Perso = 2,
         }
 
         public Giocatore Raddoppia()
@@ -100,7 +101,7 @@ namespace Classes
 
         public void Punta()
         {
-            PuntataCorrente = Strategia.Puntata(Gioco.PuntataMinima, 50, Gioco.Mazzo.GetTrueCount());
+            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, 50, Gioco.Mazzo.GetTrueCount());
         }
 
         public Puntata Scelta()

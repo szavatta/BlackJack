@@ -40,7 +40,7 @@ namespace Classes
 
             if (mischia)
             {
-                rnd = new Random();
+                rnd = new Random(1);
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }

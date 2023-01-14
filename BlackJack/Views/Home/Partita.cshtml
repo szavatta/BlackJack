@@ -398,9 +398,9 @@
     function VisualizzaVincitori(partita) {
         partita.Giocatori.forEach(function (giocatore) {
             let div = $("[idGiocatore='" + giocatore.Id + "']");
-            if (giocatore.Risultato == 0) { //vinto
+            if (giocatore.Risultato == 1) { //vinto
                 div.addClass("back-green");
-            } else if (giocatore.Risultato == 1) { //perso
+            } else if (giocatore.Risultato == 2) { //perso
                 div.addClass("back-red");
             }
         })

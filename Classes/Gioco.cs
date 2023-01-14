@@ -209,18 +209,19 @@ namespace Classes
             {
                 IdGiocatoreMano = null;
                 Mazziere.CartaCoperta = false;
-                while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
-                {
-                    Mazziere.Pesca();
-                }
-                TerminaMano();
+                //while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
+                //{
+                //    Mazziere.Pesca();
+                //}
+                //TerminaMano();
             }
         }
 
         public List<Giocatore> GiocatoriVincenti()
         {
             var ret = Giocatori.Where(q =>
-                q.PuntataCorrente > 0 && q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21) ||
+                //q.PuntataCorrente > 0 && 
+                q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21) ||
                 q.HasBlackJack() && !Mazziere.HasBlackJack()
                 ).ToList();
 
@@ -230,7 +231,7 @@ namespace Classes
         public List<Giocatore> GiocatoriPari()
         {
             var ret = Giocatori.Where(q =>
-                q.PuntataCorrente == 0 || 
+                //q.PuntataCorrente == 0 || 
                 q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21 &&
                 !(q.HasBlackJack() ^ Mazziere.HasBlackJack())
                 ).ToList();
@@ -241,7 +242,7 @@ namespace Classes
         public List<Giocatore> GiocatoriPerdenti()
         {
             var ret = Giocatori.Where(q =>
-                q.PuntataCorrente > 0 && 
+                //q.PuntataCorrente > 0 && 
                 (q.Punteggio > 21 || 
                 (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21) ||
                 !q.HasBlackJack() && Mazziere.HasBlackJack())
