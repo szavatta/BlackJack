@@ -6,8 +6,11 @@
 
 <div class="text-center p-2">
     <div class="row">
-        <div class="col-lg-3">
-
+        <div class="col-lg-3 pt-4">
+            <div id="scarti" class="w-100 d-none">
+                <img src="~/Carte/retroblu.png" />
+                <div id="num-scarti"></div>
+            </div>
         </div>
         <div id="mazziere" class="col-lg-6 p-2">
             <h2>@Model.Nome</h2>
@@ -355,7 +358,12 @@
             $(".btnNuovaMano").addClass("d-none");
         }
 
-
+        if (partita.Mazzo.Scarti.length > 0) {
+            $("#scarti").removeClass("d-none");
+            $("#num-scarti").html(partita.Mazzo.Scarti.length + " carte scartate<br>su " + partita.NumMazziIniziali + " mazzi");
+        } else {
+            $("#scarti").addClass("d-none");
+        }
     }
 
     function PulisceTavolo() {

@@ -170,9 +170,11 @@ namespace Classes
         {
             foreach(Giocatore g in Giocatori)
             {
+                Mazzo.Scarti.AddRange(g.Carte);
                 g.Carte = new List<Carta>();
                 g.PuntataCorrente = 0;
             }
+            Mazzo.Scarti.AddRange(Mazziere.Carte);
             Mazziere.Carte = new List<Carta>();
             Mazziere.CartaCoperta = true;
             Iniziato = false;

@@ -9,12 +9,15 @@ namespace Classes
     {
         public List<Carta> Carte { get; set; }
         public int Conteggio { get; set; }
+        public List<Carta> Scarti { get; set; }
 
         public void CreaMazzo(int numMazzi = 1, bool mischia = true)
         {
             Conteggio = 0;
             if (Carte == null)
                 Carte = new List<Carta>();
+
+            Scarti = new List<Carta>();
 
             for (int j = 0; j < numMazzi; j++)
             {
