@@ -155,7 +155,7 @@ namespace BlackJack.Controllers
                 HttpContext.Session.SetString("IdGiocatore", idGiocatore);
             }
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
-            Giocatore giocatore = new Giocatore(gioco, nome: nome);
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiNome(nome).build();
             giocatore.Id = idGiocatore;
             gioco.Giocatori.Add(giocatore);
 

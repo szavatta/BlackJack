@@ -19,9 +19,20 @@ namespace Test
         public void TestGiocate()
         {
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(6).AggiungiMischiata(true).build();
-            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
-            gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio()));
-            gioco.Giocatori.Add(new Giocatore(gioco));
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategy())
+                .build());
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio())
+                .build());
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new SempliceStrategiaGiocatore())
+                .build());
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
@@ -258,7 +269,8 @@ namespace Test
         public void TestCount()
         {
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(1).AggiungiMischiata(false).build();
-            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
+            
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
 
             gioco.Giocata();
             Assert.AreEqual(4, gioco.Mazzo.Conteggio);
@@ -272,8 +284,9 @@ namespace Test
         public void TestSplit()
         {
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiMischiata(false).build();
-            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy()));
-            gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore()));
+            
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new SempliceStrategiaGiocatore()).build());
             
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
