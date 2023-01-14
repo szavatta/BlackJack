@@ -71,6 +71,7 @@ namespace BlackJack.Controllers
                 .build();
 
             //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
+            //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
 
             gioco.Inizializza();
             Partite.Add(gioco);

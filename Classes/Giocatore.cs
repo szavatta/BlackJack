@@ -57,6 +57,7 @@ namespace Classes
 
         public Giocatore Stai()
         {
+            CanSplit = false;
             Gioco.Iniziato = true;
             Gioco.PassaMano(this);
             return this;
