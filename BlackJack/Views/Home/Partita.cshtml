@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    
+    @model Classes.Gioco;
 }
 @Html.Hidden("IdGiocatore", (string)ViewBag.IdGiocatore)
 
@@ -10,9 +10,13 @@
 
         </div>
         <div id="mazziere" class="col-lg-6 p-2">
+            <h2>@Model.Nome</h2>
             <div id="nome-mazziere"></div>
             <div id="cassa-mazziere"></div>
             <div id="carte-mazziere" class="d-flex justify-content-center"></div>
+            <div class="opzioni-mazziere d-flex justify-content-center">
+                <input type='button' value='Nuova mano' class='btnNuovaMano btn btn-info d-none' />
+            </div>
         </div>
         <div class="col-lg-2 offset-lg-1 mb-1 div-partecipa">
             <input type='text' value='' class='txtNomeGiocatore form-control ml-1 d-none' placeholder="Nome giocatore" />
@@ -133,8 +137,7 @@
                     puntata: puntata
                 },
                 success: function (json) {
-                    let partita = JSON.parse(json);
-                    DisegnaTavolo(partita);
+                    location.href = "/";
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -204,6 +207,13 @@
                 }
             });
         });
+
+        $(document).on("click", ".btnNuovaMano", function () {
+            NuovaMano();
+            $(".giocatore .nome-giocatore:empty").closest(".giocatore").remove();
+            DisegnaTavolo(partita);
+        });
+
 
         GetPartita()
     })
@@ -330,15 +340,19 @@
 
         if (!partita.Mazziere.CartaCoperta) {
             VisualizzaVincitori(partita);
-            if (GetStop() == false) {
-                SetStop(true);
-                setTimeout(function () {
-                    NuovaMano();
-                    SetStop(false);
-                    $(".giocatore .nome-giocatore:empty").closest(".giocatore").remove();
-                }, 5000);
-            }
+            $(".btnNuovaMano").removeClass("d-none");
+            //    if (GetStop() == false) {
+            //        SetStop(true);
+            //        setTimeout(function () {
+            //            NuovaMano();
+            //            SetStop(false);
+            //            $(".giocatore .nome-giocatore:empty").closest(".giocatore").remove();
+            //        }, 5000);
+            //    }
+        } else {
+            $(".btnNuovaMano").addClass("d-none");
         }
+
 
     }
 

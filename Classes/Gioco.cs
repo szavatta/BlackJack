@@ -22,7 +22,7 @@ namespace Classes
         public List<Giocatore> GiocatoriSplit { get; set; }
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
-
+        DateTime DataCreazione { get; set; }
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5)
         {
@@ -30,6 +30,7 @@ namespace Classes
             Mazziere = new Mazziere(this);
             Giocatori = new List<Giocatore>();
             Id = DateTime.Now.Ticks.ToString();
+            DataCreazione = DateTime.Now;
             Mazzo = new Mazzo();
             Mischia = mischia;
             Mazzo.CreaMazzo(numMazzi, mischia);

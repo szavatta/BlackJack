@@ -61,20 +61,19 @@ namespace BlackJack.Controllers
 
         public JsonResult NuovaPartita(string nome)
         {
+            if (string.IsNullOrEmpty(nome))
+                nome = "Partita " + (Partite.Count + 1);
+
             Gioco gioco = GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
-                .AggiungiNome("Partita")
+                .AggiungiNome(nome)
                 .AggiungiMazzi(6)
                 .build();
 
-            gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
-            Giocatore giocatore = new Giocatore(gioco, nome: nome);
-            gioco.Giocatori.Add(giocatore);
+            //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
 
             gioco.Inizializza();
             Partite.Add(gioco);
-
-            HttpContext.Session.SetString("IdGiocatore", giocatore.Id);
 
             return Json(gioco.Id);
         }
@@ -127,10 +126,12 @@ namespace BlackJack.Controllers
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             giocatore.Esci();
 
-            if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
+            if (gioco.Giocatori.Count == 0)
+                Partite.Remove(gioco);
+            else if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
                 gioco.DistribuisciCarteIniziali();
 
-            return Json(JsonGioco(gioco));
+            return Json(true);
         }
 
         public JsonResult Split(string id, string idGiocatore)

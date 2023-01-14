@@ -7,7 +7,7 @@
 
     </div>
     <div id="div-partite" class="col-lg-2">
-        <input type='text' id='txtNomePartita' value='' class='form-control w-100 mb-1' placeholder="Nome giocatore" />
+        <input type='text' id='txtNomePartita' value='' class='form-control w-100 mb-1' placeholder="Nome partita" />
         <input type='button' id='btnNuovaPartita' value='Nuova partita' class='btn btn-info w-100 mb-1' />
     </div>
 
@@ -27,7 +27,6 @@
                 },
                 success: function (id) {
                     GetPartite();
-                    $("#txtNomePartita").val("");
                     location.href = "/Home/Partita?id=" + id
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
