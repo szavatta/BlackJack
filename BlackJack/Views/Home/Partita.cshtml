@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-lg-3 pt-4">
             <div id="scarti" class="w-100 d-none">
-                <img src="~/Carte/retroblu.png" />
+                <img src="" />
                 <div id="num-scarti"></div>
             </div>
         </div>
@@ -214,7 +214,6 @@
         $(document).on("click", ".btnNuovaMano", function () {
             NuovaMano();
             $(".giocatore .nome-giocatore:empty").closest(".giocatore").remove();
-            DisegnaTavolo(partita);
         });
 
 
@@ -249,7 +248,7 @@
 
             if (partita.Mazziere.CartaCoperta == true && index == 1) {
                 $("#carte-mazziere")
-                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/Carte/retroblu.png'></div>");
+                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png'></div>");
             } else {
                 $("#carte-mazziere")
                     .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
@@ -359,6 +358,7 @@
         }
 
         if (partita.Mazzo.Scarti.length > 0) {
+            $("#scarti img").attr("src", "/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png");
             $("#scarti").removeClass("d-none");
             $("#num-scarti").html(partita.Mazzo.Scarti.length + " carte scartate<br>su " + partita.NumMazziIniziali + " mazzi");
         } else {

@@ -7,9 +7,15 @@ namespace Classes
     [Serializable]
     public class Mazzo
     {
+        public enum EnumRetro
+        {
+            blu,
+            rosso
+        }
         public List<Carta> Carte { get; set; }
         public int Conteggio { get; set; }
         public List<Carta> Scarti { get; set; }
+        public EnumRetro Retro { get; set; }
 
         public void CreaMazzo(int numMazzi = 1, bool mischia = true)
         {
@@ -18,6 +24,8 @@ namespace Classes
                 Carte = new List<Carta>();
 
             Scarti = new List<Carta>();
+            var rnd = new Random();
+            Retro = (EnumRetro)Math.Round(rnd.NextDouble(), 0);
 
             for (int j = 0; j < numMazzi; j++)
             {
@@ -32,7 +40,7 @@ namespace Classes
 
             if (mischia)
             {
-                var rnd = new Random();
+                rnd = new Random();
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
