@@ -58,15 +58,15 @@ namespace Classes
         {
             GiocataIniziale();
 
-            for (int i = 0;i<Giocatori.Count(); i++)
+            for (int i = 0; i < Giocatori.Count(); i++)
             {
                 GiocataGiocatore(i);
             }
-            while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
-            {
-                Mazziere.Pesca();
-            }
-            TerminaMano();
+            //while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
+            //{
+            //    Mazziere.Pesca();
+            //}
+            //TerminaMano();
             try
             {
                 if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())
@@ -99,8 +99,7 @@ namespace Classes
 
         private void GiocataIniziale()
         {
-            Mazziere.Carte = new List<Carta>();
-            Giocatori.ForEach(q => q.Carte = new List<Carta>());
+            Inizializza();
             Giocatori.ForEach(q => q.Punta());
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
             Mazziere.Pesca();
@@ -165,12 +164,13 @@ namespace Classes
 
             GiocatoriSplit = Giocatori.Where(q => q.GiocatoreSplit != null).ToList();
 
-            Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
         }
 
         public void Inizializza()
         {
-            foreach(Giocatore g in Giocatori)
+            Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
+
+            foreach (Giocatore g in Giocatori)
             {
                 Mazzo.Scarti.AddRange(g.Carte);
                 g.Carte = new List<Carta>();
@@ -211,11 +211,11 @@ namespace Classes
             {
                 IdGiocatoreMano = null;
                 Mazziere.CartaCoperta = false;
-                //while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
-                //{
-                //    Mazziere.Pesca();
-                //}
-                //TerminaMano();
+                while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
+                {
+                    Mazziere.Pesca();
+                }
+                TerminaMano();
             }
         }
 

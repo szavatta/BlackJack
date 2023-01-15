@@ -6,6 +6,9 @@
 
 <div class="text-center p-2">
     <div class="row">
+        <div>
+            <h2>@Model.Nome</h2>
+        </div>
         <div class="col-lg-3 pt-4">
             <div id="scarti" class="w-100 d-none">
                 <img src="" />
@@ -13,13 +16,9 @@
             </div>
         </div>
         <div id="mazziere" class="col-lg-6 p-2">
-            <h2>@Model.Nome</h2>
             <div id="nome-mazziere"></div>
             <div id="cassa-mazziere"></div>
             <div id="carte-mazziere" class="d-flex justify-content-center"></div>
-            <div class="opzioni-mazziere d-flex justify-content-center">
-                <input type='button' value='Nuova mano' class='btnNuovaMano btn btn-info d-none' />
-            </div>
         </div>
         <div class="col-lg-2 offset-lg-1 mb-1 div-partecipa">
             <input type='text' value='' class='txtNomeGiocatore form-control ml-1 d-none' placeholder="Nome giocatore" />
@@ -39,6 +38,7 @@
                     <input type='button' value='Esci' class='btnEsci btn btn-info d-none' />
                     <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
                     <input type='button' value='Split' class='btnSplit btn btn-info d-none' />
+                    <input type='button' value='Nuova mano' class='btnNuovaMano btn btn-info d-none' />
                 </div>
                 <div class="fiches-giocatore d-flex flex-wrap justify-content-center mt-2 d-none">
                     <img src="~/Fiches/1.png" valore="1" />
