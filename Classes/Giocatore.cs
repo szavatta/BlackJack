@@ -101,14 +101,14 @@ namespace Classes
 
         public void Punta()
         {
-            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, 5, Gioco.Mazzo.GetTrueCount());
+            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, 5, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
             if (Gioco.PuntataMassima.HasValue && PuntataCorrente > Gioco.PuntataMassima)
                 PuntataCorrente = Gioco.PuntataMassima.Value;
         }
 
         public Puntata Scelta()
         {
-            return Strategia.Strategy(this, Gioco.Mazziere, Gioco.Mazzo.GetTrueCount());
+            return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
         }
 
         public object Clone()
@@ -118,7 +118,8 @@ namespace Classes
             giocatore.PuntataCorrente = PuntataCorrente;
             return giocatore;
         }
-        public override Carta Pesca(int percMin = 20)
+
+        public override Carta Pesca(int percMin = 20, bool verifica21 = true)
         {
             Carta carta = base.Pesca(percMin);
 
@@ -126,9 +127,11 @@ namespace Classes
                 CanSplit = true;
             else
                 CanSplit = false;
+
+            Strategia.Conta(carta);
             
-            if (Punteggio > 21)
-                Stai();
+            //if (Punteggio > 21 && verifica21)
+            //    Stai();
 
             return carta;
         }

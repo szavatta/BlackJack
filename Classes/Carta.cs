@@ -11,7 +11,6 @@ namespace Classes
         private byte[] _Immagine { get; set; }
         private NumeroCarta _numero { get; set; }
         public int Valore { get; set; }
-        public int Conteggio { get; set; }
         public string NumeroString { get; set; }
         public Carta(NumeroCarta numero, SemeCarta seme)
         {
@@ -19,10 +18,6 @@ namespace Classes
             Seme = seme;
             PathImage = $"Carte/{((int)seme)}-{((int)numero)}.png";
             Nome = this.ToString();
-            if (numero >= NumeroCarta.Due && numero <= NumeroCarta.Sei)
-                Conteggio = 1;
-            else if (numero >= NumeroCarta.Dieci || numero == NumeroCarta.Asso)
-                Conteggio = -1;
         }
 
         public NumeroCarta Numero

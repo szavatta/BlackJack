@@ -24,7 +24,7 @@ namespace Classes
             Gioco = gioco;
         }
 
-        public virtual Carta Pesca(int percMin = 20)
+        public virtual Carta Pesca(int percMin = 20, bool verifica21 = false)
         {
             Carta carta = Gioco.Mazzo.PescaCarta(percMin, Gioco.Mischia);
             Carte.Add(carta);

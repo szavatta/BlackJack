@@ -17,7 +17,7 @@ namespace Classes
         public List<Carta> Scarti { get; set; }
         public EnumRetro Retro { get; set; }
 
-        public void CreaMazzo(int numMazzi = 1, bool mischia = true)
+        public void CreaMazzo(int numMazzi = 1, bool mischia = true, int? random = null)
         {
             Conteggio = 0;
             if (Carte == null)
@@ -40,7 +40,10 @@ namespace Classes
 
             if (mischia)
             {
-                rnd = new Random();
+                if (random == null)
+                    rnd = new Random();
+                else
+                    rnd = new Random(random.Value);
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
@@ -51,17 +54,17 @@ namespace Classes
 
             Carta carta = Carte.FirstOrDefault();
             Carte.RemoveAt(0);
-            Conteggio += carta.Conteggio;
+            //Conteggio += carta.Conteggio;
 
             return carta;
         }
 
-        public int GetTrueCount() => (int)(Conteggio / ((Carte.Count / 52) == 0 ? 1 : (Carte.Count / 52)));
+        //public int GetTrueCount() => (int)(Conteggio / ((Carte.Count / 52) == 0 ? 1 : (Carte.Count / 52)));
 
-        public override string ToString()
-        {
-            return "Conteggio: " + Conteggio;
-        }
+        //public override string ToString()
+        //{
+        //    return "Conteggio: " + Conteggio;
+        //}
     }
 
 }

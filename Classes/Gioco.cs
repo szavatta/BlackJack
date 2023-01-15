@@ -16,7 +16,9 @@ namespace Classes
         public int NumMazziIniziali { get; set; }
         public int PuntataMinima { get; set; }
         public int? PuntataMassima { get; set; }
-        public bool Mischia { get; }
+        public bool Mischia { get; set; }
+        private int? RandomMischiata { get; set; }
+
         public int Giri { get; set; }
         public string Nome { get; set; }
         public string Id { get; set; }
@@ -25,7 +27,7 @@ namespace Classes
         public bool Iniziato { get; set; }
         DateTime DataCreazione { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5, int? puntataMassima = null)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, int puntataMinima = 5, int? puntataMassima = null)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -34,7 +36,8 @@ namespace Classes
             DataCreazione = DateTime.Now;
             Mazzo = new Mazzo();
             Mischia = mischia;
-            Mazzo.CreaMazzo(numMazzi, mischia);
+            RandomMischiata = randomMischiata;
+            Mazzo.CreaMazzo(numMazzi, mischia, randomMischiata);
             PuntataMinima = puntataMinima;
             PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
@@ -62,11 +65,11 @@ namespace Classes
             {
                 GiocataGiocatore(i);
             }
-            //while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
-            //{
-            //    Mazziere.Pesca();
-            //}
-            //TerminaMano();
+            while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
+            {
+                Mazziere.Pesca();
+            }
+            TerminaMano();
             try
             {
                 if (GiocatoriVincenti().Count() + GiocatoriPerdenti().Count() + GiocatoriPari().Count() != Giocatori.Count())

@@ -29,5 +29,12 @@ namespace Classes
         {
             return this.Strategia.Strategy(this);
         }
+
+        public override Carta Pesca(int percMin = 20, bool verifica21 = false)
+        {
+            Carta carta = base.Pesca(percMin, verifica21);
+            Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));
+            return carta;
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Classes
         private int PuntataMinima { get; set; }
         private int? PuntataMassima { get; set; }
         private bool Mischia { get; set; } = true;
+        private int? RandomMischiata { get; set; }
         private int Giri { get; set; }
         private string Nome { get; set; }
 
@@ -59,9 +60,15 @@ namespace Classes
             return this;
         }
 
+        public GiocoBuilder AggiungiMischiataRandom(int? random)
+        {
+            RandomMischiata = random;
+            return this;
+        }
+
         public Gioco build()
         {
-            return new Gioco(NumGiocatori, NumMazziIniziali, Mischia, Nome, PuntataMinima, PuntataMassima);
+            return new Gioco(NumGiocatori, NumMazziIniziali, Mischia, RandomMischiata, Nome, PuntataMinima, PuntataMassima);
         }
 
     }

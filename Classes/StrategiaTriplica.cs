@@ -26,7 +26,6 @@ namespace Classes
                 return giocatore.PuntataCorrente;
         }
 
-
     }
 
     public class StrategiaDuplica : StrategiaGiocatore

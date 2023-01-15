@@ -57,7 +57,7 @@ namespace BlackJack.Controllers
 
             SetSessionGioco(gioco);
 
-            return Json(new { gioco = JsonConvert.SerializeObject(gioco), trueCount = gioco.Mazzo.GetTrueCount() });
+            return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
         }
 
 

@@ -43,7 +43,7 @@
                 },
                 success: function (risultato) {
                     let partita = JSON.parse(risultato.gioco);
-                    DisegnaTavolo(partita, risultato.trueCount);
+                    DisegnaTavolo(partita);
                     $("#txNumGiri").val("");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -54,10 +54,10 @@
 
     })
 
-    function DisegnaTavolo(partita, trueCount) {
+    function DisegnaTavolo(partita) {
         PulisceTavolo();
         $("#nome-mazziere").html(partita.Mazziere.Nome + " punti: " + partita.Mazziere.Punteggio);
-        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - True Count: " + trueCount + " - Giri: " + partita.Giri);
+        $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta) {
             $("#carte-mazziere").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero  + ".png'></div>");
         })

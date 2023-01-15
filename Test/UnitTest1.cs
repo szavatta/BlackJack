@@ -63,7 +63,7 @@ namespace Test
                 TestContext.WriteLine("]");
 
                 TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
-                TestContext.WriteLine($"truecount: {gioco.Mazzo.GetTrueCount()}");
+                //TestContext.WriteLine($"truecount: {gioco.Mazzo.GetTrueCount()}");
 
             }
 
@@ -238,12 +238,17 @@ namespace Test
         [Test]
         public void TestConteggio()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(1).build();
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiNumeroGiocatori(0)
+                .AggiungiMazzi(1)
+                .AggiungiMischiataRandom(1)
+                .build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio()).build());
             for (int i = 0; i < 52; i++)
             {
-                gioco.Giocatori[0].Pesca(0);
+                gioco.Giocatori[0].Pesca(0, verifica21: false);
             }
-            Assert.AreEqual(0, gioco.Mazzo.Conteggio);
+            Assert.AreEqual(0, gioco.Giocatori[0].Strategia.Conteggio);
         }
 
         [Test]
@@ -343,16 +348,16 @@ namespace Test
         [Test]
         public void TestCount()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(1).AggiungiMischiata(false).build();
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(5).AggiungiMazzi(1).AggiungiMischiata(false).build();
             
-            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio()).build());
 
             gioco.Giocata();
-            Assert.AreEqual(4, gioco.Mazzo.Conteggio);
+            Assert.AreEqual(4, gioco.Giocatori[0].Strategia.Conteggio);
             gioco.Giocata();
-            Assert.AreEqual(2, gioco.Mazzo.Conteggio);
+            Assert.AreEqual(2, gioco.Giocatori[0].Strategia.Conteggio);
             gioco.Giocata();
-            Assert.AreEqual(2, gioco.Mazzo.Conteggio);
+            Assert.AreEqual(2, gioco.Giocatori[0].Strategia.Conteggio);
         }
 
         [Test]
