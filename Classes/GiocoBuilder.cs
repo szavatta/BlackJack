@@ -9,6 +9,7 @@ namespace Classes
         private int NumGiocatori { get; set; }
         private int NumMazziIniziali { get; set; }
         private int PuntataMinima { get; set; }
+        private int? PuntataMassima { get; set; }
         private bool Mischia { get; set; } = true;
         private int Giri { get; set; }
         private string Nome { get; set; }
@@ -21,7 +22,6 @@ namespace Classes
         {
             return new GiocoBuilder();
         }
-
 
         public GiocoBuilder AggiungiNumeroGiocatori(int numGiocatori)
         {
@@ -41,6 +41,12 @@ namespace Classes
             return this;
         }
 
+        public GiocoBuilder AggiungiPuntataMassima(int puntataMassima)
+        {
+            PuntataMassima = puntataMassima;
+            return this;
+        }
+
         public GiocoBuilder AggiungiMischiata(bool mischia)
         {
             Mischia = mischia;
@@ -55,7 +61,7 @@ namespace Classes
 
         public Gioco build()
         {
-            return new Gioco(NumGiocatori, NumMazziIniziali, Mischia, Nome, PuntataMinima);
+            return new Gioco(NumGiocatori, NumMazziIniziali, Mischia, Nome, PuntataMinima, PuntataMassima);
         }
 
     }

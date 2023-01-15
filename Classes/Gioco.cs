@@ -15,6 +15,7 @@ namespace Classes
         public Mazziere Mazziere { get; set; }
         public int NumMazziIniziali { get; set; }
         public int PuntataMinima { get; set; }
+        public int? PuntataMassima { get; set; }
         public bool Mischia { get; }
         public int Giri { get; set; }
         public string Nome { get; set; }
@@ -24,7 +25,7 @@ namespace Classes
         public bool Iniziato { get; set; }
         DateTime DataCreazione { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, string nome = null, int puntataMinima = 5, int? puntataMassima = null)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -35,6 +36,7 @@ namespace Classes
             Mischia = mischia;
             Mazzo.CreaMazzo(numMazzi, mischia);
             PuntataMinima = puntataMinima;
+            PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
             if (string.IsNullOrEmpty(nome))
                 Nome = "Partita";

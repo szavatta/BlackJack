@@ -95,12 +95,16 @@ namespace Test
         }
 
         [Test]
-        public void TestGiocateTriplica()
+        public void TestGiocateRaddoppio()
         {
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
             int totale = 0;
-            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(6).AggiungiPuntataMinima(20).build();
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiMazzi(6)
+                .AggiungiPuntataMinima(5)
+                .AggiungiPuntataMassima(2000)
+                .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaTriplica()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaDuplica()).build());
@@ -112,7 +116,7 @@ namespace Test
             int perseconsecutive2 = 0;
             int perseconsecutivemax2 = 0;
 
-            int mani = 10;
+            int mani = 100;
             for (int i = 0; i < mani; i++)
             {
                 gioco.Giocata();
@@ -154,10 +158,11 @@ namespace Test
             }
 
             TestContext.WriteLine($"Mani: {gioco.Giri}");
-            TestContext.WriteLine($"Vincita giocatore 1: {gioco.Giocatori[0].SoldiTotali}");
+            TestContext.WriteLine($"Puntata massima: {gioco.PuntataMassima}");
+            TestContext.WriteLine($"Vincita giocatore Triplica: {gioco.Giocatori[0].SoldiTotali}");
             TestContext.WriteLine($"Puntata massima: {puntatamassima}");
             TestContext.WriteLine($"Perdite consecutive: {perseconsecutivemax}");
-            TestContext.WriteLine($"Vincita giocatore 2: {gioco.Giocatori[1].SoldiTotali}");
+            TestContext.WriteLine($"Vincita giocatore Raddoppio: {gioco.Giocatori[1].SoldiTotali}");
             TestContext.WriteLine($"Puntata massima: {puntatamassima2}");
             TestContext.WriteLine($"Perdite consecutive: {perseconsecutivemax2}");
             TestContext.WriteLine($"Vincita giocatore 3: {gioco.Giocatori[2].SoldiTotali}");

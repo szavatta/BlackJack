@@ -101,7 +101,9 @@ namespace Classes
 
         public void Punta()
         {
-            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, 50, Gioco.Mazzo.GetTrueCount());
+            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, 5, Gioco.Mazzo.GetTrueCount());
+            if (Gioco.PuntataMassima.HasValue && PuntataCorrente > Gioco.PuntataMassima)
+                PuntataCorrente = Gioco.PuntataMassima.Value;
         }
 
         public Puntata Scelta()
