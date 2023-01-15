@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Classes\Classes.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Fiches\" />
-  </ItemGroup>
-
 </Project>

@@ -116,7 +116,7 @@ namespace Test
             int perseconsecutive2 = 0;
             int perseconsecutivemax2 = 0;
 
-            int mani = 100;
+            int mani = 1000;
             for (int i = 0; i < mani; i++)
             {
                 gioco.Giocata();

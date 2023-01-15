@@ -108,3 +108,8 @@ body {
 .sormonta {
     position: absolute;
 }
+
+.fiches-giocatore img {
+    cursor: pointer;
+    width: 50px;
+}
