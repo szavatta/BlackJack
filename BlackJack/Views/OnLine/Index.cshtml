@@ -3,13 +3,12 @@
 }
 
 @Html.Hidden("stato", 0)
-@Html.Hidden("carta-mazziere")
 
 <div class="text-center p-2">
     <div class="row">
-        <div class="col-4 carte-mazziere">
+        <div class="col-4 d-flex flex-wrap justify-content-center carte-mazziere">
         </div>
-        <div class="col-4 carte-mie">
+        <div class="col-4 d-flex flex-wrap justify-content-center carte-mie">
         </div>
         <div class="col-4">
         </div>
@@ -28,9 +27,9 @@
 
         <div class="col-12">
             <h3>CARTE MAZZIERE</h3>
-            <div id="sel-carte-mazziere" class="d-flex flex-wrap justify-content-center"></div>
+            <div class="d-flex flex-wrap justify-content-center sel-carte-mazziere"></div>
             <h3>CARTE MIE</h3>
-            <div id="sel-carte-mie" class="d-flex flex-wrap justify-content-center"></div>
+            <div class="d-flex flex-wrap justify-content-center sel-carte-mie"></div>
 
         </div>
     </div>
@@ -51,8 +50,11 @@
             Operazione();
 
             let valore = $(this).attr("valore");
-            if ($("#stato").val()) {
-                $("#carta-mazziere").val(valore);
+
+            if ($(this).parent().hasClass("sel-carte-mazziere")) {
+                $(".carte-mazziere").append($(this).clone());
+            } else {
+                $(".carte-mie").append($(this).clone());
             }
 
             $.ajax({
@@ -72,7 +74,8 @@
         });
 
         $(document).on("click", "#btnNuovaMano", function () {
-            $("#carta-mazziere").val("");
+            $("#carte-mazziere").val("");
+            $("#carte-mie").val("");
             $("#stato").html(0);
             Operazione();
         });
@@ -86,12 +89,12 @@
 
     function DisegnaTavolo() {
         for (var i = 1; i <= 13; i++) {
-            $("#sel-carte-mazziere")
+            $(".sel-carte-mazziere")
                 .append("<div class='carta' valore='" + i + "'><img src='/Carte/1-" + i + ".png'></div>");
         }
 
         for (var i = 1; i <= 13; i++) {
-            $("#sel-carte-mie")
+            $(".sel-carte-mie")
                 .append("<div class='carta' valore='" + i + "'><img src='/Carte/3-" + i + ".png'></div>");
         }
     }
@@ -117,7 +120,12 @@
             type: "POST",
             url: "/OnLine/GetPuntata",
             data: {
-                cartaMazziere: $("#carta-mazziere").val()
+                cartaMazziere: $(".carte-mazziere .carta").map(function() {
+                    return $(this).attr("valore")
+                }).get(),
+                cartaMie: $(".carte-mie .carta").map(function() {
+                    return $(this).attr("valore")
+                }).get()
             },
             success: function (operazione) {
                 $("#operazione").html(operazione);
@@ -133,7 +141,12 @@
             type: "POST",
             url: "/OnLine/TipoOperazione",
             data: {
-                cartaMazziere: $("#carta-mazziere").val()
+                carteMazziere: $(".carte-mazziere .carta").map(function() {
+                    return $(this).attr("valore")
+                }).get(),
+                carteMie: $(".carte-mie .carta").map(function() {
+                    return $(this).attr("valore")
+                }).get()
             },
             success: function (operazione) {
                 $("#operazione").html(operazione);

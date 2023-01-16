@@ -22,15 +22,19 @@ namespace BlackJack.Controllers
             return Json(punteggio);
         }
 
-        public JsonResult TipoOperazione(int valore)
+        public JsonResult TipoOperazione(List<int> carteMazziere, List<int> carteMie, int conteggio)
         {
             Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new StrategiaConteggio()).build();
-            int conteggio = giocatore.Strategia.Conta(new Carta((Carta.NumeroCarta)valore, Carta.SemeCarta.Cuori));
+            carteMie.ForEach(q => giocatore.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Quadri)));
+            Mazziere mazziere = new Mazziere(null);
+            carteMazziere.ForEach(q => mazziere.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Picche)));
 
-            return Json(conteggio);
+            var puntata = giocatore.Strategia.Strategy(giocatore, mazziere, conteggio);
+
+            return Json(puntata);
         }
 
-        public JsonResult GetPuntata(int cartaMazziere, List<int> carteMie, int conteggio)
+        public JsonResult GetPuntata(List<int> cartaMazziere, List<int> carteMie, int conteggio)
         {
             Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new StrategiaConteggio()).build();
             foreach(int numcarta in carteMie)
@@ -38,7 +42,7 @@ namespace BlackJack.Controllers
                 giocatore.Carte.Add(new Carta((Carta.NumeroCarta)numcarta, Carta.SemeCarta.Cuori));
             }
             Mazziere mazziere = new Mazziere(null);
-            mazziere.Carte.Add(new Carta((Carta.NumeroCarta)cartaMazziere, Carta.SemeCarta.Picche));
+            mazziere.Carte.Add(new Carta((Carta.NumeroCarta)cartaMazziere.FirstOrDefault(), Carta.SemeCarta.Picche));
 
             Giocatore.Puntata puntata = giocatore.Strategia.Strategy(giocatore, mazziere, conteggio);
 
