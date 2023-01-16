@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Test Count";
+}
+
+@Html.Hidden("stato", 0)
+@Html.Hidden("carta-mazziere")
+
+<div class="text-center p-2">
+    <div class="row">
+        <div class="col-4 carte-mazziere">
+        </div>
+        <div class="col-4 carte-mie">
+        </div>
+        <div class="col-4">
+        </div>
+
+        <div class="col-4">
+            <h3>Conteggio: <span id="conteggio">0</span></h3>
+            <h3>Numero carte: <span id="numcarte">0</span></h3>
+        </div>
+        <div class="col-4 text-danger">
+            <h3><span id="operazione"></span></h3>
+        </div>
+        <div class="col-4">
+            <input type='button' id="btnNuovaMano" value='Nuova mano' class='btn btn-info' />
+            <input type='button' id="btnCambioMazzo" value='Cambio mazzo' class='btn btn-info' />
+        </div>
+
+        <div class="col-12">
+            <h3>CARTE MAZZIERE</h3>
+            <div id="sel-carte-mazziere" class="d-flex flex-wrap justify-content-center"></div>
+            <h3>CARTE MIE</h3>
+            <div id="sel-carte-mie" class="d-flex flex-wrap justify-content-center"></div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        Operazione();
+        DisegnaTavolo();
+
+        $(document).on("click", ".carta", function () {
+
+            var c = parseInt($("#numcarte").html());
+            $("#numcarte").html(c + 1);
+
+            $("#stato").val(parseInt($("#stato").val()) + 1);
+            Operazione();
+
+            let valore = $(this).attr("valore");
+            if ($("#stato").val()) {
+                $("#carta-mazziere").val(valore);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/OnLine/GetPunteggioCarta",
+                data: {
+                    valore: valore
+                },
+                success: function (conteggio) {
+                    var c = parseInt($("#conteggio").html());
+                    $("#conteggio").html(c += conteggio);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
+
+        $(document).on("click", "#btnNuovaMano", function () {
+            $("#carta-mazziere").val("");
+            $("#stato").html(0);
+            Operazione();
+        });
+
+        $(document).on("click", "#btnCambioMazzo", function () {
+            $("#conteggio").html(0);
+            $("#numcarte").html(0);
+        });
+
+    })
+
+    function DisegnaTavolo() {
+        for (var i = 1; i <= 13; i++) {
+            $("#sel-carte-mazziere")
+                .append("<div class='carta' valore='" + i + "'><img src='/Carte/1-" + i + ".png'></div>");
+        }
+
+        for (var i = 1; i <= 13; i++) {
+            $("#sel-carte-mie")
+                .append("<div class='carta' valore='" + i + "'><img src='/Carte/3-" + i + ".png'></div>");
+        }
+    }
+
+    function Operazione() {
+        if ($("#stato").val() == 1) {
+            //puntata
+        } else if ($("#stato").val() == 1) {
+            $("#operazione").html("Seleziona 1. carta mazziere");
+        } else if ($("#stato").val() == 2) {
+            $("#operazione").html("Seleziona 1. carta tua");
+        } else if ($("#stato").val() == 3) {
+            $("#operazione").html("Seleziona 2. carta mazziere");
+        } else if ($("#stato").val() == 4) {
+            $("#operazione").html("Seleziona 2. carta tua");
+        } else if ($("#stato").val() == 4) {
+            $("#operazione").html(TipoOperazione());
+        }
+    }
+
+    function GetPuntata() {
+        $.ajax({
+            type: "POST",
+            url: "/OnLine/GetPuntata",
+            data: {
+                cartaMazziere: $("#carta-mazziere").val()
+            },
+            success: function (operazione) {
+                $("#operazione").html(operazione);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+    }
+
+    function TipoOperazione() {
+        $.ajax({
+            type: "POST",
+            url: "/OnLine/TipoOperazione",
+            data: {
+                cartaMazziere: $("#carta-mazziere").val()
+            },
+            success: function (operazione) {
+                $("#operazione").html(operazione);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+    }
+
+</script>
