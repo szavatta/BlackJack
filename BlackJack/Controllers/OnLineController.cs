@@ -24,19 +24,19 @@ namespace BlackJack.Controllers
 
         public JsonResult TipoOperazione(List<int> carteMazziere, List<int> carteMie, int conteggio)
         {
-            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new StrategiaConteggio()).build();
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
             carteMie.ForEach(q => giocatore.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Quadri)));
             Mazziere mazziere = new Mazziere(null);
             carteMazziere.ForEach(q => mazziere.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Picche)));
 
             var puntata = giocatore.Strategia.Strategy(giocatore, mazziere, conteggio);
 
-            return Json(puntata);
+            return Json(Enum.GetName(typeof(Giocatore.Puntata), puntata));
         }
 
         public JsonResult GetPuntata(List<int> cartaMazziere, List<int> carteMie, int conteggio)
         {
-            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new StrategiaConteggio()).build();
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
             foreach(int numcarta in carteMie)
             {
                 giocatore.Carte.Add(new Carta((Carta.NumeroCarta)numcarta, Carta.SemeCarta.Cuori));
