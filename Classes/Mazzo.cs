@@ -47,10 +47,10 @@ namespace Classes
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
-        public Carta PescaCarta(bool mischia = true, int? percMischiata = 20)
+        public Carta PescaCarta(bool mischia = true, int? percMischiata = 20, int? randomMischiata = null)
         {
             if (Carte.Count <= Carte.Count * percMischiata / 100)
-                CreaMazzo(mischia:mischia);
+                CreaMazzo(mischia: mischia, random: randomMischiata);
 
             Carta carta = Carte.FirstOrDefault();
             Carte.RemoveAt(0);

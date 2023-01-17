@@ -16,6 +16,7 @@ namespace Classes
         public int PuntataCorrente { get; set; }
         public double SoldiTotali { get; set; }
         public int Punteggio => CalcolaPunteggio();
+        public int ManiSballate { get; set; }
 
 
         public GiocatoreSemplice(Gioco gioco)
@@ -26,9 +27,11 @@ namespace Classes
 
         public virtual Carta Pesca(bool verifica21 = false)
         {
-            Carta carta = Gioco.Mazzo.PescaCarta(Gioco.Mischia);
+            Carta carta = Gioco.Mazzo.PescaCarta(Gioco.Mischia, Gioco.PercMischiata, Gioco.RandomMischiata);
             Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));
             Carte.Add(carta);
+            if (Punteggio > 21)
+                ManiSballate += 1;
 
             return carta;
         }
@@ -44,20 +47,6 @@ namespace Classes
             }
 
             return punt11;
-        }
-
-        public int CalcolaPunteggioOld()
-        {
-            List<Carta> carte2 = new List<Carta>(Carte);
-            int punt11 = carte2.Select(q => q.Valore).Sum();
-            if (punt11 > 21)
-            {
-                var res= carte2.Select(q => q.Valore).Sum();
-                res -= carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() * 10;
-                return res;
-            }
-            else
-                return punt11;
         }
 
         public enum Puntata

@@ -22,7 +22,9 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
+                //.AggiungiMischiataRandom(10)
                 .AggiungiPuntataMinima(5)
+                .AggiungiPercentualeMischiata(20)
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
@@ -42,10 +44,11 @@ namespace Test
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
-
-            for (int i = 0; i < 10000; i++)
+            string a = "";
+            for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
+                a += gioco.Giocatori[0].SoldiTotali + "\n";
 
                 //TestContext.Write("vincente: [ ");
                 //foreach (var vincente in gioco.GiocatoriVincenti())
@@ -74,10 +77,20 @@ namespace Test
             }
 
             TestContext.WriteLine($"Mani: {gioco.Giri}");
-            TestContext.WriteLine($"Puntata massima: {gioco.PuntataMassima}");
-            TestContext.WriteLine($"Vincita BasicStrategy: {gioco.Giocatori[0].SoldiTotali}");
-            TestContext.WriteLine($"Vincita StrategiaConteggio: {gioco.Giocatori[1].SoldiTotali}");
-            TestContext.WriteLine($"Vincita SempliceStrategiaGiocatore: {gioco.Giocatori[2].SoldiTotali}");
+
+            TestContext.WriteLine("Mazziere");
+            TestContext.WriteLine($"   Vincita totale: {gioco.Mazziere.SoldiTotali}");
+            TestContext.WriteLine($"   Mani sballate: {gioco.Mazziere.ManiSballate}");
+
+            foreach (Giocatore giocatore in gioco.Giocatori)
+            {
+                TestContext.WriteLine(giocatore.Strategia.ToString());
+                TestContext.WriteLine($"   Vincita totale: {giocatore.SoldiTotali}");
+                TestContext.WriteLine($"   Mani vinte: {giocatore.ManiVinte}");
+                TestContext.WriteLine($"   Mani perse: {giocatore.ManiPerse}");
+                TestContext.WriteLine($"   Mani sballate: {giocatore.ManiSballate}");
+            }
+
         }
 
         [Test]

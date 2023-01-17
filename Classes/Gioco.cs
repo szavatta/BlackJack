@@ -17,8 +17,8 @@ namespace Classes
         public int PuntataMinima { get; set; }
         public int? PuntataMassima { get; set; }
         public bool Mischia { get; set; }
-        private int? RandomMischiata { get; set; }
-        private int? PercMischiata { get; set; }
+        public int? RandomMischiata { get; set; }
+        public int? PercMischiata { get; set; }
 
         public int Giri { get; set; }
         public string Nome { get; set; }
@@ -81,7 +81,6 @@ namespace Classes
             {
                 throw ex;
             }
-            Giri++;
         }
 
         private void GiocataGiocatore(int i)
