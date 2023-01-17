@@ -22,9 +22,9 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(10)
+                .AggiungiMischiataRandom(10)
                 .AggiungiPuntataMinima(5)
-                .AggiungiPercentualeMischiata(20)
+                .AggiungiPercentualeMischiata(50)
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
@@ -45,10 +45,24 @@ namespace Test
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
             string a = "";
+            List<double> max = new List<double> { 0,0,0,0,0,0 };
+            List<double> min = new List<double> { 0, 0, 0,0,0,0 };
+            double max0 = 0;
+            double max1 = 0;
+            double max2 = 0;
+            double min0 = 0;
+            double min1 = 0;
+            double min2 = 0;
             for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
                 a += gioco.Giocatori[0].SoldiTotali + "\n";
+
+                for (int x = 0; x < gioco.Giocatori.Count; x++)
+                {
+                    if (gioco.Giocatori[x].SoldiTotali > max[x]) max[x] = gioco.Giocatori[x].SoldiTotali;
+                    if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
+                }
 
                 //TestContext.Write("vincente: [ ");
                 //foreach (var vincente in gioco.GiocatoriVincenti())
@@ -79,16 +93,18 @@ namespace Test
             TestContext.WriteLine($"Mani: {gioco.Giri}");
 
             TestContext.WriteLine("Mazziere");
-            TestContext.WriteLine($"   Vincita totale: {gioco.Mazziere.SoldiTotali}");
+            TestContext.WriteLine($"   Vincita finale: {gioco.Mazziere.SoldiTotali}");
             TestContext.WriteLine($"   Mani sballate: {gioco.Mazziere.ManiSballate}");
 
-            foreach (Giocatore giocatore in gioco.Giocatori)
+            for (int x = 0; x < gioco.Giocatori.Count; x++)
             {
-                TestContext.WriteLine(giocatore.Strategia.ToString());
-                TestContext.WriteLine($"   Vincita totale: {giocatore.SoldiTotali}");
-                TestContext.WriteLine($"   Mani vinte: {giocatore.ManiVinte}");
-                TestContext.WriteLine($"   Mani perse: {giocatore.ManiPerse}");
-                TestContext.WriteLine($"   Mani sballate: {giocatore.ManiSballate}");
+                TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString());
+                TestContext.WriteLine($"   Vincita finale: {gioco.Giocatori[x].SoldiTotali}");
+                TestContext.WriteLine($"   Mani vinte: {gioco.Giocatori[x].ManiVinte}");
+                TestContext.WriteLine($"   Mani perse: {gioco.Giocatori[x].ManiPerse}");
+                TestContext.WriteLine($"   Mani sballate: {gioco.Giocatori[x].ManiSballate}");
+                TestContext.WriteLine($"   Vincita massima: {max[x]}");
+                TestContext.WriteLine($"   Vincita minima: {min[x]}");
             }
 
         }
