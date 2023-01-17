@@ -119,7 +119,7 @@ namespace Classes
             return giocatore;
         }
 
-        public override Carta Pesca(bool verifica21 = true)
+        public override Carta Pesca()
         {
             Carta carta = base.Pesca();
 

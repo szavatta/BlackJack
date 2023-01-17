@@ -13,6 +13,7 @@ namespace Classes
         public List<Giocatore> Giocatori { get; set; }
         public Mazzo Mazzo { get; set; }
         public Mazziere Mazziere { get; set; }
+
         public int NumMazziIniziali { get; set; }
         public int PuntataMinima { get; set; }
         public int? PuntataMassima { get; set; }

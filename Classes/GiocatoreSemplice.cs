@@ -25,7 +25,7 @@ namespace Classes
             Gioco = gioco;
         }
 
-        public virtual Carta Pesca(bool verifica21 = false)
+        public virtual Carta Pesca()
         {
             Carta carta = Gioco.Mazzo.PescaCarta(Gioco.Mischia, Gioco.PercMischiata, Gioco.RandomMischiata);
             Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));

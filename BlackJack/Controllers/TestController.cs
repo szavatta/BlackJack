@@ -31,14 +31,25 @@ namespace BlackJack.Controllers
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
 
             gioco.Mazziere.SoldiTotali = 100;
-            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
-            gioco.Giocatori.Add(new Giocatore(gioco, new BasicStrategy(), soldi: 100));
 
-            gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio(), soldi: 100));
-            gioco.Giocatori.Add(new Giocatore(gioco, new StrategiaConteggio(), soldi: 100));
+            Giocatore BasicStrategy = GiocatoreBuilder.Init().AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategy()).AggiungiSoldi(100).build();
 
-            gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore(), soldi: 100));
-            gioco.Giocatori.Add(new Giocatore(gioco, new SempliceStrategiaGiocatore(), soldi: 100));
+            Giocatore StrategiaConteggio = GiocatoreBuilder.Init().AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio()).AggiungiSoldi(100).build();
+
+            Giocatore SempliceStrategiaGiocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco)
+                .AggiungiStrategia(new SempliceStrategiaGiocatore()).AggiungiSoldi(100).build();
+
+
+            gioco.Giocatori.Add(BasicStrategy);
+            gioco.Giocatori.Add(BasicStrategy);
+
+            gioco.Giocatori.Add(StrategiaConteggio);
+            gioco.Giocatori.Add(StrategiaConteggio);
+
+            gioco.Giocatori.Add(SempliceStrategiaGiocatore);
+            gioco.Giocatori.Add(SempliceStrategiaGiocatore);
 
             SetSessionGioco(gioco);
 
