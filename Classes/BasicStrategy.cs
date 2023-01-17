@@ -121,5 +121,16 @@ namespace Classes
                 return puntataBase * 5;
         }
 
+        public override int Conta(Carta carta)
+        {
+            if (carta.Numero >= Carta.NumeroCarta.Due && carta.Numero <= Carta.NumeroCarta.Sei)
+                Conteggio += 1;
+            else if (carta.Numero >= Carta.NumeroCarta.Dieci || carta.Numero == Carta.NumeroCarta.Asso)
+                Conteggio -= 1;
+
+            return Conteggio;
+        }
+
+
     }
 }

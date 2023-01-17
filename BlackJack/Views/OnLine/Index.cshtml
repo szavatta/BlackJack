@@ -17,7 +17,7 @@
             <h3>Conteggio: <span id="conteggio">0</span></h3>
             <h3>Numero carte: <span id="numcarte">0</span></h3>
         </div>
-        <div class="col-4 text-danger">
+        <div class="col-4 text-danger div-operazione">
             <h3><span id="operazione"></span></h3>
         </div>
         <div class="col-4">
@@ -30,6 +30,8 @@
             <div class="d-flex flex-wrap justify-content-center sel-carte-mazziere"></div>
             <h3>CARTE MIE</h3>
             <div class="d-flex flex-wrap justify-content-center sel-carte-mie"></div>
+            <h3>CARTE ALTRI GIOCATORI</h3>
+            <div class="d-flex flex-wrap justify-content-center sel-carte-altri"></div>
 
         </div>
     </div>
@@ -43,10 +45,15 @@
 
         $(document).on("click", ".carta", function () {
 
+            if ($("#stato").val() == 0) {
+                return;
+            }
             var c = parseInt($("#numcarte").html());
             $("#numcarte").html(c + 1);
 
-            $("#stato").val(parseInt($("#stato").val()) + 1);
+            if ($(".carte-mazziere .carta").length >= 2) {
+                $("#stato").val(2);
+            }
             Operazione();
 
             let valore = $(this).attr("valore");
@@ -76,7 +83,7 @@
         $(document).on("click", "#btnNuovaMano", function () {
             $("#carte-mazziere").val("");
             $("#carte-mie").val("");
-            $("#stato").html(0);
+            $("#stato").val(0);
             Operazione();
         });
 
@@ -84,6 +91,15 @@
             $("#conteggio").html(0);
             $("#numcarte").html(0);
         });
+
+        $(document).on("click", ".div-operazione", function () {
+            if ($("#stato").val() != 0) {
+                return;
+            }
+            $("#stato").val(1);
+            Operazione();
+        });
+
 
     })
 
@@ -97,21 +113,21 @@
             $(".sel-carte-mie")
                 .append("<div class='carta' valore='" + i + "'><img src='/Carte/3-" + i + ".png'></div>");
         }
+
+        for (var i = 1; i <= 13; i++) {
+            $(".sel-carte-altri")
+                .append("<div class='carta' valore='" + i + "'><img src='/Carte/2-" + i + ".png'></div>");
+        }
+
     }
 
     function Operazione() {
-        if ($("#stato").val() == 1) {
-            //puntata
+        if ($("#stato").val() == 0) {
+            GetPuntata();
         } else if ($("#stato").val() == 1) {
-            $("#operazione").html("Seleziona 1. carta mazziere");
+            $("#operazione").html("Seleziona carta");
         } else if ($("#stato").val() == 2) {
-            $("#operazione").html("Seleziona 1. carta tua");
-        } else if ($("#stato").val() == 3) {
-            $("#operazione").html("Seleziona 2. carta mazziere");
-        } else if ($("#stato").val() == 4) {
-            $("#operazione").html("Seleziona 2. carta tua");
-        } else if ($("#stato").val() == 4) {
-            $("#operazione").html(TipoOperazione());
+            GetOperazione();
         }
     }
 
@@ -128,7 +144,7 @@
                 }).get()
             },
             success: function (operazione) {
-                $("#operazione").html(operazione);
+                $("#operazione").html("Punta " + operazione);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
@@ -136,10 +152,10 @@
         });
     }
 
-    function TipoOperazione() {
+    function GetOperazione() {
         $.ajax({
             type: "POST",
-            url: "/OnLine/TipoOperazione",
+            url: "/OnLine/GetOperazione",
             data: {
                 carteMazziere: $(".carte-mazziere .carta").map(function() {
                     return $(this).attr("valore")

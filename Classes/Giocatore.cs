@@ -119,17 +119,15 @@ namespace Classes
             return giocatore;
         }
 
-        public override Carta Pesca(int percMin = 20, bool verifica21 = true)
+        public override Carta Pesca(bool verifica21 = true)
         {
-            Carta carta = base.Pesca(percMin);
+            Carta carta = base.Pesca();
 
             if (Carte.Count == 2 && Carte[0].Numero == Carte[1].Numero)
                 CanSplit = true;
             else
                 CanSplit = false;
 
-            Strategia.Conta(carta);
-            
             //if (Punteggio > 21 && verifica21)
             //    Stai();
 

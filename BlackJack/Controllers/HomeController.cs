@@ -106,7 +106,6 @@ namespace BlackJack.Controllers
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             giocatore.Pesca();
-
             return Json(JsonGioco(gioco));
         }
 

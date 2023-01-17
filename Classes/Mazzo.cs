@@ -47,9 +47,9 @@ namespace Classes
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
-        public Carta PescaCarta(int percMin = 20, bool mischia=true)
+        public Carta PescaCarta(bool mischia = true, int? percMischiata = 20)
         {
-            if (Carte.Count <= percMin*Carte.Count/100)
+            if (Carte.Count <= Carte.Count * percMischiata / 100)
                 CreaMazzo(mischia:mischia);
 
             Carta carta = Carte.FirstOrDefault();

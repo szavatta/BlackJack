@@ -16,13 +16,13 @@ namespace BlackJack.Controllers
 
         public JsonResult GetPunteggioCarta(int valore)
         {
-            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).build();
             int punteggio = giocatore.Strategia.Conta(new Carta((Carta.NumeroCarta)valore, Carta.SemeCarta.Cuori));
 
             return Json(punteggio);
         }
 
-        public JsonResult TipoOperazione(List<int> carteMazziere, List<int> carteMie, int conteggio)
+        public JsonResult GetOperazione(List<int> carteMazziere, List<int> carteMie, int conteggio)
         {
             Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
             carteMie.ForEach(q => giocatore.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Quadri)));
@@ -34,21 +34,35 @@ namespace BlackJack.Controllers
             return Json(Enum.GetName(typeof(Giocatore.Puntata), puntata));
         }
 
+        //public JsonResult GetOperazione(List<int> cartaMazziere, List<int> carteMie, int conteggio)
+        //{
+        //    Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
+        //    foreach(int numcarta in carteMie)
+        //    {
+        //        giocatore.Carte.Add(new Carta((Carta.NumeroCarta)numcarta, Carta.SemeCarta.Cuori));
+        //    }
+        //    Mazziere mazziere = new Mazziere(null);
+        //    mazziere.Carte.Add(new Carta((Carta.NumeroCarta)cartaMazziere.FirstOrDefault(), Carta.SemeCarta.Picche));
+
+        //    Giocatore.Puntata operazione = giocatore.Strategia.Strategy(giocatore, mazziere, conteggio);
+
+        //    return Json(operazione.ToString());
+        //}
+
         public JsonResult GetPuntata(List<int> cartaMazziere, List<int> carteMie, int conteggio)
         {
             Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
-            foreach(int numcarta in carteMie)
+            foreach (int numcarta in carteMie)
             {
                 giocatore.Carte.Add(new Carta((Carta.NumeroCarta)numcarta, Carta.SemeCarta.Cuori));
             }
             Mazziere mazziere = new Mazziere(null);
             mazziere.Carte.Add(new Carta((Carta.NumeroCarta)cartaMazziere.FirstOrDefault(), Carta.SemeCarta.Picche));
 
-            Giocatore.Puntata puntata = giocatore.Strategia.Strategy(giocatore, mazziere, conteggio);
+            int puntata = giocatore.Strategia.Puntata(giocatore, 1, 1, conteggio);
 
-            return Json(puntata.ToString());
+            return Json(puntata);
         }
-
 
 
     }

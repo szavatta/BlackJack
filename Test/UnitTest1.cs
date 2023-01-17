@@ -18,7 +18,13 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(6).AggiungiMischiata(true).build();
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiNumeroGiocatori(0)
+                .AggiungiMazzi(6)
+                .AggiungiMischiata(true)
+                .AggiungiPuntataMinima(5)
+                .build();
+
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
@@ -41,33 +47,37 @@ namespace Test
             {
                 gioco.Giocata();
 
-                TestContext.Write("vincente: [ ");
-                foreach (var vincente in gioco.GiocatoriVincenti())
-                {
-                    TestContext.Write($"{vincente}, ");
-                }
-                TestContext.WriteLine("]");
+                //TestContext.Write("vincente: [ ");
+                //foreach (var vincente in gioco.GiocatoriVincenti())
+                //{
+                //    TestContext.Write($"{vincente}, ");
+                //}
+                //TestContext.WriteLine("]");
 
-                TestContext.Write("perdente: [ ");
-                foreach (var perdente in gioco.GiocatoriPerdenti())
-                {
-                    TestContext.Write($"{perdente}, ");
-                }
-                TestContext.WriteLine("]");
+                //TestContext.Write("perdente: [ ");
+                //foreach (var perdente in gioco.GiocatoriPerdenti())
+                //{
+                //    TestContext.Write($"{perdente}, ");
+                //}
+                //TestContext.WriteLine("]");
 
-                TestContext.Write("pareggio: [ ");
-                foreach (var pareggio in gioco.GiocatoriPari())
-                {
-                    TestContext.Write($"{pareggio}, ");
-                }
-                TestContext.WriteLine("]");
+                //TestContext.Write("pareggio: [ ");
+                //foreach (var pareggio in gioco.GiocatoriPari())
+                //{
+                //    TestContext.Write($"{pareggio}, ");
+                //}
+                //TestContext.WriteLine("]");
 
-                TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
+                //TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
                 //TestContext.WriteLine($"truecount: {gioco.Mazzo.GetTrueCount()}");
 
             }
 
-            Assert.Pass();
+            TestContext.WriteLine($"Mani: {gioco.Giri}");
+            TestContext.WriteLine($"Puntata massima: {gioco.PuntataMassima}");
+            TestContext.WriteLine($"Vincita BasicStrategy: {gioco.Giocatori[0].SoldiTotali}");
+            TestContext.WriteLine($"Vincita StrategiaConteggio: {gioco.Giocatori[1].SoldiTotali}");
+            TestContext.WriteLine($"Vincita SempliceStrategiaGiocatore: {gioco.Giocatori[2].SoldiTotali}");
         }
 
         [Test]
@@ -246,7 +256,7 @@ namespace Test
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio()).build());
             for (int i = 0; i < 52; i++)
             {
-                gioco.Giocatori[0].Pesca(0, verifica21: false);
+                gioco.Giocatori[0].Pesca();
             }
             Assert.AreEqual(0, gioco.Giocatori[0].Strategia.Conteggio);
         }
