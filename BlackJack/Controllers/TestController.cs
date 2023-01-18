@@ -28,7 +28,14 @@ namespace BlackJack.Controllers
         }
         public IActionResult Index()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiNumeroGiocatori(0)
+                .AggiungiMazzi(6)
+                .AggiungiMischiata(true)
+                .AggiungiMischiataRandom(9)
+                .AggiungiPuntataMinima(5)
+                .AggiungiPercentualeMischiata(50)
+                .build();
 
             gioco.Mazziere.SoldiTotali = 100;
 
@@ -41,15 +48,14 @@ namespace BlackJack.Controllers
             Giocatore SempliceStrategiaGiocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco)
                 .AggiungiStrategia(new SempliceStrategiaGiocatore()).AggiungiSoldi(100).build();
 
-
             gioco.Giocatori.Add(BasicStrategy);
-            gioco.Giocatori.Add(BasicStrategy);
+            //gioco.Giocatori.Add(BasicStrategy);
 
-            gioco.Giocatori.Add(StrategiaConteggio);
-            gioco.Giocatori.Add(StrategiaConteggio);
+            //gioco.Giocatori.Add(StrategiaConteggio);
+            //gioco.Giocatori.Add(StrategiaConteggio);
 
-            gioco.Giocatori.Add(SempliceStrategiaGiocatore);
-            gioco.Giocatori.Add(SempliceStrategiaGiocatore);
+            //gioco.Giocatori.Add(SempliceStrategiaGiocatore);
+            //gioco.Giocatori.Add(SempliceStrategiaGiocatore);
 
             SetSessionGioco(gioco);
 
@@ -84,7 +90,8 @@ namespace BlackJack.Controllers
             var gi = JsonConvert.SerializeObject(gioco, settings);
             HttpContext.Session.SetString("Gioco", gi);
             gioco.Giocatori = giocatori;
-            gioco.Giocatori.AddRange(gioco.GiocatoriSplit);
+
+            //gioco.Giocatori.AddRange(gioco.GiocatoriSplit);
         }
 
         Gioco GetSessionGioco()
@@ -95,19 +102,8 @@ namespace BlackJack.Controllers
             json = HttpContext.Session.GetString("Gioco");
             Gioco gioco = JsonConvert.DeserializeObject<Gioco>(json);
             gioco.Giocatori = giocatori;
-            foreach (Giocatore g in gioco.Giocatori)
-            {
-                g.Gioco = gioco;
-                if (g.TipoStrategia == 0)
-                    g.Strategia = new BasicStrategy();
-                else if (g.TipoStrategia == 1)
-                    g.Strategia = new StrategiaConteggio();
-                else
-                    g.Strategia = new SempliceStrategiaGiocatore();
-            }
-
             gioco.Mazziere.Gioco = gioco;
-
+            gioco.Giocatori.ForEach(q => q.Gioco = gioco);
 
             return gioco;
         }

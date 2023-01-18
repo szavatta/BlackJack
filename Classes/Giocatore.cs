@@ -11,10 +11,9 @@ namespace Classes
     public class Giocatore : GiocatoreSemplice, ICloneable
     {
         public string Id { get; set; }
-        [JsonIgnore]
+        [JsonConverter(typeof(StrategiaConverter))]
         public StrategiaGiocatore Strategia { get; set; }
         public Giocatore GiocatoreSplit { get; set; }
-        public int TipoStrategia { get; set; }
         public EnumRisultato Risultato { get; set; }
         public int ManiVinte { get; set; }
         public int ManiPerse { get; set; }
@@ -27,13 +26,6 @@ namespace Classes
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
             Id = DateTime.Now.Ticks.ToString();
 
-
-            if (strategia is Classes.BasicStrategy)
-                TipoStrategia = 0;
-            else if (strategia is Classes.StrategiaConteggio)
-                TipoStrategia = 1;
-            else 
-                TipoStrategia = 2;
 
             SoldiTotali = soldi;
 
@@ -108,7 +100,10 @@ namespace Classes
 
         public Puntata Scelta()
         {
-            return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
+            if (Carte.Count < 2)
+                return Puntata.Chiama;
+            else
+                return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
         }
 
         public object Clone()
@@ -127,6 +122,8 @@ namespace Classes
                 CanSplit = true;
             else
                 CanSplit = false;
+
+            Strategia.TrueCount = Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count);
 
             //if (Punteggio > 21 && verifica21)
             //    Stai();

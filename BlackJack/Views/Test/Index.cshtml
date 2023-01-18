@@ -68,13 +68,13 @@
             let div = $(".giocatorestamp").clone().removeClass("giocatorestamp d-none").addClass("giocatore");
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
-            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(partita.Giri-giocatore.ManiVinte-giocatore.ManiPerse) * 100 / partita.Giri)+"% - perse: "+ Math.round(giocatore.ManiPerse * 100 / partita.Giri)+"%");
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(partita.Giri - giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%" + " - true count: " + giocatore.Strategia.TrueCount);
             giocatore.Carte.forEach(function (carta) {
                 div.find(".carte-giocatore").append("<div><img src='Carte/" + carta.Seme + "-" + carta.Numero + ".png'></div>");
             })
-            if (giocatore.Risultato == 0) {
+            if (giocatore.Risultato == 1) {
                 div.addClass("back-green");
-            } else if (giocatore.Risultato == 1) {
+            } else if (giocatore.Risultato == 2) {
                 div.addClass("back-red");
             }
             $("#giocatori").append(div);
