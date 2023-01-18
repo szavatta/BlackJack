@@ -132,7 +132,6 @@ namespace BlackJack.Controllers
             gioco.Giocatori[0].Pesca();
             gioco.Giocatori[0].Pesca();
 
-            gioco.Mazzo.Conteggio = (int) (new Random().Next() % 6);
             return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
         }
 

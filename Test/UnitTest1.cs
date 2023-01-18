@@ -22,7 +22,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(10)
+                //.AggiungiMischiataRandom(10)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(50)
                 .build();
@@ -32,15 +32,15 @@ namespace Test
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaConteggio())
-            //    .build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio())
+                .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new SempliceStrategiaGiocatore())
-            //    .build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new SempliceStrategiaGiocatore())
+                .build());
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;

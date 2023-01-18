@@ -22,6 +22,7 @@ namespace Classes
         public int? PercMischiata { get; set; }
 
         public int Giri { get; set; }
+        public int CambiMazzi { get; set; }
         public string Nome { get; set; }
         public string Id { get; set; }
         public List<Giocatore> GiocatoriSplit { get; set; }
@@ -40,10 +41,10 @@ namespace Classes
             Mischia = mischia;
             RandomMischiata = randomMischiata;
             PercMischiata = percMischiata;
-            Mazzo.CreaMazzo(numMazzi, mischia, randomMischiata);
             PuntataMinima = puntataMinima;
             PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
+            Mazzo.CreaMazzo(this);
             if (string.IsNullOrEmpty(nome))
                 Nome = "Partita";
             else
@@ -174,6 +175,9 @@ namespace Classes
         public void Inizializza()
         {
             Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
+
+            if (Mazzo.Carte.Count <= (52 * NumMazziIniziali) * PercMischiata / 100)
+                Mazzo.CreaMazzo(this);
 
             foreach (Giocatore g in Giocatori)
             {

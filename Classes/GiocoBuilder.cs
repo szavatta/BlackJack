@@ -69,7 +69,7 @@ namespace Classes
 
         public GiocoBuilder AggiungiPercentualeMischiata(int? perc)
         {
-            PercMischiata = perc;
+            PercMischiata = perc > 5 ? perc : 5 ;
             return this;
         }
 

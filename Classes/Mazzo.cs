@@ -13,21 +13,20 @@ namespace Classes
             rosso
         }
         public List<Carta> Carte { get; set; }
-        public int Conteggio { get; set; }
         public List<Carta> Scarti { get; set; }
         public EnumRetro Retro { get; set; }
 
-        public void CreaMazzo(int numMazzi = 1, bool mischia = true, int? random = null)
+        public void CreaMazzo(Gioco gioco)
         {
-            Conteggio = 0;
-            if (Carte == null)
-                Carte = new List<Carta>();
-
+            gioco.CambiMazzi++;
+            Carte = new List<Carta>();
             Scarti = new List<Carta>();
+            gioco.Giocatori.ForEach(q => q.Strategia.Conteggio = 0);
+
             var rnd = new Random();
             Retro = (EnumRetro)Math.Round(rnd.NextDouble(), 0);
 
-            for (int j = 0; j < numMazzi; j++)
+            for (int j = 0; j < gioco.NumMazziIniziali; j++)
             {
                 for (int i = 1; i <= 4; i++)
                 {
@@ -38,20 +37,17 @@ namespace Classes
                 }
             }
 
-            if (mischia)
+            if (gioco.Mischia)
             {
-                if (random == null)
+                if (gioco.RandomMischiata == null)
                     rnd = new Random();
                 else
-                    rnd = new Random(random.Value);
+                    rnd = new Random(gioco.RandomMischiata.Value * gioco.CambiMazzi);
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
-        public Carta PescaCarta(bool mischia = true, int? percMischiata = 20, int? randomMischiata = null)
+        public Carta PescaCarta()
         {
-            if (Carte.Count <= Carte.Count * percMischiata / 100)
-                CreaMazzo(mischia: mischia, random: randomMischiata);
-
             Carta carta = Carte.FirstOrDefault();
             Carte.RemoveAt(0);
             //Conteggio += carta.Conteggio;

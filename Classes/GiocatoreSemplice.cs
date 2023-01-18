@@ -27,7 +27,7 @@ namespace Classes
 
         public virtual Carta Pesca()
         {
-            Carta carta = Gioco.Mazzo.PescaCarta(Gioco.Mischia, Gioco.PercMischiata, Gioco.RandomMischiata);
+            Carta carta = Gioco.Mazzo.PescaCarta();
             Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));
             Carte.Add(carta);
             if (Punteggio > 21)
