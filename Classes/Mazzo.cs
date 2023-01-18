@@ -42,7 +42,7 @@ namespace Classes
                 if (gioco.RandomMischiata == null)
                     rnd = new Random();
                 else
-                    rnd = new Random(gioco.RandomMischiata.Value * gioco.CambiMazzi);
+                    rnd = new Random(gioco.RandomMischiata.Value + gioco.CambiMazzi);
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
         }
