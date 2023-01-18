@@ -22,7 +22,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(10)
+                .AggiungiMischiataRandom(10)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(50)
                 .build();
@@ -32,33 +32,27 @@ namespace Test
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new StrategiaConteggio())
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new SempliceStrategiaGiocatore())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new SempliceStrategiaGiocatore())
+            //    .build());
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
             string a = "";
-            List<double> max = new List<double> { 0,0,0,0,0,0 };
-            List<double> min = new List<double> { 0, 0, 0,0,0,0 };
-            double max0 = 0;
-            double max1 = 0;
-            double max2 = 0;
-            double min0 = 0;
-            double min1 = 0;
-            double min2 = 0;
+            List<double> max = new List<double> { 0, 0, 0 };
+            List<double> min = new List<double> { 0, 0, 0 };
             for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
                 a += gioco.Giocatori[0].SoldiTotali + "\n";
 
-                for (int x = 0; x < gioco.Giocatori.Count; x++)
+                for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
                 {
                     if (gioco.Giocatori[x].SoldiTotali > max[x]) max[x] = gioco.Giocatori[x].SoldiTotali;
                     if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
@@ -96,7 +90,7 @@ namespace Test
             TestContext.WriteLine($"   Vincita finale: {gioco.Mazziere.SoldiTotali}");
             TestContext.WriteLine($"   Mani sballate: {gioco.Mazziere.ManiSballate}");
 
-            for (int x = 0; x < gioco.Giocatori.Count; x++)
+            for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
             {
                 TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString());
                 TestContext.WriteLine($"   Vincita finale: {gioco.Giocatori[x].SoldiTotali}");
@@ -104,7 +98,7 @@ namespace Test
                 TestContext.WriteLine($"   Mani perse: {gioco.Giocatori[x].ManiPerse}");
                 TestContext.WriteLine($"   Mani sballate: {gioco.Giocatori[x].ManiSballate}");
                 TestContext.WriteLine($"   Vincita massima: {max[x]}");
-                TestContext.WriteLine($"   Vincita minima: {min[x]}");
+                TestContext.WriteLine($"   Perdita massima: {min[x]}");
             }
 
         }
