@@ -396,7 +396,7 @@ namespace Test
         [Test]
         public void TestSplit()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiMischiata(false).build();
+            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiPuntataMinima(1).AggiungiMischiata(false).build();
             
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new SempliceStrategiaGiocatore()).build());
