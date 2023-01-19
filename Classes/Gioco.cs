@@ -89,6 +89,10 @@ namespace Classes
         {
             if (Giocatori[i].PuntataCorrente > 0)
             {
+                for (int ii = 0; ii < 2 - Giocatori[i].Carte.Count; ii++)
+                {
+                    Giocatori[i].Pesca();
+                }
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
                 {
                     Dividi(i);
