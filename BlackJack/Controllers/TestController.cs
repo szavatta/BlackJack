@@ -21,6 +21,27 @@ namespace BlackJack.Controllers
             return View();
         }
 
+        public IActionResult TestStrategia()
+        {
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiNome("Partita Test")
+                .AggiungiNumeroGiocatori(0)
+                .AggiungiMazzi(6)
+                .build();
+
+            gioco.Id = "test";
+            gioco.Inizializza();
+            Partite.Add(gioco);
+
+            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build();
+            giocatore.Id = "test";
+            HttpContext.Session.SetString("IdGiocatore", giocatore.Id);
+            gioco.Giocatori.Add(giocatore);
+
+            return RedirectToAction("Partita", "Home", new { id = gioco.Id });
+
+            //return View();
+        }
         public IActionResult TestStrategy()
         {
 
@@ -90,8 +111,6 @@ namespace BlackJack.Controllers
             var gi = JsonConvert.SerializeObject(gioco, settings);
             HttpContext.Session.SetString("Gioco", gi);
             gioco.Giocatori = giocatori;
-
-            //gioco.Giocatori.AddRange(gioco.GiocatoriSplit);
         }
 
         Gioco GetSessionGioco()

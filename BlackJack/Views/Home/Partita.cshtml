@@ -60,7 +60,7 @@
     let timer = null;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    let idPartita = urlParams.get('id');
+    let idPartita = location.pathname.split("/").slice(-1)[0];
 
     SetInterval();
 
@@ -82,8 +82,8 @@
                     idGiocatore: idGiocatore,
                     puntata: puntata
                 },
-                success: function (json) {
-                    let partita = JSON.parse(json);
+                success: function (ret) {
+                    let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -104,8 +104,11 @@
                     idGiocatore: idGiocatore,
                     puntata: puntata
                 },
-                success: function (json) {
-                    let partita = JSON.parse(json);
+                success: function (ret) {
+                    if (idPartita == "test" && ret.scelta != "Stai") {
+                        alert("Scelta corretta:" + ret.scelta);
+                    }
+                    let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -126,8 +129,11 @@
                     idGiocatore: idGiocatore,
                     puntata: puntata
                 },
-                success: function (json) {
-                    let partita = JSON.parse(json);
+                success: function (ret) {
+                    if (idPartita == "test" && ret.scelta != "Raddoppia") {
+                        alert("Scelta corretta:" + ret.scelta);
+                    }
+                    let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -169,8 +175,11 @@
                     idGiocatore: idGiocatore,
                     puntata: puntata
                 },
-                success: function (json) {
-                    let partita = JSON.parse(json);
+                success: function (ret) {
+                    if (idPartita == "test" && ret.scelta != "Chiama") {
+                        alert("Scelta corretta:" + ret.scelta);
+                    }
+                    let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -210,8 +219,11 @@
                     id: idPartita,
                     idGiocatore: idGiocatore
                 },
-                success: function (json) {
-                    let partita = JSON.parse(json);
+                success: function (ret) {
+                    if (idPartita == "test" && ret.scelta != "Dividi") {
+                        alert("Scelta corretta:" + ret.scelta);
+                    }
+                    let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

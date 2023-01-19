@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
@@ -83,21 +84,24 @@ namespace BlackJack.Controllers
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            int pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.GetTrueCount(gioco.Mazzo.Carte.Count));
+            int? scelta = pok != puntata ? pok : null;
             giocatore.Punta(puntata);
 
             if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
                 gioco.DistribuisciCarteIniziali();
 
-            return Json(JsonGioco(gioco));
+            return Json(new { gioco = JsonGioco(gioco), puntata = pok });
         }
 
         public JsonResult Stai(string id, string idGiocatore)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            string scelta = giocatore.Scelta().ToString();
             giocatore.Stai();
 
-            return Json(JsonGioco(gioco));
+            return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
         public JsonResult Pesca(string id, string idGiocatore, int puntata)
@@ -105,8 +109,10 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            string scelta = giocatore.Scelta().ToString();
             giocatore.Pesca();
-            return Json(JsonGioco(gioco));
+
+            return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
         public JsonResult Raddoppia(string id, string idGiocatore)
@@ -114,9 +120,10 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            string scelta = giocatore.Scelta().ToString();
             giocatore.Raddoppia().Stai();
 
-            return Json(JsonGioco(gioco));
+            return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
         public JsonResult Esci(string id, string idGiocatore)
@@ -139,10 +146,11 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            string scelta = giocatore.Scelta().ToString();
             giocatore.Split();
             Giocatore gsplit = gioco.Giocatori.SkipWhile(q => q.Id != idGiocatore).Skip(1).FirstOrDefault();
 
-            return Json(new { json = JsonGioco(gioco), idGiocatore = gsplit.Id });
+            return Json(new { gioco = JsonGioco(gioco), idGiocatore = gsplit.Id, scelta = scelta });
         }
 
 

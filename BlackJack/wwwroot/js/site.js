@@ -118,3 +118,7 @@ function showConfirm(_message, _callback, _width, _height, senzaImg) {
 
     $('#dialogConfirm').dialog('open');
 }
+
+function getQueryStringValue(key) {
+    return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+}

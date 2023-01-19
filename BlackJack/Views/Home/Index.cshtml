@@ -27,7 +27,7 @@
                 },
                 success: function (id) {
                     GetPartite();
-                    location.href = "/Home/Partita?id=" + id
+                    location.href = "/Home/Partita/" + id
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -37,7 +37,7 @@
 
         $(document).on("click", ".btnPartita", function () {
             let id = $(this).attr("idPartita");
-            location.href = "/Home/Partita?id=" + id
+            location.href = "/Home/Partita/" + id
         });
 
         GetPartite()
