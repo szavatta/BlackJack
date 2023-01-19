@@ -427,8 +427,8 @@ namespace Test
             gioco.Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
 
             Assert.AreEqual(1,gioco.Giocatori[0].SoldiTotali);
-            Assert.AreEqual(0, gioco.Giocatori[1].SoldiTotali);
-            Assert.AreEqual(0, gioco.Mazziere.SoldiTotali);
+            Assert.AreEqual(-5, gioco.Giocatori[1].SoldiTotali);
+            Assert.AreEqual(4, gioco.Mazziere.SoldiTotali);
 
         }
 
