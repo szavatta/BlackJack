@@ -40,7 +40,7 @@ namespace Classes
             Mazzo = new Mazzo();
             Mischia = mischia;
             RandomMischiata = randomMischiata;
-            PercMischiata = percMischiata;
+            PercMischiata = percMischiata ?? 20;
             PuntataMinima = puntataMinima;
             PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
@@ -136,7 +136,7 @@ namespace Classes
             Giocatori[i].Carte.RemoveAt(0);
             clone.Nome += " split";
             clone.Carte.RemoveAt(1);
-            clone.GiocatoreSplit ??= Giocatori[i];
+            clone.GiocatoreSplit = Giocatori[i].GiocatoreSplit != null ? Giocatori[i].GiocatoreSplit : Giocatori[i];
             clone.SoldiTotali = 0;
             Giocatori.Insert(i + 1, clone);
 

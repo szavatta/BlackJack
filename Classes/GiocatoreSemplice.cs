@@ -58,8 +58,9 @@ namespace Classes
         }
         public override string ToString()
         {
-            return $"Nome: {Nome}, " +
-                    $"Soldi Totali: {SoldiTotali}";
+            return $"Nome: {Nome}" +
+                    $", Soldi Totali: {SoldiTotali}" +
+                    (this is Mazziere ? "" : $", Puntata: {PuntataCorrente}");
         }
 
         public bool HasBlackJack()

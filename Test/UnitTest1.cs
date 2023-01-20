@@ -47,6 +47,7 @@ namespace Test
             string a = "";
             List<double> max = new List<double> { 0, 0, 0 };
             List<double> min = new List<double> { 0, 0, 0 };
+            int maxsplit = 0;
             for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
@@ -57,6 +58,11 @@ namespace Test
                     if (gioco.Giocatori[x].SoldiTotali > max[x]) max[x] = gioco.Giocatori[x].SoldiTotali;
                     if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
                 }
+
+                if (gioco.Giocatori.Count - 1 > maxsplit)
+                    maxsplit = gioco.Giocatori.Count - 1;
+
+                Assert.AreEqual(Math.Abs(gioco.Mazziere.SoldiTotali), Math.Abs(gioco.Giocatori.Where(q => q.GiocatoreSplit == null).Sum(q => q.SoldiTotali)));
 
                 //TestContext.Write("vincente: [ ");
                 //foreach (var vincente in gioco.GiocatoriVincenti())
@@ -100,6 +106,7 @@ namespace Test
                 TestContext.WriteLine($"   Vincita massima: {max[x]}");
                 TestContext.WriteLine($"   Perdita massima: {min[x]}");
             }
+            TestContext.WriteLine($"Max split: {maxsplit}");
 
         }
 
@@ -109,7 +116,10 @@ namespace Test
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
             int totale = 0;
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(10).build();
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiNumeroGiocatori(10)
+                .AggiungiMazzi(6)
+                .build();
 
             for (int i = 0; i < 1000; i++)
             {
@@ -423,6 +433,8 @@ namespace Test
 
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Cuori));
             gioco.Giocata();
+
+            Assert.AreEqual(4, gioco.Giocatori.Count);
 
             gioco.Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
 
