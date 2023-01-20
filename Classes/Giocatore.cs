@@ -88,6 +88,8 @@ namespace Classes
                     break;
                 }
             }
+            Chiama();
+
             return this;
         }
 

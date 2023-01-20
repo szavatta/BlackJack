@@ -282,10 +282,10 @@
 
             if (partita.Mazziere.CartaCoperta == true && index == 1) {
                 $("#carte-mazziere")
-                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='a/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png'></div>");
+                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png'></div>");
             } else {
                 $("#carte-mazziere")
-                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='a/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
+                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
             }
         })
         //if (partita.Mazziere.Punteggio > 21) {
@@ -306,7 +306,7 @@
             giocatore.Carte.forEach(function (carta, index) {
                 let left = index * 50 + 170 - giocatore.Carte.length * 25 + ((div.closest(".giocatore").width() - 400)/2);
                 div.find(".carte-giocatore")
-                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='a/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
+                    .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
             })
             //if (giocatore.Risultato == 0) {
             //    div.addClass("back-green");
@@ -327,7 +327,11 @@
                 }
                 if (giocatore.Id == partita.IdGiocatoreMano) {
                     div.find(".btnStai").removeClass("d-none");
-                    div.find(".btnChiama").removeClass("d-none");
+                    if (giocatore.Punteggio <= 21) {
+                        div.find(".btnChiama").removeClass("d-none");
+                    } else {
+                        div.find(".btnChiama").addClass("d-none");
+                    }
                 } else {
                     div.find(".btnStai").addClass("d-none");
                     div.find(".btnChiama").addClass("d-none");
@@ -394,7 +398,7 @@
         }
 
         if (partita.Mazzo.Scarti.length > 0) {
-            $("#scarti img").attr("src", "a/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png");
+            $("#scarti img").attr("src", "/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png");
             $("#scarti").removeClass("d-none");
             $("#num-scarti").html(partita.Mazzo.Scarti.length + " carte scartate<br>su " + partita.NumMazziIniziali + " mazzi");
         } else {

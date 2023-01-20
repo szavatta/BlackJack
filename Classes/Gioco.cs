@@ -223,6 +223,8 @@ namespace Classes
             if (next != null)
             {
                 IdGiocatoreMano = next.Id;
+                if (next.Carte.Count == 1)
+                    next.Chiama();
             }
             else
             {
