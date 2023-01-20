@@ -35,7 +35,7 @@ $(document).ready(function () {
 
 });
 
-function showLoading(_message, _title, _height) {
+function ShowLoading(_message, _title, _height) {
     $('#dialogLoading p').html(_message);
     $('#dialogLoading div').show();
     if (_title != undefined) {
@@ -49,13 +49,13 @@ function showLoading(_message, _title, _height) {
     }
 }
 
-function closeLoading() {
+function CloseLoading() {
 
     $('#dialogLoading div').hide();
     $('#dialogLoading').dialog('close');
 }
 
-function showMessage(_message, _title, _callback, _width, _height, senzaImg, conChiudi) {
+function ShowMessage(_message, _title, _callback, _width, _height, senzaImg, conChiudi) {
     _messageCallback = _callback;
 
     var img = '<td style="text-align:left;width:50px" valign="top"><img src="/Content/images/information.png" alt="" border="0" /></td>';
@@ -89,7 +89,7 @@ function showMessage(_message, _title, _callback, _width, _height, senzaImg, con
     $('#dialogMessage').dialog('open');
 }
 
-function showConfirm(_message, _callback, _width, _height, senzaImg) {
+function ShowConfirm(_message, _callback, _width, _height, senzaImg) {
     _confirmCallback = _callback;
 
     var img = '<td style="text-align:left;width:50px" valign="top"><img src="/Content/images/question.png" alt="" border="0" /></td>';

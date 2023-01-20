@@ -59,8 +59,8 @@ namespace Test
                     if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
                 }
 
-                if (gioco.Giocatori.Count - 1 > maxsplit)
-                    maxsplit = gioco.Giocatori.Count - 1;
+                if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
+                    maxsplit = gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count();
 
                 Assert.AreEqual(Math.Abs(gioco.Mazziere.SoldiTotali), Math.Abs(gioco.Giocatori.Where(q => q.GiocatoreSplit == null).Sum(q => q.SoldiTotali)));
 
@@ -98,7 +98,7 @@ namespace Test
 
             for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
             {
-                TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString());
+                TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString().Replace("Classes.",""));
                 TestContext.WriteLine($"   Vincita finale: {gioco.Giocatori[x].SoldiTotali}");
                 TestContext.WriteLine($"   Mani vinte: {gioco.Giocatori[x].ManiVinte}");
                 TestContext.WriteLine($"   Mani perse: {gioco.Giocatori[x].ManiPerse}");
@@ -289,7 +289,7 @@ namespace Test
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio()).build());
             for (int i = 0; i < 52; i++)
             {
-                gioco.Giocatori[0].Pesca();
+                gioco.Giocatori[0].Chiama();
             }
             Assert.AreEqual(0, gioco.Giocatori[0].Strategia.Conteggio);
         }

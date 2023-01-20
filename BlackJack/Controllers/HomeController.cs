@@ -104,13 +104,13 @@ namespace BlackJack.Controllers
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
-        public JsonResult Pesca(string id, string idGiocatore, int puntata)
+        public JsonResult Chiama(string id, string idGiocatore, int puntata)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
-            giocatore.Pesca();
+            giocatore.Chiama();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }

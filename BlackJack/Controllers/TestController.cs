@@ -134,7 +134,7 @@ namespace BlackJack.Controllers
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
             for (int i = 0; i < 20; i++)
             {
-                gioco.Mazziere.Pesca();
+                gioco.Mazziere.Chiama();
             }
             return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
         }
@@ -143,9 +143,9 @@ namespace BlackJack.Controllers
         public JsonResult GetCarteTestStrategy()
         {
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).build();
-            gioco.Mazziere.Pesca();
-            gioco.Giocatori[0].Pesca();
-            gioco.Giocatori[0].Pesca();
+            gioco.Mazziere.Chiama();
+            gioco.Giocatori[0].Chiama();
+            gioco.Giocatori[0].Chiama();
 
             return Json(new { gioco = JsonConvert.SerializeObject(gioco) });
         }

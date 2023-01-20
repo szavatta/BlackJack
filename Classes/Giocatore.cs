@@ -44,7 +44,7 @@ namespace Classes
         public Giocatore Raddoppia()
         {
             PuntataCorrente *= 2;
-            Pesca();
+            Chiama();
             return this;
         }
 
@@ -114,9 +114,9 @@ namespace Classes
             return giocatore;
         }
 
-        public override Carta Pesca()
+        public override Carta Chiama()
         {
-            Carta carta = base.Pesca();
+            Carta carta = base.Chiama();
 
             if (Carte.Count == 2 && Carte[0].Numero == Carte[1].Numero)
                 CanSplit = true;

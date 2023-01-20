@@ -25,7 +25,7 @@ namespace Classes
             Gioco = gioco;
         }
 
-        public virtual Carta Pesca()
+        public virtual Carta Chiama()
         {
             Carta carta = Gioco.Mazzo.PescaCarta();
             Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));

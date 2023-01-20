@@ -71,7 +71,7 @@ namespace Classes
             }
             while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
             {
-                Mazziere.Pesca();
+                Mazziere.Chiama();
             }
             TerminaMano();
             try
@@ -91,7 +91,7 @@ namespace Classes
             {
                 for (int ii = 0; ii < 2 - Giocatori[i].Carte.Count; ii++)
                 {
-                    Giocatori[i].Pesca();
+                    Giocatori[i].Chiama();
                 }
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
                 {
@@ -100,7 +100,7 @@ namespace Classes
 
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
                 {
-                    Giocatori[i].Pesca();
+                    Giocatori[i].Chiama();
                 }
 
                 if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
@@ -114,10 +114,10 @@ namespace Classes
         {
             Inizializza();
             Giocatori.ForEach(q => q.Punta());
-            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
-            Mazziere.Pesca();
-            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Pesca());
-            Mazziere.Pesca();
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
+            Mazziere.Chiama();
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
+            Mazziere.Chiama();
         }
 
         private void Raddoppia(int i)
@@ -127,7 +127,7 @@ namespace Classes
                 Giocatori[i].PuntataCorrente *= 2;
             }
 
-            Giocatori[i].Pesca();
+            Giocatori[i].Chiama();
         }
 
         private void Dividi(int i)
@@ -143,7 +143,7 @@ namespace Classes
 
             if (Giocatori[i].Carte.Count == 1)
             {
-                Giocatori[i].Pesca();
+                Giocatori[i].Chiama();
             }
         }
 
@@ -204,14 +204,14 @@ namespace Classes
         {
             foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
             {
-                giocatore.Pesca();
+                giocatore.Chiama();
             }
-            Mazziere.Pesca();
+            Mazziere.Chiama();
             foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
             {
-                giocatore.Pesca();
+                giocatore.Chiama();
             }
-            Mazziere.Pesca();
+            Mazziere.Chiama();
 
             if (Giocatori.Count > 0)
                 IdGiocatoreMano = Giocatori[0].Id;
@@ -230,7 +230,7 @@ namespace Classes
                 Mazziere.CartaCoperta = false;
                 while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
                 {
-                    Mazziere.Pesca();
+                    Mazziere.Chiama();
                 }
                 TerminaMano();
             }

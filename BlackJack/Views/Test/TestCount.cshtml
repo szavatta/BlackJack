@@ -35,9 +35,9 @@
 
         $("#btnConteggio").click(function () {
             if ($("#txConteggio").val() != $("#txConteggio").attr("cont")) {
-                alert("ERRATO. Il conteggo è " + $("#txConteggio").attr("cont"));
+                ShowMessage("ERRATO. Il conteggo è " + $("#txConteggio").attr("cont"));
             } else {
-                alert("CORRETTO");
+                ShowMessage("CORRETTO");
             }
         })
 
