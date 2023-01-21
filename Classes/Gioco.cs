@@ -217,27 +217,6 @@ namespace Classes
                 IdGiocatoreMano = Giocatori[0].Id;
         }
 
-        public void PassaMano(Giocatore giocatore)
-        {
-            Giocatore next = Giocatori.SkipWhile(q => q.Id != giocatore.Id).Skip(1).FirstOrDefault();
-            if (next != null)
-            {
-                IdGiocatoreMano = next.Id;
-                if (next.Carte.Count == 1)
-                    next.Chiama();
-            }
-            else
-            {
-                IdGiocatoreMano = null;
-                Mazziere.CartaCoperta = false;
-                while (Mazziere.Strategia.Strategy(Mazziere) == Mazziere.Puntata.Chiama)
-                {
-                    Mazziere.Chiama();
-                }
-                TerminaMano();
-            }
-        }
-
         public List<Giocatore> GiocatoriVincenti()
         {
             var ret = Giocatori.Where(q =>

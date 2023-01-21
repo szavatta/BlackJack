@@ -305,7 +305,7 @@
             }
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
-            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - True count: " + giocatore.Strategia.TrueCount);
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
             giocatore.Carte.forEach(function (carta, index) {
                 let left = index * 50 + 170 - giocatore.Carte.length * 25 + ((div.closest(".giocatore").width() - 400)/2);
@@ -339,6 +339,7 @@
                         div.find(".btnStai").addClass("d-none");
                         div.find(".btnChiama").addClass("d-none");
                         div.find(".btnContinua").removeClass("d-none");
+                        div.addClass("back-red");
                     }
                 } else {
                     div.find(".btnStai").addClass("d-none");
@@ -356,7 +357,7 @@
                 }
 
             }
-            if (giocatore.Id == partita.IdGiocatoreMano) {
+            if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Punteggio <= 21) {
                 div.addClass("back-azure");
             } else {
                 div.removeClass("back-azure");

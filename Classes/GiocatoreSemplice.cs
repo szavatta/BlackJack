@@ -71,6 +71,11 @@ namespace Classes
 
             return ret;
         }
+
+        public bool HaSballato()
+        {
+            return Punteggio > 21;
+        }
     }
 }
 

@@ -52,7 +52,7 @@ namespace Classes
         {
             CanSplit = false;
             Gioco.Iniziato = true;
-            Gioco.PassaMano(this);
+            PassaMano();
             return this;
         }
 
@@ -106,6 +106,28 @@ namespace Classes
                 return Puntata.Chiama;
             else
                 return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
+        }
+
+        public void PassaMano()
+        {
+            Giocatore next = Gioco.Giocatori.SkipWhile(q => q.Id != Id).Skip(1).FirstOrDefault();
+            if (next != null)
+            {
+                Gioco.IdGiocatoreMano = next.Id;
+                if (next.Carte.Count == 1)
+                    next.Chiama();
+            }
+            else
+            {
+                Gioco.IdGiocatoreMano = null;
+                Gioco.Mazziere.CartaCoperta = false;
+                while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Puntata.Chiama)
+                {
+                    Gioco.Mazziere.Chiama();
+                }
+                Gioco.TerminaMano();
+            }
+
         }
 
         public object Clone()
