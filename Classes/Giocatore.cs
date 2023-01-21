@@ -78,7 +78,7 @@ namespace Classes
             clone.Nome += " split";
             clone.Id = DateTime.Now.Ticks.ToString();
             clone.Carte.RemoveAt(1);
-            clone.GiocatoreSplit ??= this;
+            clone.GiocatoreSplit = GiocatoreSplit != null ? GiocatoreSplit : this;
             clone.SoldiTotali = 0;
             for (int i = 0; i < Gioco.Giocatori.Count; i++)
             {

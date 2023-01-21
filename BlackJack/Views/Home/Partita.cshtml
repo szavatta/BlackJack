@@ -29,6 +29,7 @@
             <div class="giocatorestamp col-lg-3 d-none p-2 border border-light">
                 <div class="nome-giocatore"></div>
                 <div class="cassa-giocatore"></div>
+                <div class="perc"></div>
                 <div class="carte-giocatore d-flex justify-content-center"></div>
                 <div class="opzioni-giocatore d-flex justify-content-center">
                     <input type='text' value='' class='txtPuntata form-control ml-1 d-none' />
@@ -301,7 +302,7 @@
             }
             div.find(".nome-giocatore").html(giocatore.Nome + " punti: " + giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
-            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%");
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pareggiate: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - True count: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
             giocatore.Carte.forEach(function (carta, index) {
                 let left = index * 50 + 170 - giocatore.Carte.length * 25 + ((div.closest(".giocatore").width() - 400)/2);

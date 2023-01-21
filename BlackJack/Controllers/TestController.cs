@@ -29,8 +29,12 @@ namespace BlackJack.Controllers
                 .AggiungiMazzi(6)
                 .build();
 
-            //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
-            //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
+            gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
+            gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
+            gioco.Mazzo.Carte[4].Numero = gioco.Mazzo.Carte[0].Numero;
+            gioco.Mazzo.Carte[4].PathImage = gioco.Mazzo.Carte[0].PathImage;
+            gioco.Mazzo.Carte[5].Numero = gioco.Mazzo.Carte[0].Numero;
+            gioco.Mazzo.Carte[5].PathImage = gioco.Mazzo.Carte[0].PathImage;
 
             gioco.Id = "test";
             gioco.Inizializza();
