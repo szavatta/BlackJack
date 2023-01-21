@@ -58,10 +58,11 @@ function CloseLoading() {
 function ShowMessage(_message, _title, _callback, _width, _height, senzaImg, conChiudi) {
     _messageCallback = _callback;
 
-    var img = '<td style="text-align:left;width:50px" valign="top"><img src="/Content/images/information.png" alt="" border="0" /></td>';
-    if (senzaImg != null && senzaImg != 'undefined' && senzaImg != '' && senzaImg.toLowerCase() == "true") {
-        img = '';
-    }
+    var img = "";
+    //var img = '<td style="text-align:left;width:50px" valign="top"><img src="/Content/images/information.png" alt="" border="0" /></td>';
+    //if (senzaImg != null && senzaImg != 'undefined' && senzaImg != '' && senzaImg.toLowerCase() == "true") {
+    //    img = '';
+    //}
 
     var buttonChiudi = '';
     if (conChiudi != null && conChiudi != 'undefined' && conChiudi != '' && conChiudi.toLowerCase() == "true") {
