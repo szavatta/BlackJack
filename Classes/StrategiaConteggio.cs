@@ -8,9 +8,16 @@ namespace Classes
     [Serializable]
     public class StrategiaConteggio : StrategiaGiocatore
     {
+        public int Punteggio { get; set; }
+
+        public StrategiaConteggio(int punteggio)
+        {
+            Punteggio = punteggio;
+        }
+
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
-            if (giocatore.Punteggio < 17)
+            if (giocatore.Punteggio < Punteggio)
                 return Giocatore.Puntata.Chiama;
             else
                 return Giocatore.Puntata.Stai;

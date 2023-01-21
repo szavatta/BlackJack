@@ -71,7 +71,7 @@ namespace BlackJack.Controllers
                 .AggiungiStrategia(new BasicStrategy()).AggiungiSoldi(100).build();
 
             Giocatore StrategiaConteggio = GiocatoreBuilder.Init().AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio()).AggiungiSoldi(100).build();
+                .AggiungiStrategia(new StrategiaConteggio(17)).AggiungiSoldi(100).build();
 
             Giocatore SempliceStrategiaGiocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco)
                 .AggiungiStrategia(new SempliceStrategiaGiocatore()).AggiungiSoldi(100).build();

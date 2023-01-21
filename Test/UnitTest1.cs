@@ -22,7 +22,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(9)
+                //.AggiungiMischiataRandom(9)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(50)
                 .build();
@@ -32,21 +32,31 @@ namespace Test
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaConteggio())
-            //    .build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio(16))
+                .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new SempliceStrategiaGiocatore())
-            //    .build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio(17))
+                .build());
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio(18))
+                .build());
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new SempliceStrategiaGiocatore())
+                .build());
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
             string a = "";
-            List<double> max = new List<double> { 0, 0, 0 };
-            List<double> min = new List<double> { 0, 0, 0 };
+            List<double> max = new List<double> { 0, 0, 0, 0, 0 };
+            List<double> min = new List<double> { 0, 0, 0, 0, 0 };
             int maxsplit = 0;
             for (int i = 0; i < 1000; i++)
             {
@@ -98,7 +108,8 @@ namespace Test
 
             for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
             {
-                TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString().Replace("Classes.",""));
+                TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString().Replace("Classes.","") 
+                    + (gioco.Giocatori[x].Strategia is StrategiaConteggio ? " " + ((StrategiaConteggio)gioco.Giocatori[x].Strategia).Punteggio.ToString() : ""));
                 TestContext.WriteLine($"   Vincita finale: {gioco.Giocatori[x].SoldiTotali}");
                 TestContext.WriteLine($"   Mani vinte: {gioco.Giocatori[x].ManiVinte}");
                 TestContext.WriteLine($"   Mani perse: {gioco.Giocatori[x].ManiPerse}");
@@ -286,7 +297,7 @@ namespace Test
                 .AggiungiMazzi(1)
                 .AggiungiMischiataRandom(1)
                 .build();
-            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio(17)).build());
             for (int i = 0; i < 52; i++)
             {
                 gioco.Giocatori[0].Chiama();
@@ -393,7 +404,7 @@ namespace Test
         {
             Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(5).AggiungiMazzi(1).AggiungiMischiata(false).build();
             
-            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio(17)).build());
 
             gioco.Giocata();
             Assert.AreEqual(4, gioco.Giocatori[0].Strategia.Conteggio);
