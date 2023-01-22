@@ -72,6 +72,8 @@ namespace Classes
 
         public Giocatore Split()
         {
+            if (!CanSplit)
+                throw new Exception("Split non ammesso");
             CanSplit = false;
             Giocatore clone = (Giocatore)this.Clone();
             Carte.RemoveAt(0);
@@ -142,7 +144,7 @@ namespace Classes
         {
             Carta carta = base.Chiama();
 
-            if (Carte.Count == 2 && Carte[0].Numero == Carte[1].Numero)
+            if (Carte.Count == 2 && Carte[0].Valore == Carte[1].Valore)
                 CanSplit = true;
             else
                 CanSplit = false;

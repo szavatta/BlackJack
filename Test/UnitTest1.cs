@@ -58,7 +58,7 @@ namespace Test
             List<double> max = new List<double> { 0, 0, 0, 0, 0 };
             List<double> min = new List<double> { 0, 0, 0, 0, 0 };
             int maxsplit = 0;
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 gioco.Giocata();
                 a += gioco.Giocatori[0].SoldiTotali + "\n";

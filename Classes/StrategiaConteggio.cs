@@ -10,7 +10,7 @@ namespace Classes
     {
         public int Punteggio { get; set; }
 
-        public StrategiaConteggio(int punteggio)
+        public StrategiaConteggio(int punteggio = 17)
         {
             Punteggio = punteggio;
         }

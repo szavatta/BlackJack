@@ -60,30 +60,20 @@ namespace BlackJack.Controllers
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(9)
+                //.AggiungiMischiataRandom(9)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(50)
                 .build();
 
             gioco.Mazziere.SoldiTotali = 100;
 
-            Giocatore BasicStrategy = GiocatoreBuilder.Init().AggiungiGioco(gioco)
-                .AggiungiStrategia(new BasicStrategy()).AggiungiSoldi(100).build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategy()).build());
 
-            Giocatore StrategiaConteggio = GiocatoreBuilder.Init().AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio(17)).AggiungiSoldi(100).build();
-
-            Giocatore SempliceStrategiaGiocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco)
-                .AggiungiStrategia(new SempliceStrategiaGiocatore()).AggiungiSoldi(100).build();
-
-            gioco.Giocatori.Add(BasicStrategy);
-            //gioco.Giocatori.Add(BasicStrategy);
-
-            //gioco.Giocatori.Add(StrategiaConteggio);
-            //gioco.Giocatori.Add(StrategiaConteggio);
-
-            //gioco.Giocatori.Add(SempliceStrategiaGiocatore);
-            //gioco.Giocatori.Add(SempliceStrategiaGiocatore);
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaConteggio(17)).build());
 
             SetSessionGioco(gioco);
 

@@ -19,15 +19,15 @@ namespace Classes
             string strategia = jsonObject["Strategia"].ToString();
             if (strategia == "BasicStrategy") 
             {
-                return jsonObject.ToObject<BasicStrategy>(serializer);
+                return (BasicStrategy)jsonObject.ToObject<BasicStrategy>(serializer);
             }
             else if (strategia == "StrategiaConteggio")
             {
-                return jsonObject.ToObject<StrategiaConteggio>(serializer);
+                return (StrategiaConteggio)jsonObject.ToObject<StrategiaConteggio>(serializer);
             }
             else if (strategia == "SempliceStrategiaGiocatore")
             {
-                return jsonObject.ToObject<SempliceStrategiaGiocatore>(serializer);
+                return (SempliceStrategiaGiocatore)jsonObject.ToObject<SempliceStrategiaGiocatore>(serializer);
             }
             return null;
         }
@@ -36,7 +36,7 @@ namespace Classes
         {
             StrategiaGiocatore strategia = (StrategiaGiocatore)value;
             JObject jsonObject = new JObject();
-            if (strategia is BasicStrategy) 
+            if (strategia is BasicStrategy)
             {
                 jsonObject["Strategia"] = "BasicStrategy";
             }
@@ -48,7 +48,7 @@ namespace Classes
             {
                 jsonObject["Strategia"] = "SempliceStrategiaGiocatore";
             }
-            jsonObject["Conteggio"] = strategia.Conteggio;
+//           jsonObject["Conteggio"] = strategia.Conteggio;
             jsonObject["TrueCount"] = strategia.TrueCount;
             jsonObject.WriteTo(writer);
         }
