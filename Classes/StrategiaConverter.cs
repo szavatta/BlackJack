@@ -43,12 +43,13 @@ namespace Classes
             else if (strategia is StrategiaConteggio)
             {
                 jsonObject["Strategia"] = "StrategiaConteggio";
+                jsonObject["Punteggio"] = ((StrategiaConteggio)strategia).Punteggio;
             }
             else if (strategia is SempliceStrategiaGiocatore)
             {
                 jsonObject["Strategia"] = "SempliceStrategiaGiocatore";
             }
-//           jsonObject["Conteggio"] = strategia.Conteggio;
+            jsonObject["Conteggio"] = strategia.Conteggio;
             jsonObject["TrueCount"] = strategia.TrueCount;
             jsonObject.WriteTo(writer);
         }
