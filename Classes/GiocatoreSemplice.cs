@@ -13,7 +13,7 @@ namespace Classes
         [JsonIgnore]
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
-        public int PuntataCorrente { get; set; }
+        public double PuntataCorrente { get; set; }
         public double SoldiTotali { get; set; }
         public int Punteggio => CalcolaPunteggio();
         public int ManiSballate { get; set; }
@@ -75,6 +75,12 @@ namespace Classes
         public bool HaSballato()
         {
             return Punteggio > 21;
+        }
+
+        public GiocatoreSemplice AggiungiCarta(Carta carta)
+        {
+            Carte.Add(carta);
+            return this;
         }
     }
 }

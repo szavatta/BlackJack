@@ -59,7 +59,7 @@ namespace BlackJack.Controllers
             Mazziere mazziere = new Mazziere(null);
             mazziere.Carte.Add(new Carta((Carta.NumeroCarta)cartaMazziere.FirstOrDefault(), Carta.SemeCarta.Picche));
 
-            int puntata = giocatore.Strategia.Puntata(giocatore, 1, 1, conteggio);
+            double puntata = giocatore.Strategia.Puntata(giocatore, 1, 1, conteggio);
 
             return Json(puntata);
         }

@@ -73,7 +73,7 @@ namespace BlackJack.Controllers
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio(16)).build());
+                .AggiungiStrategia(new StrategiaConteggio()).build());
 
             SetSessionGioco(gioco);
 

@@ -15,7 +15,7 @@ namespace Classes
         public Mazziere Mazziere { get; set; }
 
         public int NumMazziIniziali { get; set; }
-        public int PuntataMinima { get; set; }
+        public double PuntataMinima { get; set; }
         public int? PuntataMassima { get; set; }
         public bool Mischia { get; set; }
         public int? RandomMischiata { get; set; }

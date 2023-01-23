@@ -80,12 +80,12 @@ namespace BlackJack.Controllers
             return Json(gioco.Id);
         }
 
-        public JsonResult Punta(string id, string idGiocatore, int puntata)
+        public JsonResult Punta(string id, string idGiocatore, double puntata)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            int pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.GetTrueCount(gioco.Mazzo.Carte.Count));
-            int? scelta = pok != puntata ? pok : null;
+            double pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.GetTrueCount(gioco.Mazzo.Carte.Count));
+            double? scelta = pok != puntata ? pok : null;
             giocatore.Punta(puntata);
 
             if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())

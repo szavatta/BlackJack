@@ -23,7 +23,7 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override int Puntata(Giocatore giocatore, int puntataMinima, int puntataBase, int Conteggio)
+        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
         {
             if (Conteggio <= -2)
                 return puntataMinima;

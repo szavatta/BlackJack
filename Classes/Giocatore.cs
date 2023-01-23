@@ -56,7 +56,7 @@ namespace Classes
             return this;
         }
 
-        public Giocatore Punta(int puntata)
+        public Giocatore Punta(double puntata)
         {
             Gioco.Iniziato = true;
             PuntataCorrente = puntata;
