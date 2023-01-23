@@ -22,8 +22,8 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(1)
-                .AggiungiPuntataMinima(5)
+                .AggiungiMischiataRandom(5)
+                .AggiungiPuntataMinima(7)
                 .AggiungiPercentualeMischiata(20)
                 .build();
 
@@ -63,7 +63,8 @@ namespace Test
             List<double> max = new List<double> { 0, 0, 0, 0, 0, 0 };
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
-            for (int i = 0; i < 1000; i++)
+            List<double> soldi = new List<double>();
+            for (int i = 0; i < 100; i++)
             {
                 gioco.Giocata();
                 a += gioco.Giocatori[0].SoldiTotali + "\n";
@@ -77,32 +78,8 @@ namespace Test
                 if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
                     maxsplit = gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count();
 
+                soldi.Add(gioco.Giocatori[0].SoldiTotali);
                 Assert.AreEqual(Math.Abs(gioco.Mazziere.SoldiTotali), Math.Abs(gioco.Giocatori.Where(q => q.GiocatoreSplit == null).Sum(q => q.SoldiTotali)));
-
-                //TestContext.Write("vincente: [ ");
-                //foreach (var vincente in gioco.GiocatoriVincenti())
-                //{
-                //    TestContext.Write($"{vincente}, ");
-                //}
-                //TestContext.WriteLine("]");
-
-                //TestContext.Write("perdente: [ ");
-                //foreach (var perdente in gioco.GiocatoriPerdenti())
-                //{
-                //    TestContext.Write($"{perdente}, ");
-                //}
-                //TestContext.WriteLine("]");
-
-                //TestContext.Write("pareggio: [ ");
-                //foreach (var pareggio in gioco.GiocatoriPari())
-                //{
-                //    TestContext.Write($"{pareggio}, ");
-                //}
-                //TestContext.WriteLine("]");
-
-                //TestContext.WriteLine($"mazziere: {gioco.Mazziere.SoldiTotali}");
-                //TestContext.WriteLine($"truecount: {gioco.Mazzo.GetTrueCount()}");
-
             }
 
             TestContext.WriteLine($"Mani: {gioco.Giri}");

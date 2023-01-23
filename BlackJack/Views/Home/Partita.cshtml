@@ -30,6 +30,7 @@
                 <div class="nome-giocatore"></div>
                 <div class="cassa-giocatore"></div>
                 <div class="perc"></div>
+                <div class="errori bg-danger text-white mb-1 d-none">Errori: <span class="numerrori">0</span><span class="errore"></span></div>
                 <div class="carte-giocatore d-flex justify-content-center"></div>
                 <div class="opzioni-giocatore d-flex justify-content-center">
                     <input type='text' value='' class='txtPuntata form-control ml-1 d-none' />
@@ -63,6 +64,9 @@
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     let idPartita = location.pathname.split("/").slice(-1)[0];
+    if (idPartita == "test") {
+        $(".errori").removeClass("d-none");
+    }
 
     SetInterval();
 
@@ -107,8 +111,10 @@
                     puntata: puntata
                 },
                 success: function (ret) {
+
                     if (idPartita == "test" && ret.scelta != "Stai") {
-                        ShowMessage("Scelta corretta: " + ret.scelta);
+                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
+                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -133,7 +139,8 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Raddoppia") {
-                        ShowMessage("Scelta corretta: " + ret.scelta);
+                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
+                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -179,7 +186,8 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Chiama") {
-                        ShowMessage("Scelta corretta: " + ret.scelta);
+                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
+                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -223,7 +231,8 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Dividi") {
-                        ShowMessage("Scelta corretta: " + ret.scelta);
+                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
+                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
