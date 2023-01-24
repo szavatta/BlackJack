@@ -49,8 +49,7 @@ namespace Classes
                 {
                     return Giocatore.Puntata.Stai;
                 }
-                else if (
-                           pg == 19 && pm == 4 && conteggio >= 3
+                else if (pg == 19 && pm == 4 && conteggio >= 3
                         || pg == 19 && pm == 5 && conteggio >= 1
                         || pg == 19 && pm == 6 && conteggio >= 0
                         || pg == 18 && pm <= 6

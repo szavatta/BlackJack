@@ -26,9 +26,9 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(5)
-                .AggiungiPuntataMinima(7)
-                .AggiungiPercentualeMischiata(20)
+                //.AggiungiMischiataRandom(6)
+                .AggiungiPuntataMinima(5)
+                .AggiungiPercentualeMischiata(50)
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
@@ -73,7 +73,7 @@ namespace Test
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
             List<double> soldi = new List<double>();
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 gioco.Giocata();
                 a += gioco.Giocatori[0].SoldiTotali + "\n";
