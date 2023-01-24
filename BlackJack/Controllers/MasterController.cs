@@ -15,6 +15,8 @@ namespace BlackJack.Controllers
     public class MasterController : Controller
     {
         public static List<Gioco> Partite = new List<Gioco>();
-
+        public string JsonGioco(Gioco gioco) => JsonConvert.SerializeObject(gioco, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        public string JsonPartite(List<Gioco> partite) => JsonConvert.SerializeObject(partite, new Newtonsoft.Json.JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
     }
+
 }

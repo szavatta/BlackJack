@@ -6,6 +6,24 @@
 
 <div class="text-center p-2">
     <div class="row">
+        <div class="col-4 d-flex flex-wrap justify-content-center">
+            Carte mazziere
+        </div>
+        <div class="col-4 d-flex flex-wrap justify-content-center">
+            Carte mie
+        </div>
+        <div class="col-4">
+        </div>
+
+        <div class="col-4 d-flex flex-wrap justify-content-center">
+            punti: <span class="punti-mazziere">0</span>
+        </div>
+        <div class="col-4 d-flex flex-wrap justify-content-center">
+            punti: <span class="punti-miei">0</span>
+        </div>
+        <div class="col-4">
+        </div>
+
         <div class="col-4 d-flex flex-wrap justify-content-center carte-mazziere">
         </div>
         <div class="col-4 d-flex flex-wrap justify-content-center carte-mie">
@@ -14,7 +32,7 @@
         </div>
 
         <div class="col-4">
-            <h3>Conteggio: <span id="conteggio">0</span></h3>
+            <h3>True count: <span id="truecount">0</span></h3>
             <h3>Numero carte: <span id="numcarte">0</span></h3>
         </div>
         <div class="col-4 text-danger div-operazione">
@@ -26,10 +44,10 @@
         </div>
 
         <div class="col-12">
-            <h3>CARTE MAZZIERE</h3>
-            <div class="d-flex flex-wrap justify-content-center sel-carte-mazziere"></div>
             <h3>CARTE MIE</h3>
             <div class="d-flex flex-wrap justify-content-center sel-carte-mie"></div>
+            <h3>CARTE MAZZIERE</h3>
+            <div class="d-flex flex-wrap justify-content-center sel-carte-mazziere"></div>
             <h3>CARTE ALTRI GIOCATORI</h3>
             <div class="d-flex flex-wrap justify-content-center sel-carte-altri"></div>
 
@@ -45,46 +63,67 @@
 
         $(document).on("click", ".carta", function () {
 
-            if ($("#stato").val() == 0) {
-                return;
-            }
-            var c = parseInt($("#numcarte").html());
-            $("#numcarte").html(c + 1);
+            //if ($("#stato").val() == 0) {
+            //    return;
+            //}
 
-            if ($(".carte-mazziere .carta").length >= 2) {
-                $("#stato").val(2);
+            let soggetto = null;
+            if ($(this).parent().hasClass("sel-carte-mazziere")) {
+                $(".carte-mazziere").append($(this).clone());
+                soggetto = 0;
+            } else {
+                $(".carte-mie").append($(this).clone());
+                soggetto = 1;
             }
-            Operazione();
+
+            //var c = parseInt($("#numcarte").html());
+            //$("#numcarte").html(c + 1);
+
+            //if ($(".carte-mazziere .carta").length >= 2) {
+            //    $("#stato").val(2);
+            //}
 
             let valore = $(this).attr("valore");
 
-            if ($(this).parent().hasClass("sel-carte-mazziere")) {
-                $(".carte-mazziere").append($(this).clone());
-            } else {
-                $(".carte-mie").append($(this).clone());
-            }
-
             $.ajax({
                 type: "POST",
-                url: "/OnLine/GetPunteggioCarta",
+                url: "/OnLine/PescaCarta",
                 data: {
-                    valore: valore
+                    valore: valore,
+                    soggetto: soggetto
                 },
-                success: function (conteggio) {
-                    var c = parseInt($("#conteggio").html());
-                    $("#conteggio").html(c += conteggio);
+                success: function (ret) {
+                    Operazione();
+
+                    $("#truecount").html(ret.truecount);
+                    $("#numcarte").html(ret.numcarte);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 }
             });
+
+
         });
 
         $(document).on("click", "#btnNuovaMano", function () {
-            $("#carte-mazziere").val("");
-            $("#carte-mie").val("");
-            $("#stato").val(0);
-            Operazione();
+
+            $.ajax({
+                type: "POST",
+                url: "/OnLine/NuovaMano",
+                data: {
+                },
+                success: function (ret) {
+                    $(".carte-mazziere").empty();
+                    $(".carte-mie").empty();
+                    //$("#stato").val(0);
+                    Operazione();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+
         });
 
         $(document).on("click", "#btnCambioMazzo", function () {
@@ -122,11 +161,9 @@
     }
 
     function Operazione() {
-        if ($("#stato").val() == 0) {
+        if ($(".carte-mazziere .carta").length + $(".carte-mie .carta").length == 0) {
             GetPuntata();
-        } else if ($("#stato").val() == 1) {
-            $("#operazione").html("Seleziona carta");
-        } else if ($("#stato").val() == 2) {
+        } else {
             GetOperazione();
         }
     }
@@ -164,8 +201,10 @@
                     return $(this).attr("valore")
                 }).get()
             },
-            success: function (operazione) {
-                $("#operazione").html(operazione);
+            success: function (ret) {
+                $("#operazione").html(ret.operazione);
+                $(".punti-mazziere").html(ret.puntimazziere);
+                $(".punti-miei").html(ret.puntimiei);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);

@@ -11,27 +11,56 @@ namespace BlackJack.Controllers
     {
         public IActionResult Index()
         {
+            Gioco gioco = GiocoBuilder.Init()
+                .AggiungiNome("On line")
+                .AggiungiMazzi(6)
+                .build();
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategy())
+                .build());
+
+            Partite.Add(gioco);
+
             return View();
         }
 
-        public JsonResult GetPunteggioCarta(int valore)
+        public JsonResult PescaCarta(int valore, int soggetto)
         {
-            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).build();
-            int punteggio = giocatore.Strategia.Conta(new Carta((Carta.NumeroCarta)valore, Carta.SemeCarta.Cuori));
-
-            return Json(punteggio);
+            Gioco gioco = Partite.Where(q => q.Nome == "On line").FirstOrDefault();
+            Giocatore giocatore = gioco.Giocatori.First();
+            gioco.Mazzo.Carte[0] = new Carta((Carta.NumeroCarta)valore, Carta.SemeCarta.Cuori);
+            if (soggetto == 0)
+                gioco.Mazziere.Chiama();
+            else if (soggetto == 1)
+                giocatore.Chiama();
+            
+            return Json(new { numcarte = gioco.Mazzo.Carte.Count, truecount = giocatore.Strategia.GetTrueCount(gioco.Mazzo.Carte.Count) });
         }
 
-        public JsonResult GetOperazione(List<int> carteMazziere, List<int> carteMie, int conteggio)
+        public JsonResult NuovaMano()
         {
-            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(null).AggiungiStrategia(new BasicStrategy()).build();
-            carteMie.ForEach(q => giocatore.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Quadri)));
-            Mazziere mazziere = new Mazziere(null);
-            carteMazziere.ForEach(q => mazziere.Carte.Add(new Carta((Carta.NumeroCarta)q, Carta.SemeCarta.Picche)));
+            Gioco gioco = Partite.Where(q => q.Nome == "On line").FirstOrDefault();
 
-            var puntata = giocatore.Strategia.Strategy(giocatore, mazziere, conteggio);
+            return Json(JsonGioco(gioco));
+        }
 
-            return Json(Enum.GetName(typeof(Giocatore.Puntata), puntata));
+        public JsonResult GetOperazione()
+        {
+            Gioco gioco = Partite.Where(q => q.Nome == "On line").FirstOrDefault();
+            Giocatore giocatore = gioco.Giocatori.First();
+
+            Giocatore.Puntata? puntata = GiocatoreSemplice.Puntata.Chiama;
+            if (giocatore.Carte.Count > 0 && gioco.Mazziere.Carte.Count > 0)
+                puntata = giocatore.Strategia.Strategy(giocatore, gioco.Mazziere, gioco.Mazzo.Carte.Count);
+
+            return Json(new { 
+                operazione = gioco.Mazziere.Carte.Count + giocatore.Carte.Count >= 3 ? Enum.GetName(typeof(Giocatore.Puntata), puntata) : "Seleziona carta",
+                puntimiei = giocatore.Punteggio,
+                puntimazziere = gioco.Mazziere.Punteggio,
+                numcarte = gioco.Mazzo.Carte.Count
+            });
         }
 
         //public JsonResult GetOperazione(List<int> cartaMazziere, List<int> carteMie, int conteggio)
