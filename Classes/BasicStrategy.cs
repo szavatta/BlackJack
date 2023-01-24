@@ -44,14 +44,14 @@ namespace Classes
                     || pg == 19 && pm >= 7 //aggiunto
                     || pg == 19 && pm == 4 && conteggio < 3
                     || pg == 19 && pm == 5 && conteggio < 1
-                    || pg == 19 && pm == 6 && conteggio < 0
+                    || pg == 19 && pm == 6 && conteggio <= 0
                     || pg == 18 && pm >= 7 && pm <= 8)
                 {
                     return Giocatore.Puntata.Stai;
                 }
                 else if (pg == 19 && pm == 4 && conteggio >= 3
                         || pg == 19 && pm == 5 && conteggio >= 1
-                        || pg == 19 && pm == 6 && conteggio >= 0
+                        || pg == 19 && pm == 6 && conteggio > 0
                         || pg == 18 && pm <= 6
                         || pg == 17 && pm >= 3 && pm <= 6
                         || pg == 17 && pm == 2 && conteggio >= 1 
@@ -73,10 +73,10 @@ namespace Classes
                 || pg >= 13 && pm >= 3 && pm <= 6
                 || pg == 12 && pm == 2 && conteggio >=3
                 || pg == 12 && pm == 3 && conteggio >= 2
-                || pg == 12 && pm == 4 && conteggio >= 0
+                || pg == 12 && pm == 4 && conteggio > 0
                 || pg == 12 && pm >= 5 && pm <= 6
                 || pg == 16 && pm == 9 && conteggio >= 4
-                || pg == 16 && pm == 10 && conteggio > 0
+                || pg == 16 && pm == 10 && conteggio >= 0
                 || pg == 16 && pm == 11 && conteggio >= 3
                 || pg == 15 && pm == 10 && conteggio >= 4
                 || pg == 15 && pm == 11 && conteggio >= 5)
@@ -84,7 +84,7 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
             }
             if (pg == 16 && pm == 9 && conteggio<4
-                || pg == 16 && pm == 10 && conteggio <= 0
+                || pg == 16 && pm == 10 && conteggio < 0
                 || pg == 16 && pm == 11 && conteggio < 3
                 || pg == 15 && pm == 10 && conteggio < 4
                 || pg == 15 && pm == 11 && conteggio < 5
@@ -92,14 +92,15 @@ namespace Classes
                 || pg >= 12 && pm >= 7
                 || pg == 12 && pm == 2 && conteggio < 3
                 || pg == 12 && pm == 3 && conteggio < 2
-                || pg == 12 && pm == 4 && conteggio < 0
+                || pg == 12 && pm == 4 && conteggio <= 0
                 || pg == 10 && pm == 10 && conteggio < 4
                 || pg == 10 && pm == 11 && conteggio < 3
                 || pg == 9 && pm == 2 && conteggio < 1 
                 || pg == 9 && pm == 7 && conteggio<3
                 || pg == 9 && pm > 7
                 || pg == 8 && pm == 6 && conteggio < 2
-                || pg <= 8)
+                || pg == 8 && pm != 6
+                || pg < 8)
             {
                 return Giocatore.Puntata.Chiama;
             }
@@ -202,7 +203,7 @@ namespace Classes
                 || pg >= 13 && pm >= 3 && pm <= 6
                 || pg == 12 && pm == 2 && conteggio >= 3
                 || pg == 12 && pm == 3 && conteggio >= 2
-                || pg == 12 && pm == 4 && conteggio >= 0
+                || pg == 12 && pm == 4 && conteggio > 0
                 || pg == 12 && pm >= 5 && pm <= 6
                 || pg == 16 && pm == 9 && conteggio >= 4
                 || pg == 16 && pm == 10 && conteggio > 0
