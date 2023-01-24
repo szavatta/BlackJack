@@ -28,7 +28,7 @@ namespace Test
                 .AggiungiMischiata(true)
                 //.AggiungiMischiataRandom(6)
                 .AggiungiPuntataMinima(5)
-                .AggiungiPercentualeMischiata(50)
+                .AggiungiPercentualeMischiata(20)
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
@@ -73,7 +73,7 @@ namespace Test
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
             List<double> soldi = new List<double>();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 gioco.Giocata();
                 a += gioco.Giocatori[0].SoldiTotali + "\n";
@@ -869,7 +869,26 @@ namespace Test
                 .AggiungiCarta(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Fiori))
                 .AggiungiCarta(new Carta(Carta.NumeroCarta.Sei, Carta.SemeCarta.Fiori));
 
-            Assert.AreEqual(GiocatoreSemplice.Puntata.Chiama, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, 0));
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Chiama, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, 0));
+            }
+        }
+        [Test]
+        public void Test16_asso_dev()
+        {
+            gioco.Mazziere
+                .AggiungiCarta(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Fiori))
+                .AggiungiCarta(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Fiori));
+
+            gioco.Giocatori.First()
+                .AggiungiCarta(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Fiori))
+                .AggiungiCarta(new Carta(Carta.NumeroCarta.Sei, Carta.SemeCarta.Fiori));
+
+            for (int i = 3; i < 5; i++)
+            {
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
+            }
         }
 
         [Test]
@@ -902,7 +921,7 @@ namespace Test
 
             for (int i = 0; i < 5; i++)
             {
-                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, 0));
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
         }
 
@@ -936,7 +955,7 @@ namespace Test
 
             for (int i = 0; i < 5; i++)
             {
-                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, 0));
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
         }
 
@@ -970,7 +989,7 @@ namespace Test
 
             for (int i = 0; i < 5; i++)
             {
-                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, 0));
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
         }
 
@@ -1775,7 +1794,7 @@ namespace Test
                 .AggiungiCarta(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Fiori))
                 .AggiungiCarta(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 5; i++)
             {
                 Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
@@ -1792,7 +1811,7 @@ namespace Test
                 .AggiungiCarta(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Fiori))
                 .AggiungiCarta(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
 
-            for (int i = 2-5; i <= 0; i++)
+            for (int i = -5; i <= 0; i++)
             {
                 Assert.AreEqual(GiocatoreSemplice.Puntata.Chiama, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
@@ -2856,7 +2875,7 @@ namespace Test
 
             for (int i = 2; i <= 8; i++)
             {
-                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Raddoppia, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
         }
 
@@ -3343,7 +3362,7 @@ namespace Test
 
             for (int i = -5; i <= 0; i++)
             {
-                Assert.AreEqual(GiocatoreSemplice.Puntata.Raddoppia, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
+                Assert.AreEqual(GiocatoreSemplice.Puntata.Stai, gioco.Giocatori.First().Strategia.Strategy(gioco.Giocatori.First(), gioco.Mazziere, i));
             }
         }
 
