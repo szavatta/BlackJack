@@ -19,6 +19,9 @@ namespace Classes
             return puntataBase;
         }
 
-
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
+        {
+            return false;
+        }
     }
 }

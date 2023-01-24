@@ -134,7 +134,10 @@ namespace Classes
             return Conteggio;
         }
 
-
+        public override bool Assicurazione(Giocatore giocatore, decimal truecount)
+        {
+            return truecount >= 3;
+        }
     }
 
     [Serializable]
@@ -263,7 +266,10 @@ namespace Classes
             return Conteggio;
         }
 
-
+        public override bool Assicurazione(Giocatore giocatore, decimal truecount)
+        {
+            return truecount >= 3;
+        }
     }
 
 }

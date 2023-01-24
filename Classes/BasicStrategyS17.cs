@@ -133,6 +133,10 @@ namespace Classes
             return Conteggio;
         }
 
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
+        {
+            return false;
+        }
     }
 
 }

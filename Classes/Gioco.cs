@@ -89,10 +89,19 @@ namespace Classes
         {
             if (Giocatori[i].PuntataCorrente > 0)
             {
-                for (int ii = 0; ii < 2 - Giocatori[i].Carte.Count; ii++)
+                if (Giocatori[i].Carte.Count < 2)
                 {
                     Giocatori[i].Chiama();
                 }
+
+                if (Giocatori[i].Carte.Count == 2 &&
+                    Giocatori[i].GiocatoreSplit == null &&
+                    Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso &&
+                    Giocatori[i].Strategia.Assicurazione(Giocatori[i], Giocatori[i].Strategia.GetTrueCount(Mazzo.Carte.Count))) 
+                {
+                    Giocatori[i].PuntataAssicurazione = Giocatori[i].PuntataCorrente;
+                }
+                
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
                 {
                     Dividi(i);
@@ -135,6 +144,7 @@ namespace Classes
             Giocatore clone = (Giocatore)Giocatori[i].Clone();
             Giocatori[i].Carte.RemoveAt(0);
             clone.Nome += " split";
+            clone.PuntataAssicurazione = 0;
             clone.Carte.RemoveAt(1);
             clone.GiocatoreSplit = Giocatori[i].GiocatoreSplit != null ? Giocatori[i].GiocatoreSplit : Giocatori[i];
             clone.SoldiTotali = 0;
@@ -171,6 +181,20 @@ namespace Classes
                 giocatore.GiocatoreSplit.SoldiTotali += giocatore.SoldiTotali;
             }
 
+            foreach (var giocatore in Giocatori)
+            {
+                if (giocatore.PuntataAssicurazione > 0 && Mazziere.HasBlackJack())
+                {
+                    giocatore.SoldiTotali += giocatore.PuntataAssicurazione;
+                    Mazziere.SoldiTotali -= giocatore.PuntataAssicurazione;
+                }
+                else 
+                {
+                    giocatore.SoldiTotali -= giocatore.PuntataAssicurazione;
+                    Mazziere.SoldiTotali += giocatore.PuntataAssicurazione;
+                }
+            }
+
             GiocatoriVincenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Vinto);
             GiocatoriPerdenti().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Perso);
             GiocatoriPari().ForEach(q => q.Risultato = Giocatore.EnumRisultato.Pari);
@@ -191,6 +215,7 @@ namespace Classes
                 Mazzo.Scarti.AddRange(g.Carte);
                 g.Carte = new List<Carta>();
                 g.PuntataCorrente = 0;
+                g.PuntataAssicurazione= 0;
                 g.Risultato = Giocatore.EnumRisultato.Pari;
             }
             Mazzo.Scarti.AddRange(Mazziere.Carte);

@@ -18,6 +18,9 @@ namespace Classes
         public int ManiVinte { get; set; }
         public int ManiPerse { get; set; }
         public bool CanSplit { get; set; }
+        public double PuntataAssicurazione { get; set; }
+        public double PuntataCorrente { get; set; }
+
 
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
@@ -155,6 +158,13 @@ namespace Classes
             //    Stai();
 
             return carta;
+        }
+
+        public override string ToString()
+        {
+            return $"Nome: {Nome}" +
+                    $", Soldi Totali: {SoldiTotali}" +
+                    $", Puntata: {PuntataCorrente}";
         }
     }
 }

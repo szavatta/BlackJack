@@ -26,6 +26,10 @@ namespace Classes
                 return giocatore.PuntataCorrente;
         }
 
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
+        {
+            return false;
+        }
     }
 
     public class StrategiaDuplica : StrategiaGiocatore
@@ -50,7 +54,10 @@ namespace Classes
                 return giocatore.PuntataCorrente;
         }
 
-
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
+        {
+            return false;
+        }
     }
 
 

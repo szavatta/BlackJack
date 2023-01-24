@@ -36,35 +36,35 @@ namespace Test
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new BasicStrategyS17())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new BasicStrategyS17())
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new BasicStrategy2())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new BasicStrategy2())
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio(16))
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new StrategiaConteggio(16))
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio(17))
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new StrategiaConteggio(17))
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio(18))
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new StrategiaConteggio(18))
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new SempliceStrategiaGiocatore())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new SempliceStrategiaGiocatore())
+            //    .build());
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
@@ -280,6 +280,71 @@ namespace Test
             Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
         }
 
+        [Test]
+        public void TestAssicurazione()
+        {
+            Gioco gioco = GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            for (int i = 0; i < 48; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Quadri));
+            }
+
+            gioco.Giocatori[0].Strategia.Conteggio = 8;
+            gioco.Giocata();
+
+            Assert.AreEqual(250, gioco.Giocatori[0].SoldiTotali);
+        }
+
+        [Test]
+        public void TestAssicurazione2()
+        {
+            Gioco gioco = GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            for (int i = 0; i < 48; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Quadri));
+            }
+
+            gioco.Giocatori[0].Strategia.Conteggio = 8;
+            gioco.Giocata();
+
+            Assert.AreEqual(0, gioco.Giocatori[0].SoldiTotali);
+        }
+
+        [Test]
+        public void TestAssicurazione3()
+        {
+            Gioco gioco = GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Re, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
+            for (int i = 0; i < 48; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Quadri));
+            }
+
+            gioco.Giocatori[0].Strategia.Conteggio = 4;
+            gioco.Giocata();
+
+            Assert.AreEqual(200, gioco.Giocatori[0].SoldiTotali);
+        }
         [Test]
         public void TestConteggio()
         {
@@ -4983,3 +5048,4 @@ namespace Test
 
     }
 }
+

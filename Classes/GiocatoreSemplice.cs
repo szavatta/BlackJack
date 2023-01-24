@@ -13,7 +13,6 @@ namespace Classes
         [JsonIgnore]
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
-        public double PuntataCorrente { get; set; }
         public double SoldiTotali { get; set; }
         public int Punteggio => CalcolaPunteggio();
         public int ManiSballate { get; set; }
@@ -56,12 +55,7 @@ namespace Classes
             Raddoppia = 2,
             Dividi = 3
         }
-        public override string ToString()
-        {
-            return $"Nome: {Nome}" +
-                    $", Soldi Totali: {SoldiTotali}" +
-                    (this is Mazziere ? "" : $", Puntata: {PuntataCorrente}");
-        }
+
 
         public bool HasBlackJack()
         {

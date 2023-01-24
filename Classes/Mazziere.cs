@@ -29,6 +29,11 @@ namespace Classes
         {
             return this.Strategia.Strategy(this);
         }
+        public override string ToString()
+        {
+            return $"Nome: {Nome}" +
+                    $", Soldi Totali: {SoldiTotali}";
+        }
 
     }
 }
