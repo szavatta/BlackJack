@@ -113,8 +113,8 @@
                 success: function (ret) {
 
                     if (idPartita == "test" && ret.scelta != "Stai") {
-                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
-                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -139,8 +139,8 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Raddoppia") {
-                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
-                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -186,8 +186,8 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Chiama") {
-                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
-                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -231,8 +231,8 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Dividi") {
-                        $(".numerrori").text(parseInt($(".numerrori").text())+1);
-                        $(".errore").text(" - Scelta corretta: " + ret.scelta);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
                     DisegnaTavolo(partita);
@@ -316,6 +316,9 @@
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
+            if (giocatore.Carte.length == 0) {
+                div.find(".errore").text("");
+            }
             giocatore.Carte.forEach(function (carta, index) {
                 let left = index * 50 + 170 - giocatore.Carte.length * 25 + ((div.closest(".giocatore").width() - 400)/2);
                 div.find(".carte-giocatore")
