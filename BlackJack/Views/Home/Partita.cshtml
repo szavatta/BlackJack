@@ -61,6 +61,7 @@
 <script>
 
     let timer = null;
+    let errori = 0;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     let idPartita = location.pathname.split("/").slice(-1)[0];
@@ -113,7 +114,7 @@
                 success: function (ret) {
 
                     if (idPartita == "test" && ret.scelta != "Stai") {
-                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        errori++;
                         $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
@@ -139,7 +140,7 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Raddoppia") {
-                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        errori++;
                         $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
@@ -186,7 +187,7 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Chiama") {
-                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        errori++;
                         $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
@@ -231,7 +232,7 @@
                 },
                 success: function (ret) {
                     if (idPartita == "test" && ret.scelta != "Dividi") {
-                        $("[idgiocatore='" + idGiocatore + "']").find(".numerrori").text(parseInt($(".numerrori").text()) + 1);
+                        errori++;
                         $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                     }
                     let partita = JSON.parse(ret.gioco);
@@ -316,6 +317,8 @@
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
+            div.find(".numerrori").text(errori);
+
             if (giocatore.Carte.length == 0) {
                 div.find(".errore").text("");
             }

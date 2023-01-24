@@ -1,10 +1,12 @@
 using Classes;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -4884,6 +4886,7 @@ namespace Test
         public void TestTripleDes()
         {
             byte[] EncryptedData = null;
+            string b64 = "";
             var Key = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 };
             var IV = new byte[] { 8, 7, 6, 5, 4, 3, 2, 1 };
             string stringa = "test string";
@@ -4898,12 +4901,13 @@ namespace Test
                     cs.Write(input, 0, input.Length);
                     cs.FlushFinalBlock();
                     EncryptedData = ms.ToArray();
+                    b64 = Convert.ToBase64String(EncryptedData);
                 }
             }
 
             using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
             {
-                byte[] input = EncryptedData;
+                byte[] input = Convert.FromBase64String(b64);
                 des.Key = Key;
                 des.IV = IV;
                 using (MemoryStream ms = new MemoryStream())
@@ -4918,6 +4922,45 @@ namespace Test
 
         }
 
+        [Test]
+        public void TestAes()
+        {
+            byte[] EncryptedData = null;
+            string b64 = "";
+            var Key = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 };
+            var IV = new byte[] { 8, 7, 6, 5, 4, 3, 2, 1 };
+            string stringa = "test string";
+            using (AesCryptoServiceProvider aes = new AesCryptoServiceProvider())
+            {
+                aes.Key = Key;
+                aes.IV = IV;
+                byte[] input = Encoding.UTF8.GetBytes(stringa);
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(input, 0, input.Length);
+                    cs.FlushFinalBlock();
+                    EncryptedData = ms.ToArray();
+                    b64 = Convert.ToBase64String(EncryptedData);
+                }
+            }
+
+            using (AesCryptoServiceProvider aes = new AesCryptoServiceProvider())
+            {
+                byte[] input = Convert.FromBase64String(b64);
+                aes.Key = Key;
+                aes.IV = IV;
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(input, 0, input.Length);
+                    cs.FlushFinalBlock();
+                    byte[] output = ms.ToArray();
+                    Assert.AreEqual(stringa, Encoding.UTF8.GetString(output));
+                }
+            }
+
+        }
 
     }
 }
