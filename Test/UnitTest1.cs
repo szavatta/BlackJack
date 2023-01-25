@@ -26,7 +26,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(6)
+                //.AggiungiMischiataRandom(6)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(20)
                 .build();
@@ -73,6 +73,9 @@ namespace Test
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
             List<double> soldi = new List<double>();
+            int numass = 0;
+            double vass = 0;
+            double pass = 0;
             for (int i = 0; i < 10000; i++)
             {
                 gioco.Giocata();
@@ -88,6 +91,15 @@ namespace Test
                     maxsplit = gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count();
 
                 soldi.Add(gioco.Giocatori[0].SoldiTotali);
+                if (gioco.Giocatori[0].PuntataAssicurazione > 0)
+                {
+                    numass++;
+                    if (gioco.Mazziere.HasBlackJack())
+                        vass += gioco.Giocatori[0].PuntataAssicurazione * 2;
+                    else
+                        pass += gioco.Giocatori[0].PuntataAssicurazione;
+                }
+
                 Assert.AreEqual(Math.Abs(gioco.Mazziere.SoldiTotali), Math.Abs(gioco.Giocatori.Where(q => q.GiocatoreSplit == null).Sum(q => q.SoldiTotali)));
             }
             var dt = Utils.GetDataTable(listacassa);
@@ -107,6 +119,12 @@ namespace Test
                 TestContext.WriteLine($"   Mani sballate: {gioco.Giocatori[x].ManiSballate}");
                 TestContext.WriteLine($"   Vincita massima: {max[x]}");
                 TestContext.WriteLine($"   Perdita massima: {min[x]}");
+                if (x == 0)
+                {
+                    TestContext.WriteLine($"   Num assicurazioni: {numass}");
+                    TestContext.WriteLine($"   Vincite assicurazioni: {vass}");
+                    TestContext.WriteLine($"   Perdite assicurazioni: {pass}");
+                }
             }
             TestContext.WriteLine($"Max split: {maxsplit}");
 
