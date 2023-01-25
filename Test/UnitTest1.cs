@@ -19,6 +19,18 @@ namespace Test
         {
         }
 
+        class Result
+        {
+            public double Cassa { get; set; }
+            public double Puntata { get; set; }
+            public string Risultato { get; set; }
+            public int PunteggioGiocatore { get; set; }
+            public int PunteggioMazziere { get; set; }
+            public int Conteggio { get; set; }
+            public double TrueCount { get; set; }
+            public int NumCarte { get; set; }
+        }
+
         [Test]
         public void TestGiocate()
         {
@@ -26,7 +38,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(6)
+                .AggiungiMischiataRandom(6)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(20)
                 .build();
@@ -68,18 +80,17 @@ namespace Test
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
-            List<double> listacassa = new List<double>();
             List<double> max = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
-            List<double> soldi = new List<double>();
             int numass = 0;
             double vass = 0;
             double pass = 0;
+            List<Result> report = new List<Result>();
+
             for (int i = 0; i < 10000; i++)
             {
                 gioco.Giocata();
-                listacassa.Add(gioco.Giocatori[0].SoldiTotali);
 
                 for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
                 {
@@ -90,7 +101,6 @@ namespace Test
                 if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
                     maxsplit = gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count();
 
-                soldi.Add(gioco.Giocatori[0].SoldiTotali);
                 if (gioco.Giocatori[0].PuntataAssicurazione > 0)
                 {
                     numass++;
@@ -100,9 +110,21 @@ namespace Test
                         pass += gioco.Giocatori[0].PuntataAssicurazione;
                 }
 
+                report.Add(new Result
+                {
+                    Cassa = gioco.Giocatori[0].SoldiTotali,
+                    Puntata = gioco.Giocatori[0].PuntataCorrente,
+                    Risultato = gioco.Giocatori[0].Risultato.ToString(),
+                    PunteggioGiocatore = gioco.Giocatori[0].Punteggio,
+                    PunteggioMazziere = gioco.Mazziere.Punteggio,
+                    Conteggio = gioco.Giocatori[0].Strategia.Conteggio,
+                    TrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count),
+                    NumCarte = gioco.Mazzo.Carte.Count
+                });
+
                 Assert.AreEqual(Math.Abs(gioco.Mazziere.SoldiTotali), Math.Abs(gioco.Giocatori.Where(q => q.GiocatoreSplit == null).Sum(q => q.SoldiTotali)));
             }
-            var dt = Utils.GetDataTable(listacassa);
+            var dt = Utils.GetDataTable(report);
             TestContext.WriteLine($"Mani: {gioco.Giri}");
 
             TestContext.WriteLine("Mazziere");
