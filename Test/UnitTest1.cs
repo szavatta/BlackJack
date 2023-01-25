@@ -68,7 +68,7 @@ namespace Test
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
-            string a = "";
+            List<double> listacassa = new List<double>();
             List<double> max = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
@@ -76,7 +76,7 @@ namespace Test
             for (int i = 0; i < 10000; i++)
             {
                 gioco.Giocata();
-                a += gioco.Giocatori[0].SoldiTotali + "\n";
+                listacassa.Add(gioco.Giocatori[0].SoldiTotali);
 
                 for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
                 {
@@ -90,7 +90,7 @@ namespace Test
                 soldi.Add(gioco.Giocatori[0].SoldiTotali);
                 Assert.AreEqual(Math.Abs(gioco.Mazziere.SoldiTotali), Math.Abs(gioco.Giocatori.Where(q => q.GiocatoreSplit == null).Sum(q => q.SoldiTotali)));
             }
-            
+            var dt = Utils.GetDataTable(listacassa);
             TestContext.WriteLine($"Mani: {gioco.Giri}");
 
             TestContext.WriteLine("Mazziere");

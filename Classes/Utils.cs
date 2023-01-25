@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,6 +38,27 @@ namespace Classes
                 PropertyInfo[] pis = t.GetProperties();
                 if (dt.Columns.Count == 0)
                 {
+                    if (t.IsClass)
+                    {
+                        foreach (PropertyInfo pi in pis)
+                        {
+                            Type pt = pi.PropertyType;
+                            if (pt.IsGenericType && pt.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                pt = Nullable.GetUnderlyingType(pt);
+                            //if (pt.IsValueType)
+                            //{
+                            dt.Columns.Add(pi.Name, pt);
+                            //}
+                        }
+                    }
+                    else
+                    {
+                        dt.Columns.Add(t.Name, t);
+                    }
+                }
+                DataRow dr = dt.NewRow();
+                if (t.IsClass)
+                {
                     foreach (PropertyInfo pi in pis)
                     {
                         Type pt = pi.PropertyType;
@@ -44,21 +66,14 @@ namespace Classes
                             pt = Nullable.GetUnderlyingType(pt);
                         //if (pt.IsValueType)
                         //{
-                        dt.Columns.Add(pi.Name, pt);
+                        object value = pi.GetValue(obj, null);
+                        dr[pi.Name] = value == null ? DBNull.Value : value;
                         //}
                     }
                 }
-                DataRow dr = dt.NewRow();
-                foreach (PropertyInfo pi in pis)
+                else
                 {
-                    Type pt = pi.PropertyType;
-                    if (pt.IsGenericType && pt.GetGenericTypeDefinition() == typeof(Nullable<>))
-                        pt = Nullable.GetUnderlyingType(pt);
-                    //if (pt.IsValueType)
-                    //{
-                    object value = pi.GetValue(obj, null);
-                    dr[pi.Name] = value == null ? DBNull.Value : value;
-                    //}
+                    dr[t.Name] = obj == null ? DBNull.Value : obj;
                 }
                 dt.Rows.Add(dr);
             }
