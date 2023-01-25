@@ -26,7 +26,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(6)
+                .AggiungiMischiataRandom(6)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(20)
                 .build();

@@ -99,7 +99,7 @@ namespace Classes
                     Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso &&
                     Giocatori[i].Strategia.Assicurazione(Giocatori[i], Giocatori[i].Strategia.GetTrueCount(Mazzo.Carte.Count))) 
                 {
-                    Giocatori[i].PuntataAssicurazione = Giocatori[i].PuntataCorrente;
+                    Giocatori[i].PuntataAssicurazione = Giocatori[i].PuntataCorrente / 2;
                 }
                 
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
@@ -181,12 +181,12 @@ namespace Classes
                 giocatore.GiocatoreSplit.SoldiTotali += giocatore.SoldiTotali;
             }
 
-            foreach (var giocatore in Giocatori)
+            foreach (var giocatore in Giocatori.Where(q => q.PuntataAssicurazione > 0))
             {
-                if (giocatore.PuntataAssicurazione > 0 && Mazziere.HasBlackJack())
+                if (Mazziere.HasBlackJack())
                 {
-                    giocatore.SoldiTotali += giocatore.PuntataAssicurazione;
-                    Mazziere.SoldiTotali -= giocatore.PuntataAssicurazione;
+                    giocatore.SoldiTotali += giocatore.PuntataAssicurazione * 2;
+                    Mazziere.SoldiTotali -= giocatore.PuntataAssicurazione * 2;
                 }
                 else 
                 {
