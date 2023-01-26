@@ -40,8 +40,8 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(6)
-                .AggiungiPuntataMinima(5)
+                .AggiungiMischiataRandom(1111)
+                .AggiungiPuntataMinima(1)
                 .AggiungiPercentualeMischiata(20)
                 .build();
 
@@ -49,6 +49,11 @@ namespace Test
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
+
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new StrategiaRaddoppia())
+            //    .build());
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
             //    .AggiungiGioco(gioco)
@@ -84,13 +89,17 @@ namespace Test
             //gioco.Mazziere.SoldiTotali = 100;
             List<double> max = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
+            List<double> vmax = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
+            List<double> pmax = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
+            List<double> vcons = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
+            List<double> pcons = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int maxsplit = 0;
             int numass = 0;
             double vass = 0;
             double pass = 0;
             List<Result> report = new List<Result>();
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 100000; i++)
             {
                 gioco.Giocata();
 
@@ -98,6 +107,20 @@ namespace Test
                 {
                     if (gioco.Giocatori[x].SoldiTotali > max[x]) max[x] = gioco.Giocatori[x].SoldiTotali;
                     if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
+                    if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Vinto) 
+                    { 
+                        vcons[x]++;
+                        pcons[x] = 0;
+                        if (vcons[x] > vmax[x])
+                            vmax[x] = vcons[x];
+                    }
+                    else if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Perso)
+                    {
+                        pcons[x]++;
+                        vcons[x] = 0;
+                        if (pcons[x] > pmax[x])
+                            pmax[x] = pcons[x];
+                    }
                 }
 
                 if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
@@ -145,6 +168,8 @@ namespace Test
                 TestContext.WriteLine($"   Mani sballate: {gioco.Giocatori[x].ManiSballate}");
                 TestContext.WriteLine($"   Vincita massima: {max[x]}");
                 TestContext.WriteLine($"   Perdita massima: {min[x]}");
+                TestContext.WriteLine($"   Vincite consecutive: {vmax[x]}");
+                TestContext.WriteLine($"   Perdite consecutive: {pmax[x]}");
                 if (x == 0)
                 {
                     TestContext.WriteLine($"   Num assicurazioni: {numass}");
@@ -196,7 +221,7 @@ namespace Test
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaTriplica()).build());
-            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaDuplica()).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaRaddoppia()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
             double puntatamassima = 0;
             int perseconsecutive = 0;

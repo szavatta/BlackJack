@@ -214,9 +214,10 @@ namespace Classes
             {
                 Mazzo.Scarti.AddRange(g.Carte);
                 g.Carte = new List<Carta>();
+                g.PuntataPrecedente = g.PuntataCorrente;
                 g.PuntataCorrente = 0;
                 g.PuntataAssicurazione= 0;
-                g.Risultato = Giocatore.EnumRisultato.Pari;
+                //g.Risultato = Giocatore.EnumRisultato.Pari;
             }
             Mazzo.Scarti.AddRange(Mazziere.Carte);
             Mazziere.Carte = new List<Carta>();

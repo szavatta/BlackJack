@@ -20,7 +20,7 @@ namespace Classes
         public bool CanSplit { get; set; }
         public double PuntataAssicurazione { get; set; }
         public double PuntataCorrente { get; set; }
-
+        public double PuntataPrecedente { get; set; }
 
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)

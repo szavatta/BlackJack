@@ -16,15 +16,14 @@ namespace Classes
 
         public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
         {
-            if (giocatore.PuntataCorrente == 0)
-                giocatore.PuntataCorrente = puntataBase;
             if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
-                return giocatore.PuntataCorrente * 3;
+                return giocatore.PuntataPrecedente * 3;
             else if (giocatore.Risultato == Giocatore.EnumRisultato.Vinto)
-                return puntataBase;
+                return puntataMinima;
             else
-                return giocatore.PuntataCorrente;
+                return giocatore.PuntataPrecedente == 0 ? puntataMinima : giocatore.PuntataPrecedente;
         }
+
 
         public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
         {
@@ -32,7 +31,7 @@ namespace Classes
         }
     }
 
-    public class StrategiaDuplica : StrategiaGiocatore
+    public class StrategiaRaddoppia : StrategiaGiocatore
     {
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
@@ -44,14 +43,15 @@ namespace Classes
 
         public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
         {
-            if (giocatore.PuntataCorrente == 0)
-                giocatore.PuntataCorrente = puntataBase;
+            double puntata = 0;
             if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
-                return giocatore.PuntataCorrente * 2;
+                puntata = giocatore.PuntataPrecedente * 2;
             else if (giocatore.Risultato == Giocatore.EnumRisultato.Vinto)
-                return puntataBase;
+                puntata = puntataMinima;
             else
-                return giocatore.PuntataCorrente;
+                puntata = giocatore.PuntataPrecedente == 0 ? puntataMinima : giocatore.PuntataPrecedente;
+
+            return puntata;
         }
 
         public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
