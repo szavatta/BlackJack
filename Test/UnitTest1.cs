@@ -26,6 +26,8 @@ namespace Test
             public string Risultato { get; set; }
             public int PunteggioGiocatore { get; set; }
             public int PunteggioMazziere { get; set; }
+            public string CarteGiocatore { get; set; }
+            public string CarteMazziere { get; set; }
             public int Conteggio { get; set; }
             public double TrueCount { get; set; }
             public int NumCarte { get; set; }
@@ -117,6 +119,8 @@ namespace Test
                     Risultato = gioco.Giocatori[0].Risultato.ToString(),
                     PunteggioGiocatore = gioco.Giocatori[0].Punteggio,
                     PunteggioMazziere = gioco.Mazziere.Punteggio,
+                    CarteGiocatore = string.Join(",", gioco.Giocatori[0].Carte),
+                    CarteMazziere = string.Join(",", gioco.Mazziere.Carte),
                     Conteggio = gioco.Giocatori[0].Strategia.Conteggio,
                     TrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count),
                     NumCarte = gioco.Mazzo.Carte.Count
