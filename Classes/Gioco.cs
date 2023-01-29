@@ -232,8 +232,7 @@ namespace Classes
 
             if (Mazziere.HasBlackJack())
                 Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
-
-            if (Giocatori.Count > 0)
+            else if (Giocatori.Count > 0)
             {
                 IdGiocatoreMano = Giocatori[0].Id;
                 if (Giocatori[0].Punteggio >= 21)
