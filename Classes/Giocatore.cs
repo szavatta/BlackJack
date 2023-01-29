@@ -121,6 +121,8 @@ namespace Classes
                 Gioco.IdGiocatoreMano = next.Id;
                 if (next.Carte.Count == 1)
                     next.Chiama();
+                if (Punteggio >= 21)
+                    Stai();
             }
             else
             {
@@ -153,9 +155,6 @@ namespace Classes
                 CanSplit = false;
 
             Strategia.TrueCount = Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count);
-
-            if (Punteggio >= 21)
-                Stai();
 
             return carta;
         }

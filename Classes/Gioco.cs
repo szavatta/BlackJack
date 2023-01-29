@@ -122,6 +122,7 @@ namespace Classes
         public void GiocataIniziale()
         {
             Inizializza();
+            Giocatori.ForEach(q => q.Punta());
             DistribuisciCarteIniziali();
         }
 
@@ -224,17 +225,20 @@ namespace Classes
 
         public void DistribuisciCarteIniziali()
         {
-            Giocatori.ForEach(q => q.Punta());
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
-
-            if (Giocatori.Count > 0)
-                IdGiocatoreMano = Giocatori[0].Id;
 
             if (Mazziere.HasBlackJack())
                 Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+
+            if (Giocatori.Count > 0)
+            {
+                IdGiocatoreMano = Giocatori[0].Id;
+                if (Giocatori[0].Punteggio >= 21)
+                    Giocatori[0].Stai();
+            }
 
         }
 
