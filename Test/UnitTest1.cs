@@ -526,6 +526,31 @@ namespace Test
         }
 
         [Test]
+        public void TestBlackJackMazziere()
+        {
+            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategy())
+                .build());
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri)); //giocatore
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche)); //mazziere
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Fiori)); //giocatore
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Jack, Carta.SemeCarta.Fiori)); //mazziere
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+            }
+            gioco.GiocataIniziale();
+
+            Assert.AreEqual(21, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(20, gioco.Giocatori[0].Punteggio);
+            Assert.IsTrue(gioco.Mazziere.HasBlackJack());
+            Assert.IsTrue(!gioco.Giocatori[0].HasBlackJack());
+            Assert.IsTrue(gioco.Giocatori[0].SoldiTotali == -5);
+        }
+
+        [Test]
         public void TestBlackJack4()
         {
             Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();

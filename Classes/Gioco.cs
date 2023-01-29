@@ -119,14 +119,10 @@ namespace Classes
             }
         }
 
-        private void GiocataIniziale()
+        public void GiocataIniziale()
         {
             Inizializza();
-            Giocatori.ForEach(q => q.Punta());
-            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
-            Mazziere.Chiama();
-            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
-            Mazziere.Chiama();
+            DistribuisciCarteIniziali();
         }
 
         private void Raddoppia(int i)
@@ -228,19 +224,18 @@ namespace Classes
 
         public void DistribuisciCarteIniziali()
         {
-            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
-            {
-                giocatore.Chiama();
-            }
+            Giocatori.ForEach(q => q.Punta());
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
-            foreach (Giocatore giocatore in Giocatori.Where(q => q.PuntataCorrente > 0))
-            {
-                giocatore.Chiama();
-            }
+            Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
 
             if (Giocatori.Count > 0)
                 IdGiocatoreMano = Giocatori[0].Id;
+
+            if (Mazziere.HasBlackJack())
+                Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+
         }
 
         public List<Giocatore> GiocatoriVincenti()

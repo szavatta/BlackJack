@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlackJack.Controllers
 {
@@ -71,8 +72,13 @@ namespace BlackJack.Controllers
                 .AggiungiMazzi(6)
                 .build();
 
-            //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //riga di test per lo split
+            //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
             //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
+
+            gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del mazziere
+            gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
+            gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Jack; 
+            gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
 
             gioco.Inizializza();
             Partite.Add(gioco);
