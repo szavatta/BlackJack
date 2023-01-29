@@ -8,7 +8,7 @@ namespace Classes
     [Serializable]
     public class BasicStrategy : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
         {
             int pg= giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
@@ -110,16 +110,12 @@ namespace Classes
             }
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
+        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
         {
-            if (Conteggio <= -2)
-                return puntataMinima;
-            else if (Conteggio == -1)
-                return puntataMinima;
-            else if (Conteggio == 0)
+            if (Conteggio < 1)
                 return puntataMinima;
             else if (Conteggio >= 1 && Conteggio <= 4)
-                return 50 * Conteggio;
+                return 50 * (double)Conteggio;
             else //if (Conteggio >= 5)
                 return 50 * 5;
         }
@@ -134,7 +130,7 @@ namespace Classes
             return Conteggio;
         }
 
-        public override bool Assicurazione(Giocatore giocatore, decimal truecount)
+        public override bool Assicurazione(Giocatore giocatore, double truecount)
         {
             return truecount >= 3;
         }
@@ -143,7 +139,7 @@ namespace Classes
     [Serializable]
     public class BasicStrategy2 : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
         {
             int pg = giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
@@ -242,7 +238,7 @@ namespace Classes
             }
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
+        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
         {
             if (Conteggio <= -2)
                 return puntataMinima;
@@ -266,7 +262,7 @@ namespace Classes
             return Conteggio;
         }
 
-        public override bool Assicurazione(Giocatore giocatore, decimal truecount)
+        public override bool Assicurazione(Giocatore giocatore, double truecount)
         {
             return truecount >= 3;
         }

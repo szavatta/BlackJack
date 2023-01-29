@@ -6,7 +6,7 @@ namespace Classes
 {
     public class SempliceStrategiaGiocatore : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
         {
             if (giocatore.Punteggio < 17)
                 return Giocatore.Puntata.Chiama;
@@ -14,12 +14,12 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
+        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
         {
             return puntataBase;
         }
 
-        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
+        public override bool Assicurazione(Giocatore giocatore, double conteggio)
         {
             return false;
         }

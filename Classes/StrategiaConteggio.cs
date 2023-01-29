@@ -15,7 +15,7 @@ namespace Classes
             Punteggio = punteggio;
         }
 
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
         {
             if (giocatore.Punteggio < Punteggio)
                 return Giocatore.Puntata.Chiama;
@@ -23,7 +23,7 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, int Conteggio)
+        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
         {
             if (Conteggio <= -2)
                 return puntataMinima;
@@ -47,7 +47,7 @@ namespace Classes
             return Conteggio;
         }
 
-        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
+        public override bool Assicurazione(Giocatore giocatore, double conteggio)
         {
             return false;
         }
