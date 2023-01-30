@@ -40,7 +40,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(9)
+                .AggiungiMischiataRandom(9)
                 .AggiungiPuntataMinima(1)
                 .AggiungiPercentualeMischiata(20)
                 .build();
@@ -50,10 +50,10 @@ namespace Test
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaRaddoppia())
-            //    .build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new StrategiaRaddoppia())
+                .build());
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
             //    .AggiungiGioco(gioco)
@@ -99,7 +99,7 @@ namespace Test
             double pass = 0;
             List<Result> report = new List<Result>();
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 30; i++)
             {
                 gioco.Giocata();
 
@@ -567,6 +567,33 @@ namespace Test
                 gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
             }
             gioco.Giocata();
+
+            Assert.AreEqual(17, gioco.Mazziere.Punteggio);
+            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.IsTrue(!gioco.Mazziere.HasBlackJack());
+            Assert.IsTrue(gioco.Giocatori[0].HasBlackJack());
+            Assert.IsTrue(gioco.Giocatori[0].SoldiTotali == 7.5);
+        }
+
+        [Test]
+        public void Test21Giocatore()
+        {
+            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategy())
+                .build());
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri)); //giocatore
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Picche)); //mazziere
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Quadri)); //giocatore
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Donna, Carta.SemeCarta.Fiori)); //mazziere
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Nove, Carta.SemeCarta.Quadri)); //giocatore
+            for (int i = 0; i < 20; i++)
+            {
+                gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Cuori));
+            }
+            gioco.GiocataIniziale();
+            gioco.Giocatori[0].Chiama();
 
             Assert.AreEqual(17, gioco.Mazziere.Punteggio);
             Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);

@@ -156,6 +156,9 @@ namespace Classes
 
             Strategia.TrueCount = Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count);
 
+            //if (Punteggio >= 21)
+            //    Stai();
+
             return carta;
         }
 

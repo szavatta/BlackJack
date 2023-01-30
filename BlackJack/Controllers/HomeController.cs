@@ -86,6 +86,13 @@ namespace BlackJack.Controllers
             //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Jack;
             //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
 
+            //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Dieci; //righe di test per il 21 del giocatore
+            //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
+            //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Due;
+            //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
+            //gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Nove;
+            //gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[4].Seme)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
+
             gioco.Inizializza();
             Partite.Add(gioco);
 
