@@ -73,8 +73,8 @@ namespace BlackJack.Controllers
                 //.AggiungiMischiataRandom(1)
                 .build();
 
-            //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
-            //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
+            gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
+            gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
 
             //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del mazziere
             //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
@@ -110,6 +110,8 @@ namespace BlackJack.Controllers
             if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
             {
                 gioco.DistribuisciCarteIniziali();
+                if (gioco.Mazziere.HasBlackJack())
+                    gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
             }
 
             return Json(new { gioco = JsonGioco(gioco), puntata = pok });

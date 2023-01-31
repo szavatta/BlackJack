@@ -231,8 +231,10 @@ namespace Classes
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
 
-            //if (Mazziere.HasBlackJack())
-            //    Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+            if (Mazziere.HasBlackJack())
+                Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+            else if (Giocatori[0].Punteggio >= 21)
+                Giocatori[0].Stai();
 
         }
 
