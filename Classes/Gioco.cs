@@ -99,7 +99,7 @@ namespace Classes
                     Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso &&
                     Giocatori[i].Strategia.Assicurazione(Giocatori[i], Giocatori[i].Strategia.GetTrueCount(Mazzo.Carte.Count))) 
                 {
-                    Giocatori[i].PuntataAssicurazione = Giocatori[i].PuntataCorrente / 2;
+                    Giocatori[i].Assicurazione();
                 }
                 
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
@@ -214,6 +214,7 @@ namespace Classes
                 g.PuntataPrecedente = g.PuntataCorrente;
                 g.PuntataCorrente = 0;
                 g.PuntataAssicurazione= 0;
+                g.SceltaAssicurazione = false;
                 //g.Risultato = Giocatore.EnumRisultato.Pari;
             }
             Mazzo.Scarti.AddRange(Mazziere.Carte);
@@ -231,10 +232,11 @@ namespace Classes
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
 
-            if (Mazziere.HasBlackJack())
-                Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
-            else if (Giocatori[0].Punteggio >= 21)
-                Giocatori[0].Stai();
+            //if (Mazziere.HasBlackJack())
+            //    Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+            //else 
+            //if (Giocatori[0].Punteggio >= 21)
+            //    Giocatori[0].Stai();
 
         }
 

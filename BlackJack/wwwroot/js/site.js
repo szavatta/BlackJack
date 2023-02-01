@@ -27,6 +27,7 @@ $(document).ready(function () {
                 $(this).dialog("close");
             },
             "No": function () {
+                _confirmCallback2();
                 $(this).dialog("close");
             }
         },
@@ -120,6 +121,36 @@ function ShowConfirm(_message, _callback, _width, _height, senzaImg) {
     $('#dialogConfirm').dialog('open');
 }
 
+function ShowConfirmSiNo(_message, _callbackSi, _callbackNo, _width, _height, senzaImg) {
+    _confirmCallback = _callbackSi;
+    _confirmCallback2 = _callbackNo;
+
+    var img = '<td style="text-align:left;width:50px" valign="top"><img src="/Content/images/question.png" alt="" border="0" /></td>';
+    if (senzaImg != null && senzaImg != 'undefined' && senzaImg != '' && senzaImg.toLowerCase() == "true") {
+        img = '';
+    }
+    var testo = '<table style="width:100%"><tr>' + img + '<td valign="top" style="text-align:left">' + _message + '</td></tr></table>';
+
+    $('#dialogConfirm').html(testo);
+
+    $("#dialogConfirm").dialog("option", "z-index", 1000);
+
+    $("#dialogConfirm").dialog({
+        open: function () {
+            $(this).siblings('.ui-dialog-buttonpane').find('button:eq(1)').focus();
+        }
+    });
+
+    if (_width != undefined && _width > 0) {
+        $("#dialogConfirm").dialog("option", "width", _width);
+    }
+
+    if (_height != undefined && _height != null && _height > 0) {
+        $("#dialogConfirm").dialog("option", "height", _height);
+    }
+
+    $('#dialogConfirm').dialog('open');
+}
 function getQueryStringValue(key) {
     return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
 }

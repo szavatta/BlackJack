@@ -268,6 +268,26 @@
         GetPartita()
     })
 
+    function Assicurazione(idPartita, idGiocatore, scelta) {
+        $.ajax({
+            type: "POST",
+            url: "/Home/Assicurazione",
+            data: {
+                id: idPartita,
+                idGiocatore: idGiocatore,
+                scelta: scelta
+            },
+            success: function (json) {
+                let partita = JSON.parse(json);
+                DisegnaTavolo(partita);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+
+    }
+
     function GetPartita() {
 
         $.ajax({
@@ -339,6 +359,9 @@
                     div.find(".btnEsci").removeClass("d-none");
                     div.find(".fiches-giocatore").removeClass("d-none");
                 } else {
+                    if (giocatore.SceltaAssicurazione == false && partita.Mazziere.Carte.length > 0 && partita.Mazziere.Carte[0].Numero == 1) {
+                        ShowConfirmSiNo("Assicurazione?", () => Assicurazione(partita.Id, giocatore.Id, 1), () => Assicurazione(partita.Id, giocatore.Id, 0));
+                    }
                     div.find(".txtPuntata").addClass("d-none");
                     div.find(".btnPunta").addClass("d-none");
                     div.find(".btnEsci").addClass("d-none");

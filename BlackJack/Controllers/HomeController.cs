@@ -73,8 +73,13 @@ namespace BlackJack.Controllers
                 //.AggiungiMischiataRandom(1)
                 .build();
 
-            gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
-            gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
+            //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
+            //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
+            //gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Otto;
+            //gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Otto)}.png";
+
+            //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
+            //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
 
             //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del mazziere
             //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
@@ -110,11 +115,32 @@ namespace BlackJack.Controllers
             if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
             {
                 gioco.DistribuisciCarteIniziali();
-                if (gioco.Mazziere.HasBlackJack())
+                if (gioco.Mazziere.HasBlackJack() && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
                     gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
             }
 
             return Json(new { gioco = JsonGioco(gioco), puntata = pok });
+        }
+
+        public JsonResult Assicurazione(string id, string idGiocatore, int scelta)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            giocatore.SceltaAssicurazione = true;
+            if (scelta == 1)
+                giocatore.Assicurazione();
+
+            if (!gioco.Mazziere.HasBlackJack() && scelta == 1)
+            {
+                giocatore.SoldiTotali -= giocatore.PuntataAssicurazione;
+                gioco.Mazziere.SoldiTotali += giocatore.PuntataAssicurazione;
+                giocatore.PuntataAssicurazione = 0;
+            }
+            if (gioco.Giocatori.Count(q => q.SceltaAssicurazione == false) == 0 
+                &&  gioco.Mazziere.HasBlackJack())
+                gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+
+            return Json(new { gioco = JsonGioco(gioco) });
         }
 
         public JsonResult Stai(string id, string idGiocatore)

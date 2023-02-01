@@ -21,7 +21,7 @@ namespace Classes
         public double PuntataAssicurazione { get; set; }
         public double PuntataCorrente { get; set; }
         public double PuntataPrecedente { get; set; }
-
+        public bool SceltaAssicurazione { get; set; }
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
         {
@@ -95,6 +95,12 @@ namespace Classes
             }
             Chiama();
 
+            return this;
+        }
+
+        public Giocatore Assicurazione()
+        {
+            PuntataAssicurazione = PuntataCorrente / 2;
             return this;
         }
 
