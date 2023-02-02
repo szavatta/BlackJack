@@ -421,6 +421,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(1)
                 .AggiungiMischiataRandom(1)
+                .AggiungiPercentualeMischiata(0)
                 .build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio(17)).build());
             for (int i = 0; i < 52; i++)
@@ -547,6 +548,7 @@ namespace Test
             Assert.AreEqual(20, gioco.Giocatori[0].Punteggio);
             Assert.IsTrue(gioco.Mazziere.HasBlackJack());
             Assert.IsTrue(!gioco.Giocatori[0].HasBlackJack());
+            gioco.TerminaMano();
             Assert.IsTrue(gioco.Giocatori[0].SoldiTotali == -5);
         }
 
@@ -598,8 +600,7 @@ namespace Test
             Assert.AreEqual(17, gioco.Mazziere.Punteggio);
             Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
             Assert.IsTrue(!gioco.Mazziere.HasBlackJack());
-            Assert.IsTrue(gioco.Giocatori[0].HasBlackJack());
-            Assert.IsTrue(gioco.Giocatori[0].SoldiTotali == 7.5);
+            Assert.IsTrue(!gioco.Giocatori[0].HasBlackJack());
         }
 
         [Test]

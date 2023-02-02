@@ -159,7 +159,8 @@ namespace BlackJack.Controllers
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
-            giocatore.Chiama();
+            if (giocatore.Punteggio < 21)
+                giocatore.Chiama();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
