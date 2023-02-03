@@ -14,7 +14,6 @@ Project is created with:
 - [x] play multiplayer against the dealer
 - [x] Page to learn basic strategy, used to count cards
 - [x] Page to learn card counting and playing deviation and betting deviation
-- [ ] Pretty interface
 
 ### Functionality of the game
 - [x] all the features of the blackjack game have been implemented
