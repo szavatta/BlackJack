@@ -70,13 +70,13 @@ namespace BlackJack.Controllers
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome(nome)
                 .AggiungiMazzi(6)
-                //.AggiungiMischiataRandom(1)
+                .AggiungiMischiataRandom(1)
                 .build();
 
-            //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
-            //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
-            //gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Otto;
-            //gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Otto)}.png";
+            //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
+            //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
+            //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;
+            //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Quattro)}.png";
 
             //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
             //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
@@ -117,6 +117,8 @@ namespace BlackJack.Controllers
                 gioco.DistribuisciCarteIniziali();
                 if (gioco.Mazziere.HasBlackJack() && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
                     gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+                else if (gioco.Giocatori[0].Punteggio == 21 && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
+                    gioco.Giocatori[0].Stai();
             }
 
             return Json(new { gioco = JsonGioco(gioco), puntata = pok });
@@ -139,6 +141,8 @@ namespace BlackJack.Controllers
             if (gioco.Giocatori.Count(q => q.SceltaAssicurazione == false) == 0 
                 &&  gioco.Mazziere.HasBlackJack())
                 gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+            else if (giocatore.Punteggio >= 21)
+                giocatore.Stai();
 
             return Json(new { gioco = JsonGioco(gioco) });
         }
@@ -161,6 +165,9 @@ namespace BlackJack.Controllers
             string scelta = giocatore.Scelta().ToString();
             if (giocatore.Punteggio < 21)
                 giocatore.Chiama();
+
+            if (giocatore.Punteggio >= 21)
+                giocatore.Stai();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }

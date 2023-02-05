@@ -127,8 +127,6 @@ namespace Classes
                 Gioco.IdGiocatoreMano = next.Id;
                 if (next.Carte.Count == 1)
                     next.Chiama();
-                if (Punteggio >= 21)
-                    Stai();
             }
             else
             {

@@ -42,6 +42,8 @@
                     <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
                     <input type='button' value='Split' class='btnSplit btn btn-info d-none' />
                     <input type='button' value='Nuova mano' class='btnNuovaMano btn btn-info d-none' />
+                    <input type='button' value='Assicurazione SI' class='btnAssicurazione btn btn-info d-none' scelta="1"/>
+                    <input type='button' value='Assicurazione NO' class='btnAssicurazione btn btn-info d-none' scelta="0"/>
                 </div>
                 <div class="fiches-giocatore d-flex flex-wrap justify-content-center mt-2 d-none">
                     <img src="~/Fiches/1.png" valore="1" />
@@ -244,6 +246,12 @@
             });
         });
 
+        $(document).on("click", ".btnAssicurazione", function () {
+            let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
+            let scelta = $(this).attr("scelta");
+            Assicurazione(idPartita, idGiocatore, scelta);
+        });
+
         $(document).on("click", ".btnNuovaMano", function () {
             NuovaMano();
             $(".giocatore .nome-giocatore:empty").closest(".giocatore").remove();
@@ -327,6 +335,7 @@
         //}
         let presenteg = false;
         partita.Giocatori.forEach(function (giocatore) {
+            let assicurazione = false;
             let div = $("[idGiocatore='" + giocatore.Id + "']");
             let existdiv = div.length > 0;
             if (div.length == 0) {
@@ -360,7 +369,11 @@
                     div.find(".fiches-giocatore").removeClass("d-none");
                 } else {
                     if (giocatore.SceltaAssicurazione == false && partita.Mazziere.Carte.length > 0 && partita.Mazziere.Carte[0].Numero == 1) {
-                        ShowConfirmSiNo("Assicurazione?", () => Assicurazione(partita.Id, giocatore.Id, 1), () => Assicurazione(partita.Id, giocatore.Id, 0));
+                        //ShowConfirmSiNo("Assicurazione?", () => Assicurazione(partita.Id, giocatore.Id, 1), () => Assicurazione(partita.Id, giocatore.Id, 0));
+                        assicurazione = true;
+                        div.find(".btnAssicurazione").removeClass("d-none");
+                    } else {
+                        div.find(".btnAssicurazione").addClass("d-none");
                     }
                     div.find(".txtPuntata").addClass("d-none");
                     div.find(".btnPunta").addClass("d-none");
@@ -368,7 +381,7 @@
                     div.find(".fiches-giocatore").addClass("d-none");
                     div.find(".btnContinua").addClass("d-none");
                 }
-                if (giocatore.Id == partita.IdGiocatoreMano) {
+                if (giocatore.Id == partita.IdGiocatoreMano && !assicurazione) {
                     if (giocatore.Punteggio <= 21) {
                         div.find(".btnStai").removeClass("d-none");
                         div.find(".btnChiama").removeClass("d-none");
@@ -383,12 +396,12 @@
                     div.find(".btnStai").addClass("d-none");
                     div.find(".btnChiama").addClass("d-none");
                 }
-                if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Carte.length == 2) {
+                if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Carte.length == 2 && !assicurazione) {
                     div.find(".btnRaddoppia").removeClass("d-none");
                 } else {
                     div.find(".btnRaddoppia").addClass("d-none");
                 }
-                if (giocatore.CanSplit == true) {
+                if (giocatore.Id == partita.IdGiocatoreMano && giocatore.CanSplit == true && !assicurazione) {
                     div.find(".btnSplit").removeClass("d-none");
                 } else {
                     div.find(".btnSplit").addClass("d-none");
