@@ -70,7 +70,7 @@ namespace BlackJack.Controllers
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome(nome)
                 .AggiungiMazzi(6)
-                .AggiungiMischiataRandom(1)
+                //.AggiungiMischiataRandom(1)
                 .build();
 
             //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
@@ -90,6 +90,11 @@ namespace BlackJack.Controllers
             //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
             //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Jack;
             //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
+
+            //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del giocatore 2
+            //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
+            //gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Jack;
+            //gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[4].Seme)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
 
             //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Dieci; //righe di test per il 21 del giocatore
             //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";

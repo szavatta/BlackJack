@@ -352,7 +352,7 @@
                 div.find(".errore").text("");
             }
             giocatore.Carte.forEach(function (carta, index) {
-                let left = index * 50 + 170 - giocatore.Carte.length * 25 + ((div.closest(".giocatore").width() - 400)/2);
+                let left = index * 30 + 175 - giocatore.Carte.length * 18 + ((div.closest(".giocatore").width() - 400)/2);
                 div.find(".carte-giocatore")
                     .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
             })
