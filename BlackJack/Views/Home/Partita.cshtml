@@ -40,7 +40,7 @@
                     <input type='button' value='Continua' class='btnContinua btn btn-info d-none' />
                     <input type='button' value='Esci' class='btnEsci btn btn-info d-none' />
                     <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
-                    <input type='button' value='Split' class='btnSplit btn btn-info d-none' />
+                    <input type='button' value='Dividi' class='btnSplit btn btn-info d-none' />
                     <input type='button' value='Nuova mano' class='btnNuovaMano btn btn-info d-none' />
                     <input type='button' value='Assicurazione SI' class='btnAssicurazione btn btn-info d-none' scelta="1"/>
                     <input type='button' value='Assicurazione NO' class='btnAssicurazione btn btn-info d-none' scelta="0"/>
@@ -286,8 +286,8 @@
                 idGiocatore: idGiocatore,
                 scelta: scelta
             },
-            success: function (json) {
-                let partita = JSON.parse(json);
+            success: function (ret) {
+                let partita = JSON.parse(ret.gioco);
                 DisegnaTavolo(partita);
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -321,7 +321,7 @@
         $("#nome-mazziere").html(partita.Mazziere.Nome + (partita.Mazziere.CartaCoperta == false ? " punti: " + partita.Mazziere.Punteggio : ""));
         $("#cassa-mazziere").html("Cassa: " + partita.Mazziere.SoldiTotali + " - Giri: " + partita.Giri);
         partita.Mazziere.Carte.forEach(function (carta, index) {
-            let left = index * 50 + 170 - partita.Mazziere.Carte.length * 25 + (($("#mazziere").width() - 400) / 2);
+            let left = index * 30 + 165 - partita.Mazziere.Carte.length * 17 + (($("#mazziere").width() - 400) / 2);
 
             if (partita.Mazziere.CartaCoperta == true && index == 1) {
                 $("#carte-mazziere")
@@ -353,7 +353,7 @@
                 div.find(".errore").text("");
             }
             giocatore.Carte.forEach(function (carta, index) {
-                let left = index * 30 + 175 - giocatore.Carte.length * 18 + ((div.closest(".giocatore").width() - 400)/2);
+                let left = index * 30 + 165 - giocatore.Carte.length * 17 + ((div.closest(".giocatore").width() - 400)/2);
                 div.find(".carte-giocatore")
                     .append("<div class='carta sormonta' style='left:" + left + "px'><img src='/" + carta.PathImage + "' title='" + carta.Nome + "'></div>");
             })
