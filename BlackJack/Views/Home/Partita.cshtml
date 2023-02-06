@@ -212,6 +212,7 @@
                 },
                 success: function (data) {
                     $("#IdGiocatore").val(data.idGiocatore);
+                    $(".giocatore").remove();
                     let partita = JSON.parse(data.json);
                     DisegnaTavolo(partita);
                 },
@@ -334,7 +335,7 @@
         //    $("#mazziere").addClass("back-red");
         //}
         let presenteg = false;
-        partita.Giocatori.forEach(function (giocatore) {
+        ListaGiocatori(partita).forEach(function (giocatore) {
             let assicurazione = false;
             let div = $("[idGiocatore='" + giocatore.Id + "']");
             let existdiv = div.length > 0;
@@ -545,6 +546,13 @@
             }
         });
 
+    }
+
+    function ListaGiocatori(partita) {
+
+        let a1 = partita.Giocatori.filter(function (item) { return item.Id == $("#IdGiocatore").val() });
+        let a2 = partita.Giocatori.filter(function (item) { return item.Id != $("#IdGiocatore").val() });
+        return a1.concat(a2);
     }
 
 
