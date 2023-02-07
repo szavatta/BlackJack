@@ -54,9 +54,14 @@ namespace BlackJack.Controllers
             return Json(JsonPartite(Partite));
         }
 
-        public JsonResult GetPartita(string id)
+        public JsonResult GetPartita(string id, bool mazzo = true)
         {
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
+            if (!mazzo) 
+            {
+                gioco.Mazzo.Carte = null;
+                gioco.Mazzo.Scarti = null;
+            }
 
             return Json(JsonGioco(gioco));
         }

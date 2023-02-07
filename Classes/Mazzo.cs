@@ -15,6 +15,8 @@ namespace Classes
         public List<Carta> Carte { get; set; }
         public List<Carta> Scarti { get; set; }
         public EnumRetro Retro { get; set; }
+        public int NumCarte => Carte?.Count ?? 0;
+        public int NumScarti => Scarti?.Count ?? 0;
 
         public void CreaMazzo(Gioco gioco)
         {

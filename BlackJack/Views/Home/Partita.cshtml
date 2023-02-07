@@ -303,7 +303,8 @@
             type: "POST",
             url: "/Home/GetPartita",
             data: {
-                id: idPartita
+                id: idPartita,
+                mazzo: false
             },
             success: function (json) {
                 let partita = JSON.parse(json);
@@ -461,7 +462,7 @@
         if (partita.Mazzo.Scarti.length > 0) {
             $("#scarti img").attr("src", "/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png");
             $("#scarti").removeClass("d-none");
-            $("#num-scarti").html(partita.Mazzo.Scarti.length + " carte scartate<br>su " + partita.NumMazziIniziali + " mazzi");
+            $("#num-scarti").html(partita.Mazzo.NumScarti + " carte scartate<br>su " + partita.NumMazziIniziali + " mazzi");
         } else {
             $("#scarti").addClass("d-none");
         }
