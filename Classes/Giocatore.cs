@@ -48,6 +48,7 @@ namespace Classes
         {
             PuntataCorrente *= 2;
             Chiama();
+            Stai();
             return this;
         }
 
@@ -98,6 +99,8 @@ namespace Classes
                 }
             }
             Chiama();
+            if (Punteggio >= 21)
+                Stai();
 
             return this;
         }

@@ -86,6 +86,15 @@ namespace BlackJack.Controllers
             //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Jack;
             //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
 
+            //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del giocatore split
+            //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
+            //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Asso;
+            //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
+            //gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Jack;
+            //gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[5].Seme)}-{((int)gioco.Mazzo.Carte[5].Numero)}.png";
+            //gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Jack;
+            //gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[4].Seme)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
+            
             //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del giocatore
             //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
             //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Jack;
@@ -183,7 +192,7 @@ namespace BlackJack.Controllers
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
-            giocatore.Raddoppia().Stai();
+            giocatore.Raddoppia();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
