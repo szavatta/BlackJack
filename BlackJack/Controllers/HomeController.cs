@@ -56,7 +56,10 @@ namespace BlackJack.Controllers
 
         public JsonResult GetPartita(string id, bool mazzo = true)
         {
-            Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
+            Gioco g = Partite.Where(q => q.Id == id).FirstOrDefault();
+            Gioco gioco = null;
+            if (g != null)
+                gioco = (Gioco)g.Clone();
             if (!mazzo) 
             {
                 gioco.Mazzo.Carte = null;

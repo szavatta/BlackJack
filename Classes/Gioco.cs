@@ -57,8 +57,9 @@ namespace Classes
 
         public object Clone()
         {
-            return this.MemberwiseClone();
-
+            Gioco cloned = (Gioco)this.MemberwiseClone();
+            cloned.Mazzo = (Mazzo)this.Mazzo.Clone();
+            return cloned;
         }
 
         public void Giocata()

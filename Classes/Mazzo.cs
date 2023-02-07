@@ -5,7 +5,7 @@ using System.Linq;
 namespace Classes
 {
     [Serializable]
-    public class Mazzo
+    public class Mazzo : ICloneable
     {
         public enum EnumRetro
         {
@@ -55,6 +55,11 @@ namespace Classes
             //Conteggio += carta.Conteggio;
 
             return carta;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
 
         //public int GetTrueCount() => (int)(Conteggio / ((Carte.Count / 52) == 0 ? 1 : (Carte.Count / 52)));

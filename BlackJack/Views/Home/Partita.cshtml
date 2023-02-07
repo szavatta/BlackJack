@@ -303,8 +303,7 @@
             type: "POST",
             url: "/Home/GetPartita",
             data: {
-                id: idPartita,
-                mazzo: false
+                id: idPartita
             },
             success: function (json) {
                 let partita = JSON.parse(json);
@@ -459,7 +458,7 @@
             $(".btnNuovaMano").addClass("d-none");
         }
 
-        if (partita.Mazzo.Scarti.length > 0) {
+        if (partita.Mazzo.NumScarti > 0) {
             $("#scarti img").attr("src", "/Carte/retro" + (partita.Mazzo.Retro == 0 ? "blu" : "rosso") + ".png");
             $("#scarti").removeClass("d-none");
             $("#num-scarti").html(partita.Mazzo.NumScarti + " carte scartate<br>su " + partita.NumMazziIniziali + " mazzi");
