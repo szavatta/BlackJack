@@ -99,6 +99,7 @@
                     console.log(jqXHR);
                 }
             });
+
         });
 
         $(document).on("click", ".btnStai,.btnContinua", function () {
@@ -155,23 +156,25 @@
         });
 
         $(document).on("click", ".btnEsci", function () {
-            let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
-            let puntata = $(this).parent().find(".txtPuntata").val();
+            ShowConfirm("Confermi l'uscita?", function () {
+                let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
+                let puntata = $(this).parent().find(".txtPuntata").val();
 
-            $.ajax({
-                type: "POST",
-                url: "/Home/Esci",
-                data: {
-                    id: idPartita,
-                    idGiocatore: idGiocatore,
-                    puntata: puntata
-                },
-                success: function (json) {
-                    location.href = "/";
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/Esci",
+                    data: {
+                        id: idPartita,
+                        idGiocatore: idGiocatore,
+                        puntata: puntata
+                    },
+                    success: function (json) {
+                        location.href = "/";
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                    }
+                });
             });
         });
 
@@ -188,12 +191,38 @@
                     puntata: puntata
                 },
                 success: function (ret) {
-                    if (idPartita == "test" && ret.scelta != "Chiama") {
-                        errori++;
-                        $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
+                    if (ret.scelta == "?") {
+                        ShowConfirm("Confermi la chiamata?", function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Home/Chiama",
+                                data: {
+                                    id: idPartita,
+                                    idGiocatore: idGiocatore,
+                                    puntata: puntata,
+                                    forza: true
+                                },
+                                success: function (ret) {
+                                    if (idPartita == "test" && ret.scelta != "Chiama") {
+                                        errori++;
+                                        $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
+                                    }
+                                    let partita = JSON.parse(ret.gioco);
+                                    DisegnaTavolo(partita);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log(jqXHR);
+                                }
+                            });
+                        });
+                    } else {
+                        if (idPartita == "test" && ret.scelta != "Chiama") {
+                            errori++;
+                            $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
+                        }
+                        let partita = JSON.parse(ret.gioco);
+                        DisegnaTavolo(partita);
                     }
-                    let partita = JSON.parse(ret.gioco);
-                    DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);

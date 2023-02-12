@@ -179,17 +179,24 @@ namespace BlackJack.Controllers
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
-        public JsonResult Chiama(string id, string idGiocatore, int puntata)
+        public JsonResult Chiama(string id, string idGiocatore, int puntata, bool forza = false)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
-            if (giocatore.Punteggio < 21)
-                giocatore.Chiama();
+            if (giocatore.Punteggio >= 17 && !forza)
+            {
+                scelta = "?";
+            }
+            else
+            {
+                if (giocatore.Punteggio < 21)
+                    giocatore.Chiama();
 
-            if (giocatore.Punteggio >= 21)
-                giocatore.Stai();
+                if (giocatore.Punteggio >= 21)
+                    giocatore.Stai();
+            }
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
