@@ -201,13 +201,20 @@ namespace BlackJack.Controllers
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
-        public JsonResult Raddoppia(string id, string idGiocatore)
+        public JsonResult Raddoppia(string id, string idGiocatore, bool forza = false)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
-            giocatore.Raddoppia();
+            if (giocatore.Punteggio >= 17 && !forza)
+            {
+                scelta = "?";
+            }
+            else
+            {
+                giocatore.Raddoppia();
+            }
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
