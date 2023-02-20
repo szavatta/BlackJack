@@ -40,7 +40,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(9)
+                //.AggiungiMischiataRandom(9)
                 .AggiungiPuntataMinima(1)
                 .AggiungiPercentualeMischiata(20)
                 .build();
@@ -99,7 +99,7 @@ namespace Test
             double pass = 0;
             List<Result> report = new List<Result>();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
 

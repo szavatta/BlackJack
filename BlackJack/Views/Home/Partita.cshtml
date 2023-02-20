@@ -143,7 +143,7 @@
                 },
                 success: function (ret) {
                     if (ret.scelta == "?") {
-                        ShowConfirm("Confermi la chiamata?", function () {
+                        ShowConfirm("Confermi il raddoppio?", function () {
                             $.ajax({
                                 type: "POST",
                                 url: "/Home/Raddoppia",
@@ -370,6 +370,29 @@
             }
         });
 
+    }
+
+    function GetPartita2() {
+
+        var ret;
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "/Home/GetPartita",
+            data: {
+                id: idPartita
+            },
+            success: function (json) {
+                ret = JSON.parse(json);
+            }
+        });
+        return ret;
+    }
+
+    function GetPunteggioGiocatore(idGiocatore) {
+        let partita = GetPartita2();
+        let punteggio = partita.Giocatori.filter(q => q.Id == idGiocatore)[0].Punteggio;
+        return punteggio;
     }
 
     function DisegnaTavolo(partita, trueCount) {
