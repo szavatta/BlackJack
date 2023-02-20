@@ -156,9 +156,9 @@
         });
 
         $(document).on("click", ".btnEsci", function () {
+            let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
             ShowConfirm("Confermi l'uscita?", function () {
-                let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
-                let puntata = $(this).parent().find(".txtPuntata").val();
 
                 $.ajax({
                     type: "POST",
@@ -181,6 +181,7 @@
         $(document).on("click", ".btnChiama", function () {
             let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
             let puntata = $(this).parent().find(".txtPuntata").val();
+            let partita = GetPartita();
 
             $.ajax({
                 type: "POST",
@@ -207,7 +208,7 @@
                                         errori++;
                                         $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                                     }
-                                    let partita = JSON.parse(ret.gioco);
+                                    partita = JSON.parse(ret.gioco);
                                     DisegnaTavolo(partita);
                                 },
                                 error: function (jqXHR, textStatus, errorThrown) {
@@ -220,7 +221,7 @@
                             errori++;
                             $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                         }
-                        let partita = JSON.parse(ret.gioco);
+                        partita = JSON.parse(ret.gioco);
                         DisegnaTavolo(partita);
                     }
                 },
@@ -327,21 +328,33 @@
     }
 
     function GetPartita() {
-
         $.ajax({
             type: "POST",
             url: "/Home/GetPartita",
+            async: false,
             data: {
                 id: idPartita
             },
             success: function (json) {
                 let partita = JSON.parse(json);
                 DisegnaTavolo(partita);
+                return partita;
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
             }
         });
+
+    }
+
+    function GetPartita2() {
+        return JSON.parse($.ajax({
+            type: "GET",
+            url: "/Home/GetPartita",
+            data: {
+                id: idPartita
+            }
+        }));
 
     }
 

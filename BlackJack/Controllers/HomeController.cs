@@ -185,7 +185,7 @@ namespace BlackJack.Controllers
             gioco.Iniziato = true;
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
-            if (giocatore.Punteggio >= 17 && !forza)
+            if (giocatore.CalcolaPunteggio(true) >= 17 && !forza)
             {
                 scelta = "?";
             }
