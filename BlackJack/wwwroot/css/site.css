@@ -93,6 +93,15 @@ body {
     position: relative;
 }
 
+.punti {
+    position: absolute;
+    width: 40px;
+    border-radius: 8px;
+    background-color: blue;
+    color: white;
+    font-size: large;
+}
+
 .txtPuntata {
     width: 70px;
 }

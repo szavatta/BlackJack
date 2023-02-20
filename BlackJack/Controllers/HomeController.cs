@@ -73,7 +73,16 @@ namespace BlackJack.Controllers
         public JsonResult NuovaPartita(string nome)
         {
             if (string.IsNullOrEmpty(nome))
+            {
                 nome = "Partita " + (Partite.Count + 1);
+                int i = 1;
+                while (Partite.Count(q => q.Nome == nome) > 0)
+                {
+                    i++;
+                    nome = "Partita " + (Partite.Count + i);
+                }
+
+            }
 
             Gioco gioco = GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
