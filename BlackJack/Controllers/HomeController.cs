@@ -44,7 +44,8 @@ namespace BlackJack.Controllers
         public IActionResult Partita(string id)
         {
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
-            ViewBag.IdGiocatore = HttpContext.Session.GetString("IdGiocatore");
+            //ViewBag.IdGiocatore = HttpContext.Session.GetString("IdGiocatore");
+            ViewBag.IdGiocatore = HttpContext.Request.Cookies["idGiocatore"];
 
             return View(gioco);
         }
@@ -249,11 +250,16 @@ namespace BlackJack.Controllers
 
         public JsonResult Partecipa(string id, string nome)
         {
-            string idGiocatore = HttpContext.Session.GetString("IdGiocatore");
+            string idGiocatore = HttpContext.Request.Cookies["idGiocatore"];
+            //idGiocatore = HttpContext.Session.GetString("IdGiocatore");
             if (string.IsNullOrEmpty(idGiocatore))
             {
                 idGiocatore = DateTime.Now.Ticks.ToString();
-                HttpContext.Session.SetString("IdGiocatore", idGiocatore);
+                //HttpContext.Session.SetString("IdGiocatore", idGiocatore);
+                HttpContext.Response.Cookies.Append("IdGiocatore", idGiocatore, new CookieOptions()
+                {
+                    Expires = DateTime.Now.AddDays(5)
+                });
             }
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiNome(nome).build();
