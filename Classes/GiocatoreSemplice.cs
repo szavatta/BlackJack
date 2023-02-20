@@ -35,13 +35,13 @@ namespace Classes
             return carta;
         }
 
-        public int CalcolaPunteggio()
+        public int CalcolaPunteggio(bool Asso1 = false)
         {
             List<Carta> carte2 = new List<Carta>(Carte);
             int punt11 = carte2.Select(q => q.Valore).Sum();
             for (int i = 0; i < carte2.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count(); i++)
             {
-                if (punt11 > 21)
+                if (punt11 > 21 || Asso1)
                     punt11 -= 10;
             }
 
