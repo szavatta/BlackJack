@@ -93,9 +93,11 @@ namespace Test
             List<double> pmax = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             List<double> vcons = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             List<double> pcons = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
+            List<double> nblackjack = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
             int[] puntiMazziere = new int[30];
             int maxsplit = 0;
             int numass = 0;
+            int nblackjackmazziere = 0;
             double vass = 0;
             double pass = 0;
             List<Result> report = new List<Result>();
@@ -122,6 +124,9 @@ namespace Test
                         if (pcons[x] > pmax[x])
                             pmax[x] = pcons[x];
                     }
+
+                    if (gioco.Giocatori[x].HasBlackJack())
+                        nblackjack[x]++;
                 }
 
                 if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
@@ -136,6 +141,8 @@ namespace Test
                         pass += gioco.Giocatori[0].PuntataAssicurazione;
                 }
                 puntiMazziere[gioco.Mazziere.Punteggio]++;
+                if (gioco.Mazziere.HasBlackJack())
+                    nblackjackmazziere++;
 
                 report.Add(new Result
                 {
@@ -156,10 +163,6 @@ namespace Test
             var dt = Utils.GetDataTable(report);
             TestContext.WriteLine($"Mani: {gioco.Giri}");
 
-            TestContext.WriteLine("Mazziere");
-            TestContext.WriteLine($"   Vincita finale: {gioco.Mazziere.SoldiTotali}");
-            TestContext.WriteLine($"   Mani sballate: {gioco.Mazziere.ManiSballate}");
-
             for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
             {
                 TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString().Replace("Classes.","") 
@@ -172,6 +175,7 @@ namespace Test
                 TestContext.WriteLine($"   Perdita massima: {min[x]}");
                 TestContext.WriteLine($"   Vincite consecutive: {vmax[x]}");
                 TestContext.WriteLine($"   Perdite consecutive: {pmax[x]}");
+                TestContext.WriteLine($"   Black Jack: {nblackjack[x]} ({Math.Round((decimal)nblackjack[x] / gioco.Giri * 100, 1)}%)");
                 if (x == 0)
                 {
                     TestContext.WriteLine($"   Num assicurazioni: {numass}");
@@ -179,12 +183,17 @@ namespace Test
                     TestContext.WriteLine($"   Perdite assicurazioni: {pass}");
                 }
             }
+
             TestContext.WriteLine("Mazziere");
+            TestContext.WriteLine($"   Vincita finale: {gioco.Mazziere.SoldiTotali}");
+            TestContext.WriteLine($"   Mani sballate: {gioco.Mazziere.ManiSballate}");
             for (int i = 0; i < puntiMazziere.Length; i++)
             {
-                if (puntiMazziere[i]>0)
-                    TestContext.WriteLine($"   Punti: {i}: { puntiMazziere[i]}");
+                if (puntiMazziere[i] > 0)
+                    TestContext.WriteLine($"   Punti: {i}: {puntiMazziere[i]} ({Math.Round((decimal)puntiMazziere[i] / gioco.Giri * 100, 1)}%)");
             }
+            TestContext.WriteLine($"   Black Jack: {nblackjackmazziere} ({Math.Round((decimal)nblackjackmazziere / gioco.Giri * 100, 1)}%)");
+
             TestContext.WriteLine($"Max split: {maxsplit}");
 
         }
