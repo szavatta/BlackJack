@@ -59,7 +59,9 @@ namespace Classes
 
         public bool HasBlackJack()
         {
-            bool ret = Carte.Count() == 2 
+            bool split = this is Giocatore ? ((Giocatore)this).GiocatoreSplit != null : false;
+            bool ret = !split &&
+                Carte.Count() == 2 
                 && Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() == 1 
                 && Carte.Where(q => q.Numero >= Carta.NumeroCarta.Dieci).Count() == 1;
 
