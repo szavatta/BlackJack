@@ -139,9 +139,12 @@ namespace Classes
             {
                 Gioco.IdGiocatoreMano = null;
                 Gioco.Mazziere.CartaCoperta = false;
-                while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Puntata.Chiama)
+                if (Gioco.Giocatori.Where(q => q.HaSballato() == false).Count() > 0)
                 {
-                    Gioco.Mazziere.Chiama();
+                    while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Puntata.Chiama)
+                    {
+                        Gioco.Mazziere.Chiama();
+                    }
                 }
                 Gioco.TerminaMano();
             }
