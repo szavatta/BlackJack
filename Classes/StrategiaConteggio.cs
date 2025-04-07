@@ -5,12 +5,15 @@ using System.Text;
 
 namespace Classes
 {
+    /// <summary>
+    /// Chiama con punteggio minore di quello selezionato altrimenti Sta
+    /// </summary>
     [Serializable]
-    public class StrategiaConteggio : StrategiaGiocatore
+    public class StrategiaPunteggio : StrategiaGiocatore
     {
         public int Punteggio { get; set; }
 
-        public StrategiaConteggio(int punteggio = 17)
+        public StrategiaPunteggio(int punteggio = 17)
         {
             Punteggio = punteggio;
         }
@@ -25,7 +28,7 @@ namespace Classes
 
         public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
         {
-            if (Conteggio <= -2)
+            if (Conteggio <= -2) //Lasciare il tavolo
                 return puntataMinima;
             else if (Conteggio == -1)
                 return puntataMinima;

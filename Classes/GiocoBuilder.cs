@@ -6,6 +6,7 @@ namespace Classes
 {
     public class GiocoBuilder
     {
+
         private int NumGiocatori { get; set; }
         private int NumMazziIniziali { get; set; }
         private double PuntataMinima { get; set; }

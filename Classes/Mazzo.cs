@@ -47,6 +47,8 @@ namespace Classes
                     rnd = new Random(gioco.RandomMischiata.Value + gioco.CambiMazzi);
                 Carte = Carte.OrderBy(item => rnd.Next()).ToList();
             }
+
+            gioco.Log.AppendLine($"Nuovo mazzo di {Carte.Count} carte{(gioco.Mischia ? " mischiate" : "")}");
         }
         public Carta PescaCarta()
         {

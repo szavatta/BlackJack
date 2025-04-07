@@ -10,6 +10,7 @@ namespace Classes
     [Serializable]
     public class Giocatore : GiocatoreSemplice, ICloneable
     {
+
         public string Id { get; set; }
         [JsonConverter(typeof(StrategiaConverter))]
         public StrategiaGiocatore Strategia { get; set; }
@@ -22,21 +23,26 @@ namespace Classes
         public double PuntataCorrente { get; set; }
         public double PuntataPrecedente { get; set; }
         public bool SceltaAssicurazione { get; set; }
+        public double PuntataBase { get; set; }
 
-        public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "") : base(gioco)
+
+        public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "", double puntataBase = 1) : base(gioco)
         {
             Carte = new List<Carta>();
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
             Id = DateTime.Now.Ticks.ToString();
 
-
             SoldiTotali = soldi;
+            PuntataBase = puntataBase;
 
             if (strategia == null)
                 Strategia = new SempliceStrategiaGiocatore();
             else
                 Strategia = strategia;
+
+            gioco.Log.AppendLine($"Aggiunto giocatore {Nome} strategia {strategia.ToString().Replace("Classes.", "")}");
         }
+
         public enum EnumRisultato
         {
             Pari = 0,
@@ -108,14 +114,19 @@ namespace Classes
         public Giocatore Assicurazione()
         {
             PuntataAssicurazione = PuntataCorrente / 2;
+
+            Gioco.Log.AppendLine($"{Nome} accetta assicurazione");
+
             return this;
         }
 
         public void Punta()
         {
-            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, 5, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
+            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, PuntataBase, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
             if (Gioco.PuntataMassima.HasValue && PuntataCorrente > Gioco.PuntataMassima)
                 PuntataCorrente = Gioco.PuntataMassima.Value;
+
+            Gioco.Log.AppendLine($"{Nome} punta {PuntataCorrente}");
         }
 
         public Puntata Scelta()

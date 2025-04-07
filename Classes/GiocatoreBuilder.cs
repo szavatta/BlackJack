@@ -11,6 +11,7 @@ namespace Classes
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
         public double Soldi { get; set; }
+        public double PuntataBase { get; set; } = 1;
 
         public static GiocatoreBuilder Init()
         {
@@ -41,9 +42,15 @@ namespace Classes
             return this;
         }
 
+        public GiocatoreBuilder AggiungiPuntataBase(double puntataBase)
+        {
+            PuntataBase = puntataBase;
+            return this;
+        }
+
         public Giocatore build()
         {
-            return new Giocatore(Gioco, Strategia, Soldi, Nome);
+            return new Giocatore(Gioco, Strategia, Soldi, Nome, PuntataBase);
         }
     }
 }

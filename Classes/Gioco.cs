@@ -10,6 +10,72 @@ namespace Classes
     [Serializable]
     public class Gioco : ICloneable
     {
+        private Gioco() { }
+        public class GiocoBuilder
+        {
+            private static Gioco gioco;
+            private int numGiocatori;
+
+            public static GiocoBuilder Init()
+            {
+                gioco = new Gioco();
+                return new GiocoBuilder();
+            }
+
+            public GiocoBuilder AggiungiNumeroGiocatori(int numGiocatori)
+            {
+                this.numGiocatori = numGiocatori;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiNome(string nome)
+            {
+                gioco.Nome = nome;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiPuntataMinima(int puntataMinima)
+            {
+                gioco.PuntataMinima = puntataMinima;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiPuntataMassima(int puntataMassima)
+            {
+                gioco.PuntataMassima = puntataMassima;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiMischiata(bool mischia)
+            {
+                gioco.Mischia = mischia;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiMazzi(int numMazzi)
+            {
+                gioco.NumMazziIniziali = numMazzi;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiMischiataRandom(int? random)
+            {
+                gioco.RandomMischiata = random;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiPercentualeMischiata(int? perc)
+            {
+                gioco.PercMischiata = perc > 5 ? perc : 5;
+                return this;
+            }
+
+            public Gioco build()
+            {
+                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata);
+            }
+
+        }
         public List<Giocatore> Giocatori { get; set; }
         public Mazzo Mazzo { get; set; }
         public Mazziere Mazziere { get; set; }
@@ -29,6 +95,7 @@ namespace Classes
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
         DateTime DataCreazione { get; set; }
+        public StringBuilder Log { get; set; }
 
         public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, double puntataMinima = 5, double? puntataMassima = null, int? percMischiata = null)
         {
@@ -44,6 +111,8 @@ namespace Classes
             PuntataMinima = puntataMinima;
             PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
+            Log = new StringBuilder();
+            Log.AppendLine("Inizio partita");
             Mazzo.CreaMazzo(this);
             if (string.IsNullOrEmpty(nome))
                 Nome = "Partita";
@@ -66,14 +135,22 @@ namespace Classes
         {
             GiocataIniziale();
 
+            bool isInGioco = false;
             for (int i = 0; i < Giocatori.Count(); i++)
             {
                 GiocataGiocatore(i);
+                if (!Giocatori[i].HaSballato())
+                    isInGioco = true;
             }
-            while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
+
+            if (isInGioco)
             {
-                Mazziere.Chiama();
+                while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
+                {
+                    Mazziere.Chiama();
+                }
             }
+
             TerminaMano();
             try
             {
@@ -117,6 +194,11 @@ namespace Classes
                 {
                     Raddoppia(i);
                 }
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Stai && Giocatori[i].Punteggio <= 21)
+                {
+                    Log.AppendLine($"{Giocatori[i].Nome} sta");
+                }
+
             }
         }
 
@@ -134,6 +216,8 @@ namespace Classes
                 Giocatori[i].PuntataCorrente *= 2;
             }
 
+            Log.AppendLine($"{Giocatori[i].Nome} raddoppia");
+
             Giocatori[i].Chiama();
         }
 
@@ -148,6 +232,7 @@ namespace Classes
             clone.SoldiTotali = 0;
             Giocatori.Insert(i + 1, clone);
 
+            Log.AppendLine($"{Giocatori[i].Nome} effettua lo split");
 
             if (Giocatori[i].Carte.Count == 1)
             {
@@ -157,19 +242,34 @@ namespace Classes
 
         public void TerminaMano()
         {
-            foreach (var vincente in GiocatoriVincenti())
+            Log.AppendLine($"Mano terminata");
+
+            foreach (var giocatore in GiocatoriVincenti())
             {
-                vincente.ManiVinte++;
-                double paga = vincente.HasBlackJack() ? vincente.PuntataCorrente * 3 / 2 : vincente.PuntataCorrente;
+                giocatore.ManiVinte++;
+                double paga = giocatore.HasBlackJack() ? giocatore.PuntataCorrente * 3 / 2 : giocatore.PuntataCorrente;
                 Mazziere.SoldiTotali -= paga;
-                vincente.SoldiTotali += paga;
+                giocatore.SoldiTotali += paga;
+                Log.AppendLine($"{giocatore.Nome} vince, nuovo saldo {giocatore.SoldiTotali}");
+                Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
+                Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
             }
 
-            foreach (var perdente in GiocatoriPerdenti())
+            foreach (var giocatore in GiocatoriPerdenti())
             {
-                perdente.ManiPerse++;
-                Mazziere.SoldiTotali += perdente.PuntataCorrente;
-                perdente.SoldiTotali -= perdente.PuntataCorrente;
+                giocatore.ManiPerse++;
+                Mazziere.SoldiTotali += giocatore.PuntataCorrente;
+                giocatore.SoldiTotali -= giocatore.PuntataCorrente;
+                Log.AppendLine($"{giocatore.Nome} perde, nuovo saldo {giocatore.SoldiTotali}");
+                Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
+                Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
+            }
+
+            foreach (var giocatore in GiocatoriPari())
+            {
+                Log.AppendLine($"{giocatore.Nome} pareggia, nuovo saldo {giocatore.SoldiTotali}");
+                Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
+                Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
             }
 
             foreach (var giocatore in Giocatori.Where(q => q.GiocatoreSplit != null))
@@ -203,6 +303,7 @@ namespace Classes
 
         public void Inizializza()
         {
+            Log.AppendLine("");
             Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
 
             if (Mazzo.Carte.Count <= (52 * NumMazziIniziali) * PercMischiata / 100)
@@ -223,6 +324,7 @@ namespace Classes
             Mazziere.CartaCoperta = true;
             Iniziato = false;
             Giri++;
+            Log.AppendLine($"Nuova mano n.{Giri}");
         }
 
         public void DistribuisciCarteIniziali()

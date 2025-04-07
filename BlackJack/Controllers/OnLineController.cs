@@ -11,7 +11,7 @@ namespace BlackJack.Controllers
     {
         public IActionResult Index()
         {
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNome("On line")
                 .AggiungiMazzi(6)
                 .build();

@@ -23,7 +23,7 @@ namespace BlackJack.Controllers
 
         public IActionResult TestStrategia()
         {
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNome("Partita Test")
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
@@ -56,7 +56,7 @@ namespace BlackJack.Controllers
         }
         public IActionResult Index()
         {
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
@@ -73,7 +73,7 @@ namespace BlackJack.Controllers
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaConteggio()).build());
+                .AggiungiStrategia(new StrategiaPunteggio()).build());
 
             SetSessionGioco(gioco);
 
@@ -128,7 +128,7 @@ namespace BlackJack.Controllers
         [HttpPost]
         public JsonResult GetCarteTest()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).build();
             for (int i = 0; i < 20; i++)
             {
                 gioco.Mazziere.Chiama();
@@ -139,7 +139,7 @@ namespace BlackJack.Controllers
         [HttpPost]
         public JsonResult GetCarteTestStrategy()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(1).build();
             gioco.Mazziere.Chiama();
             gioco.Giocatori[0].Chiama();
             gioco.Giocatori[0].Chiama();

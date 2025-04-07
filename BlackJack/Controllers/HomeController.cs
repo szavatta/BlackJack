@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlackJack.Controllers
 {
@@ -84,13 +83,14 @@ namespace BlackJack.Controllers
 
             }
 
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome(nome)
                 .AggiungiMazzi(6)
                 //.AggiungiMischiataRandom(1)
                 .build();
 
+            //gioco.Mazzo.Carte.Clear();
             //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
             //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
             //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;
@@ -104,15 +104,21 @@ namespace BlackJack.Controllers
             //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Jack;
             //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
 
-            //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del giocatore split
-            //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
-            //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Asso;
-            //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
-            //gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Jack;
-            //gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[5].Seme)}-{((int)gioco.Mazzo.Carte[5].Numero)}.png";
-            //gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Jack;
-            //gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[4].Seme)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
-            
+            gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del giocatore split
+            gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
+            gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Otto;
+            gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
+            gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Asso;
+            gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
+            gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Otto;
+            gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
+            gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Jack;
+            gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[4].Seme)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
+            gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Jack;
+            gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[5].Seme)}-{((int)gioco.Mazzo.Carte[5].Numero)}.png";
+            gioco.Mazzo.Carte[6].Numero = Carta.NumeroCarta.Cinque;
+            gioco.Mazzo.Carte[6].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[6].Seme)}-{((int)gioco.Mazzo.Carte[6].Numero)}.png";
+
             //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Asso; //righe di test per il black jack del giocatore
             //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
             //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Jack;

@@ -23,7 +23,7 @@ namespace Classes
             }
             else if (strategia == "StrategiaConteggio")
             {
-                return (StrategiaConteggio)jsonObject.ToObject<StrategiaConteggio>(serializer);
+                return (StrategiaPunteggio)jsonObject.ToObject<StrategiaPunteggio>(serializer);
             }
             else if (strategia == "SempliceStrategiaGiocatore")
             {
@@ -40,10 +40,10 @@ namespace Classes
             {
                 jsonObject["Strategia"] = "BasicStrategy";
             }
-            else if (strategia is StrategiaConteggio)
+            else if (strategia is StrategiaPunteggio)
             {
                 jsonObject["Strategia"] = "StrategiaConteggio";
-                jsonObject["Punteggio"] = ((StrategiaConteggio)strategia).Punteggio;
+                jsonObject["Punteggio"] = ((StrategiaPunteggio)strategia).Punteggio;
             }
             else if (strategia is SempliceStrategiaGiocatore)
             {

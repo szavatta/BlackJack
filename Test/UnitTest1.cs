@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Test
 {
-    public class Tests1
+    public class Simulations
     {
         [SetUp]
         public void Setup()
@@ -36,21 +36,29 @@ namespace Test
         [Test]
         public void TestGiocate()
         {
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
                 //.AggiungiMischiataRandom(9)
-                .AggiungiPuntataMinima(1)
+                .AggiungiPuntataMinima(10)
                 .AggiungiPercentualeMischiata(20)
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiPuntataBase(100)
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiPuntataBase(100)
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategyDeviation())
+                .build());
+
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiPuntataBase(100)
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new StrategiaRaddoppia())
                 .build());
@@ -67,7 +75,7 @@ namespace Test
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
             //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaConteggio(16))
+            //    .AggiungiStrategia(new StrategiaPunteggio(16))
             //    .build());
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
@@ -102,7 +110,7 @@ namespace Test
             double pass = 0;
             List<Result> report = new List<Result>();
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 gioco.Giocata();
 
@@ -110,8 +118,8 @@ namespace Test
                 {
                     if (gioco.Giocatori[x].SoldiTotali > max[x]) max[x] = gioco.Giocatori[x].SoldiTotali;
                     if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
-                    if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Vinto) 
-                    { 
+                    if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Vinto)
+                    {
                         vcons[x]++;
                         pcons[x] = 0;
                         if (vcons[x] > vmax[x])
@@ -162,39 +170,86 @@ namespace Test
             }
             var dt = Utils.GetDataTable(report);
             TestContext.WriteLine($"Mani: {gioco.Giri}");
+            gioco.Log.AppendLine("");
+            gioco.Log.AppendLine("Partita finita");
+            gioco.Log.AppendLine("");
+            string riga = "";
 
             for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
             {
-                TestContext.WriteLine(gioco.Giocatori[x].Strategia.ToString().Replace("Classes.","") 
-                    + (gioco.Giocatori[x].Strategia is StrategiaConteggio ? " " + ((StrategiaConteggio)gioco.Giocatori[x].Strategia).Punteggio.ToString() : ""));
-                TestContext.WriteLine($"   Vincita finale: {gioco.Giocatori[x].SoldiTotali}");
-                TestContext.WriteLine($"   Mani vinte: {gioco.Giocatori[x].ManiVinte}");
-                TestContext.WriteLine($"   Mani perse: {gioco.Giocatori[x].ManiPerse}");
-                TestContext.WriteLine($"   Mani sballate: {gioco.Giocatori[x].ManiSballate}");
-                TestContext.WriteLine($"   Vincita massima: {max[x]}");
-                TestContext.WriteLine($"   Perdita massima: {min[x]}");
-                TestContext.WriteLine($"   Vincite consecutive: {vmax[x]}");
-                TestContext.WriteLine($"   Perdite consecutive: {pmax[x]}");
-                TestContext.WriteLine($"   Black Jack: {nblackjack[x]} ({Math.Round((decimal)nblackjack[x] / gioco.Giri * 100, 1)}%)");
+                riga = $"{gioco.Giocatori[x].Nome}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = gioco.Giocatori[x].Strategia.ToString().Replace("Classes.", "")
+                    + (gioco.Giocatori[x].Strategia is StrategiaPunteggio ? " " + ((StrategiaPunteggio)gioco.Giocatori[x].Strategia).Punteggio.ToString() : "");
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Vincita finale: {gioco.Giocatori[x].SoldiTotali}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Mani vinte: {gioco.Giocatori[x].ManiVinte}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Mani perse: {gioco.Giocatori[x].ManiPerse}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Mani sballate: {gioco.Giocatori[x].ManiSballate}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Vincita massima: {max[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Perdita massima: {min[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Vincite consecutive: {vmax[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Perdite consecutive: {pmax[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Black Jack: {nblackjack[x]} ({Math.Round((decimal)nblackjack[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
                 if (x == 0)
                 {
-                    TestContext.WriteLine($"   Num assicurazioni: {numass}");
-                    TestContext.WriteLine($"   Vincite assicurazioni: {vass}");
-                    TestContext.WriteLine($"   Perdite assicurazioni: {pass}");
+                    riga = $"   Num assicurazioni: {numass}";
+                    gioco.Log.AppendLine(riga);
+                    TestContext.WriteLine(riga);
+                    riga = $"   Vincite assicurazioni: {vass}";
+                    gioco.Log.AppendLine(riga);
+                    TestContext.WriteLine(riga);
+                    riga = $"   Perdite assicurazioni: {pass}";
+                    gioco.Log.AppendLine(riga);
+                    TestContext.WriteLine(riga);
                 }
             }
 
-            TestContext.WriteLine("Mazziere");
-            TestContext.WriteLine($"   Vincita finale: {gioco.Mazziere.SoldiTotali}");
-            TestContext.WriteLine($"   Mani sballate: {gioco.Mazziere.ManiSballate}");
+            riga = "Mazziere";
+            gioco.Log.AppendLine(riga);
+            TestContext.WriteLine(riga);
+            riga = $"   Vincita finale: {gioco.Mazziere.SoldiTotali}";
+            gioco.Log.AppendLine(riga);
+            TestContext.WriteLine(riga);
+            riga = $"   Mani sballate: {gioco.Mazziere.ManiSballate}";
+            gioco.Log.AppendLine(riga);
+            TestContext.WriteLine(riga);
             for (int i = 0; i < puntiMazziere.Length; i++)
             {
                 if (puntiMazziere[i] > 0)
-                    TestContext.WriteLine($"   Punti: {i}: {puntiMazziere[i]} ({Math.Round((decimal)puntiMazziere[i] / gioco.Giri * 100, 1)}%)");
+                {
+                    riga = $"   Punti: {i}: {puntiMazziere[i]} ({Math.Round((decimal)puntiMazziere[i] / gioco.Giri * 100, 1)}%)";
+                    gioco.Log.AppendLine(riga);
+                    TestContext.WriteLine(riga);
+                }
             }
-            TestContext.WriteLine($"   Black Jack: {nblackjackmazziere} ({Math.Round((decimal)nblackjackmazziere / gioco.Giri * 100, 1)}%)");
+            riga = $"   Black Jack: {nblackjackmazziere} ({Math.Round((decimal)nblackjackmazziere / gioco.Giri * 100, 1)}%)";
+            gioco.Log.AppendLine(riga);
+            TestContext.WriteLine(riga);
 
-            TestContext.WriteLine($"Max split: {maxsplit}");
+            riga = $"Max split: {maxsplit}";
+            gioco.Log.AppendLine(riga);
+            TestContext.WriteLine(riga);
 
         }
 
@@ -204,7 +259,7 @@ namespace Test
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
             int totale = 0;
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(10)
                 .AggiungiMazzi(6)
                 .build();
@@ -231,7 +286,7 @@ namespace Test
             int vinteGiocatori = 0;
             int vinteMazziere = 0;
             int totale = 0;
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiMazzi(6)
                 .AggiungiPuntataMinima(5)
                 .AggiungiPuntataMassima(2000)
@@ -313,7 +368,7 @@ namespace Test
         [Test]
         public void Test1()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
             for (int i = 0; i < 4; i++)
             {
                 gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Tre, Carta.SemeCarta.Picche));
@@ -340,7 +395,7 @@ namespace Test
         [Test]
         public void Test2()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
             for (int i = 0; i < 4; i++)
             {
                 gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
@@ -369,7 +424,7 @@ namespace Test
         [Test]
         public void TestAssicurazione()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
 
@@ -391,7 +446,7 @@ namespace Test
         [Test]
         public void TestAssicurazione2()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
 
@@ -413,7 +468,7 @@ namespace Test
         [Test]
         public void TestAssicurazione3()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
 
@@ -434,13 +489,13 @@ namespace Test
         [Test]
         public void TestConteggio()
         {
-            Gioco gioco = GiocoBuilder.Init()
+            Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(1)
                 .AggiungiMischiataRandom(1)
                 .AggiungiPercentualeMischiata(0)
                 .build();
-            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio(17)).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
             for (int i = 0; i < 52; i++)
             {
                 gioco.Giocatori[0].Chiama();
@@ -449,9 +504,65 @@ namespace Test
         }
 
         [Test]
+        public void TestConteggio2()
+        {
+            Gioco gioco = Gioco.GiocoBuilder.Init()
+                .AggiungiNumeroGiocatori(0)
+                .AggiungiMazzi(1)
+                .AggiungiMischiataRandom(1)
+                .AggiungiMischiata(true)
+                //.AggiungiPercentualeMischiata(0)
+                .build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
+            for (int i = 0; i < 10; i++)
+            {
+                gioco.Giocatori[0].Chiama();
+            }
+            Assert.AreEqual(-2, gioco.Giocatori[0].Strategia.Conteggio);
+            for (int i = 0; i < 10; i++)
+            {
+                gioco.Giocatori[0].Chiama();
+            }
+            Assert.AreEqual(4, gioco.Giocatori[0].Strategia.Conteggio);
+        }
+
+        [Test]
+        public void TestConteggio3()
+        {
+            Gioco gioco = Gioco.GiocoBuilder.Init()
+                .AggiungiNumeroGiocatori(0)
+                .AggiungiMazzi(6)
+                .AggiungiMischiataRandom(1)
+                .AggiungiMischiata(true)
+                //.AggiungiPercentualeMischiata(0)
+                .build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
+            int maxConteggio = 0;
+            int minConteggio = 0;
+            double minTrueCount = 0;
+            double maxTrueCount = 0;
+            int numCarte = gioco.Mazzo.Carte.Count;
+            for (int i = 0; i < numCarte; i++)
+            {
+                gioco.Giocatori[0].Chiama();
+                if (gioco.Giocatori[0].Strategia.Conteggio > maxConteggio)
+                    maxConteggio = gioco.Giocatori[0].Strategia.Conteggio;
+                if (gioco.Giocatori[0].Strategia.Conteggio < minConteggio)
+                    minConteggio = gioco.Giocatori[0].Strategia.Conteggio;
+                if (gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count) > maxTrueCount)
+                    maxTrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count);
+                if (gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count) < minTrueCount)
+                    minTrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count);
+            }
+            Assert.AreEqual(0, gioco.Giocatori[0].Strategia.Conteggio);
+            Assert.AreEqual(3, maxConteggio);
+            Assert.AreEqual(-13, minConteggio);
+        }
+
+        [Test]
         public void Test3()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(2).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
@@ -478,7 +589,7 @@ namespace Test
         [Test]
         public void TestBlackJack()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Jack, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
@@ -499,7 +610,7 @@ namespace Test
         [Test]
         public void TestBlackJack2()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
@@ -522,7 +633,7 @@ namespace Test
         [Test]
         public void TestBlackJack3()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Quadri));
@@ -546,7 +657,7 @@ namespace Test
         [Test]
         public void TestBlackJackMazziere()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
@@ -572,7 +683,7 @@ namespace Test
         [Test]
         public void TestBlackJack4()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
@@ -597,7 +708,7 @@ namespace Test
         [Test]
         public void Test21Giocatore()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiMazzi(0).AggiungiPuntataMinima(5).build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
@@ -623,9 +734,9 @@ namespace Test
         [Test]
         public void TestCount()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(5).AggiungiMazzi(1).AggiungiMischiata(false).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(5).AggiungiMazzi(1).AggiungiMischiata(false).build();
             
-            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaConteggio(17)).build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
 
             gioco.Giocata();
             Assert.AreEqual(4, gioco.Giocatori[0].Strategia.Conteggio);
@@ -638,7 +749,7 @@ namespace Test
         [Test]
         public void TestSplit()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiPuntataMinima(1).AggiungiMischiata(false).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiPuntataMinima(1).AggiungiMischiata(false).build();
             
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new SempliceStrategiaGiocatore()).build());
@@ -679,7 +790,7 @@ namespace Test
         [Test]
         public void TestDueAssi()
         {
-            Gioco gioco = GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(1).AggiungiMazzi(0).build();
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
@@ -706,10 +817,10 @@ namespace Test
         [SetUp]
         public void Setup()
         {
-            gioco = GiocoBuilder.Init().AggiungiMazzi(0).build();
+            gioco = Gioco.GiocoBuilder.Init().AggiungiMazzi(0).build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
-                .AggiungiStrategia(new BasicStrategy())
+                .AggiungiStrategia(new BasicStrategyDeviation())
                 .build());
 
         }

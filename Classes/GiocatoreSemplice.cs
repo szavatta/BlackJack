@@ -29,8 +29,13 @@ namespace Classes
             Carta carta = Gioco.Mazzo.PescaCarta();
             Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));
             Carte.Add(carta);
+            Gioco.Log.AppendLine($"{Nome} pesca carta {carta} {(Nome == "Mazziere" && this.Carte.Count == 2 ? "(nascosta)" : "")}");
+
             if (Punteggio > 21)
+            {
                 ManiSballate += 1;
+                Gioco.Log.AppendLine($"{Nome} sballa");
+            }
 
             return carta;
         }
@@ -59,7 +64,23 @@ namespace Classes
 
         public bool HasBlackJack()
         {
-            bool split = this is Giocatore ? ((Giocatore)this).GiocatoreSplit != null : false;
+            bool split = false;
+            if (this is Giocatore)
+            {
+                if (((Giocatore)this).GiocatoreSplit != null)
+                    split = true;
+                else
+                {
+                    foreach (var item in Gioco.Giocatori)
+                    {
+                        if (item.GiocatoreSplit?.Id == ((Giocatore)this).Id)
+                        {
+                            split = true;
+                            break;
+                        }
+                    }
+                }
+            }
             bool ret = !split &&
                 Carte.Count() == 2 
                 && Carte.Where(q => q.Numero == Carta.NumeroCarta.Asso).Count() == 1 
