@@ -45,6 +45,7 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
             //ViewBag.IdGiocatore = HttpContext.Session.GetString("IdGiocatore");
             ViewBag.IdGiocatore = HttpContext.Request.Cookies["idGiocatore"];
+            gioco.Giocatori.ForEach(q => q.ProssimaScelta = q.Scelta().ToString());
 
             return View(gioco);
         }
@@ -159,6 +160,7 @@ namespace BlackJack.Controllers
                     gioco.Giocatori[0].Stai();
             }
 
+            giocatore.ProssimaScelta = giocatore.Scelta().ToString();
             return Json(new { gioco = JsonGioco(gioco), puntata = pok });
         }
 
@@ -181,6 +183,8 @@ namespace BlackJack.Controllers
                 gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
             else if (giocatore.Punteggio >= 21)
                 giocatore.Stai();
+            
+            giocatore.ProssimaScelta = giocatore.Scelta().ToString();
 
             return Json(new { gioco = JsonGioco(gioco) });
         }
@@ -191,6 +195,7 @@ namespace BlackJack.Controllers
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
             giocatore.Stai();
+            giocatore.ProssimaScelta = giocatore.Scelta().ToString();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
@@ -213,6 +218,7 @@ namespace BlackJack.Controllers
                 if (giocatore.Punteggio >= 21)
                     giocatore.Stai();
             }
+            giocatore.ProssimaScelta = giocatore.Scelta().ToString();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
@@ -231,6 +237,7 @@ namespace BlackJack.Controllers
             {
                 giocatore.Raddoppia();
             }
+            giocatore.ProssimaScelta = giocatore.Scelta().ToString();
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
@@ -258,6 +265,7 @@ namespace BlackJack.Controllers
             string scelta = giocatore.Scelta().ToString();
             giocatore.Split();
             Giocatore gsplit = gioco.Giocatori.SkipWhile(q => q.Id != idGiocatore).Skip(1).FirstOrDefault();
+            giocatore.ProssimaScelta = giocatore.Scelta().ToString();
 
             return Json(new { gioco = JsonGioco(gioco), idGiocatore = gsplit.Id, scelta = scelta });
         }

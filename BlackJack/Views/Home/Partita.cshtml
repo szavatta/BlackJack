@@ -47,6 +47,7 @@
                     <input type='button' value='Assicurazione SI' class='btnAssicurazione btn btn-info d-none' scelta="1"/>
                     <input type='button' value='Assicurazione NO' class='btnAssicurazione btn btn-info d-none' scelta="0"/>
                 </div>
+                <div class="prossimaGiocata"></div>
                 <div class="fiches-giocatore d-flex flex-wrap justify-content-center mt-2 d-none">
                     <img src="~/Fiches/1.png" valore="1" />
                     <img src="~/Fiches/5.png" valore="5" />
@@ -435,6 +436,7 @@
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
             div.find(".numerrori").text(errori);
+            div.find(".prossimaGiocata").html("Prossima scelta da strategia: " + giocatore.ProssimaScelta);
 
             if (giocatore.Carte.length == 0) {
                 div.find(".errore").text("");
