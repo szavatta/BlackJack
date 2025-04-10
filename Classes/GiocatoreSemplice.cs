@@ -17,6 +17,13 @@ namespace Classes
         public int Punteggio => CalcolaPunteggio();
         public int ManiSballate { get; set; }
 
+        public enum Puntata
+        {
+            Chiama = 0,
+            Stai = 1,
+            Raddoppia = 2,
+            Dividi = 3
+        }
 
         public GiocatoreSemplice(Gioco gioco)
         {
@@ -52,15 +59,6 @@ namespace Classes
 
             return punt11;
         }
-
-        public enum Puntata
-        {
-            Chiama = 0,
-            Stai = 1,
-            Raddoppia = 2,
-            Dividi = 3
-        }
-
 
         public bool HasBlackJack()
         {

@@ -40,7 +40,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(9)
+                .AggiungiMischiataRandom(8)
                 .AggiungiSecondaCartaInizialeMazziere(false)
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
