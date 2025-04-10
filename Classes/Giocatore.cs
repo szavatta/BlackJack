@@ -19,14 +19,14 @@ namespace Classes
         public int ManiVinte { get; set; }
         public int ManiPerse { get; set; }
         public bool CanSplit { get; set; }
-        public double PuntataAssicurazione { get; set; }
-        public double PuntataCorrente { get; set; }
-        public double PuntataPrecedente { get; set; }
+        public decimal PuntataAssicurazione { get; set; }
+        public decimal PuntataCorrente { get; set; }
+        public decimal PuntataPrecedente { get; set; }
         public bool SceltaAssicurazione { get; set; }
-        public double PuntataBase { get; set; }
+        public decimal PuntataBase { get; set; }
 
 
-        public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, double soldi = 0, string nome = "", double puntataBase = 1) : base(gioco)
+        public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, decimal soldi = 0, string nome = "", decimal puntataBase = 1) : base(gioco)
         {
             Carte = new List<Carta>();
             Nome = string.IsNullOrEmpty(nome) ? $"Giocatore { (gioco != null ? gioco.Giocatori.Count + 1 : 0) }" : nome;
@@ -70,7 +70,7 @@ namespace Classes
             return this;
         }
 
-        public Giocatore Punta(double puntata)
+        public Giocatore Punta(decimal puntata)
         {
             Gioco.Iniziato = true;
             PuntataCorrente = puntata;

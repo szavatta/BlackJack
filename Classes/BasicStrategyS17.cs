@@ -8,7 +8,7 @@ namespace Classes
     [Serializable]
     public class BasicStrategyS17 : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             int pg= giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
@@ -109,7 +109,7 @@ namespace Classes
             }
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
+        public override decimal Puntata(Giocatore giocatore, decimal puntataMinima, decimal puntataBase, decimal Conteggio)
         {
             if (Conteggio <= -2)
                 return puntataMinima;
@@ -133,7 +133,7 @@ namespace Classes
             return Conteggio;
         }
 
-        public override bool Assicurazione(Giocatore giocatore, double conteggio)
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
         {
             return false;
         }

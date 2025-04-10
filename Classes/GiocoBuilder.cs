@@ -9,8 +9,8 @@ namespace Classes
 
         private int NumGiocatori { get; set; }
         private int NumMazziIniziali { get; set; }
-        private double PuntataMinima { get; set; }
-        private double? PuntataMassima { get; set; }
+        private decimal PuntataMinima { get; set; }
+        private decimal? PuntataMassima { get; set; }
         private bool Mischia { get; set; } = true;
         private int? RandomMischiata { get; set; }
         private int? PercMischiata { get; set; }

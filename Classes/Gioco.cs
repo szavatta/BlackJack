@@ -81,8 +81,8 @@ namespace Classes
         public Mazziere Mazziere { get; set; }
 
         public int NumMazziIniziali { get; set; }
-        public double PuntataMinima { get; set; }
-        public double? PuntataMassima { get; set; }
+        public decimal PuntataMinima { get; set; }
+        public decimal? PuntataMassima { get; set; }
         public bool Mischia { get; set; }
         public int? RandomMischiata { get; set; }
         public int? PercMischiata { get; set; }
@@ -97,7 +97,7 @@ namespace Classes
         DateTime DataCreazione { get; set; }
         public StringBuilder Log { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, double puntataMinima = 5, double? puntataMassima = null, int? percMischiata = null)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -247,7 +247,7 @@ namespace Classes
             foreach (var giocatore in GiocatoriVincenti())
             {
                 giocatore.ManiVinte++;
-                double paga = giocatore.HasBlackJack() ? giocatore.PuntataCorrente * 3 / 2 : giocatore.PuntataCorrente;
+                decimal paga = giocatore.HasBlackJack() ? giocatore.PuntataCorrente * 3 / 2 : giocatore.PuntataCorrente;
                 Mazziere.SoldiTotali -= paga;
                 giocatore.SoldiTotali += paga;
                 Log.AppendLine($"{giocatore.Nome} vince, nuovo saldo {giocatore.SoldiTotali}");

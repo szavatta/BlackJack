@@ -10,8 +10,8 @@ namespace Classes
         public StrategiaGiocatore Strategia { get; set; }
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
-        public double Soldi { get; set; }
-        public double PuntataBase { get; set; } = 1;
+        public decimal Soldi { get; set; }
+        public decimal PuntataBase { get; set; } = 1;
 
         public static GiocatoreBuilder Init()
         {
@@ -36,13 +36,13 @@ namespace Classes
             return this;
         }
 
-        public GiocatoreBuilder AggiungiSoldi(double soldi)
+        public GiocatoreBuilder AggiungiSoldi(decimal soldi)
         {
             Soldi = soldi;
             return this;
         }
 
-        public GiocatoreBuilder AggiungiPuntataBase(double puntataBase)
+        public GiocatoreBuilder AggiungiPuntataBase(decimal puntataBase)
         {
             PuntataBase = puntataBase;
             return this;

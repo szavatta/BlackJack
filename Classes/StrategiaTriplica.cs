@@ -6,7 +6,7 @@ namespace Classes
 {
     public class StrategiaTriplica : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             if (giocatore.Punteggio < 17)
                 return Giocatore.Puntata.Chiama;
@@ -14,7 +14,7 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
+        public override decimal Puntata(Giocatore giocatore, decimal puntataMinima, decimal puntataBase, decimal Conteggio)
         {
             if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
                 return giocatore.PuntataPrecedente * 3;
@@ -25,7 +25,7 @@ namespace Classes
         }
 
 
-        public override bool Assicurazione(Giocatore giocatore, double conteggio)
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
         {
             return false;
         }
@@ -33,7 +33,7 @@ namespace Classes
 
     public class StrategiaRaddoppia : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)
+        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             if (giocatore.Punteggio < 17)
                 return Giocatore.Puntata.Chiama;
@@ -41,9 +41,9 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
         }
 
-        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
+        public override decimal Puntata(Giocatore giocatore, decimal puntataMinima, decimal puntataBase, decimal Conteggio)
         {
-            double puntata = 0;
+            decimal puntata = 0;
             if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
                 puntata = giocatore.PuntataPrecedente * 2;
             else if (giocatore.Risultato == Giocatore.EnumRisultato.Vinto)
@@ -54,7 +54,7 @@ namespace Classes
             return puntata;
         }
 
-        public override bool Assicurazione(Giocatore giocatore, double conteggio)
+        public override bool Assicurazione(Giocatore giocatore, decimal conteggio)
         {
             return false;
         }

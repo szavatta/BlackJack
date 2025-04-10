@@ -21,15 +21,15 @@ namespace Test
 
         class Result
         {
-            public double Cassa { get; set; }
-            public double Puntata { get; set; }
+            public decimal Cassa { get; set; }
+            public decimal Puntata { get; set; }
             public string Risultato { get; set; }
             public int PunteggioGiocatore { get; set; }
             public int PunteggioMazziere { get; set; }
             public string CarteGiocatore { get; set; }
             public string CarteMazziere { get; set; }
             public int Conteggio { get; set; }
-            public double TrueCount { get; set; }
+            public decimal TrueCount { get; set; }
             public int NumCarte { get; set; }
         }
 
@@ -102,19 +102,19 @@ namespace Test
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
-            List<double> max = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
-            List<double> min = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
-            List<double> vmax = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
-            List<double> pmax = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
-            List<double> vcons = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
-            List<double> pcons = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
-            List<double> nblackjack = new List<double> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> max = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> min = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> vmax = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> pmax = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> vcons = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> pcons = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> nblackjack = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             int[] puntiMazziere = new int[30];
             int maxsplit = 0;
             int numass = 0;
             int nblackjackmazziere = 0;
-            double vass = 0;
-            double pass = 0;
+            decimal vass = 0;
+            decimal pass = 0;
             List<Result> report = new List<Result>();
 
             for (int i = 0; i < 1000; i++)
@@ -302,10 +302,10 @@ namespace Test
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaTriplica()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaRaddoppia()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
-            double puntatamassima = 0;
+            decimal puntatamassima = 0;
             int perseconsecutive = 0;
             int perseconsecutivemax = 0;
-            double puntatamassima2 = 0;
+            decimal puntatamassima2 = 0;
             int perseconsecutive2 = 0;
             int perseconsecutivemax2 = 0;
 
@@ -546,8 +546,8 @@ namespace Test
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
             int maxConteggio = 0;
             int minConteggio = 0;
-            double minTrueCount = 0;
-            double maxTrueCount = 0;
+            decimal minTrueCount = 0;
+            decimal maxTrueCount = 0;
             int numCarte = gioco.Mazzo.Carte.Count;
             for (int i = 0; i < numCarte; i++)
             {
@@ -709,7 +709,7 @@ namespace Test
             Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
             Assert.IsTrue(!gioco.Mazziere.HasBlackJack());
             Assert.IsTrue(gioco.Giocatori[0].HasBlackJack());
-            Assert.IsTrue(gioco.Giocatori[0].SoldiTotali == 7.5);
+            Assert.IsTrue(gioco.Giocatori[0].SoldiTotali == (decimal)7.5);
         }
 
         [Test]

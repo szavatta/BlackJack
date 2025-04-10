@@ -13,7 +13,7 @@ namespace Classes
         [JsonIgnore]
         public Gioco Gioco { get; set; }
         public String Nome { get; set; }
-        public double SoldiTotali { get; set; }
+        public decimal SoldiTotali { get; set; }
         public int Punteggio => CalcolaPunteggio();
         public int ManiSballate { get; set; }
 
