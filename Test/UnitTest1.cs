@@ -39,8 +39,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata(true)
-                .AggiungiMischiataRandom(9)
+                .AggiungiMischiata(9)
                 .AggiungiSecondaCartaInizialeMazziere(true)
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
@@ -500,7 +499,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(1)
-                .AggiungiMischiataRandom(1)
+                .AggiungiMischiata(1)
                 .AggiungiPercentualeMischiata(0)
                 .build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
@@ -517,8 +516,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(1)
-                .AggiungiMischiataRandom(1)
-                .AggiungiMischiata(true)
+                .AggiungiMischiata(1)
                 //.AggiungiPercentualeMischiata(0)
                 .build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
@@ -540,8 +538,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiataRandom(1)
-                .AggiungiMischiata(true)
+                .AggiungiMischiata(1)
                 //.AggiungiPercentualeMischiata(0)
                 .build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
@@ -742,7 +739,7 @@ namespace Test
         [Test]
         public void TestCount()
         {
-            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(5).AggiungiMazzi(1).AggiungiMischiata(false).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(5).AggiungiMazzi(1).build();
             
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
 
@@ -757,7 +754,7 @@ namespace Test
         [Test]
         public void TestSplit()
         {
-            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiPuntataMinima(1).AggiungiMischiata(false).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiMazzi(0).AggiungiPuntataMinima(1).build();
             
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new BasicStrategy()).build());
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new SempliceStrategiaGiocatore()).build());

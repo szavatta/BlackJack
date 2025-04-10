@@ -46,21 +46,16 @@ namespace Classes
                 return this;
             }
 
-            public GiocoBuilder AggiungiMischiata(bool mischia)
+            public GiocoBuilder AggiungiMischiata(int? random = null)
             {
-                gioco.Mischia = mischia;
+                gioco.Mischia = true;
+                gioco.RandomMischiata = random;
                 return this;
             }
 
             public GiocoBuilder AggiungiMazzi(int numMazzi)
             {
                 gioco.NumMazziIniziali = numMazzi;
-                return this;
-            }
-
-            public GiocoBuilder AggiungiMischiataRandom(int? random)
-            {
-                gioco.RandomMischiata = random;
                 return this;
             }
 

@@ -63,6 +63,7 @@ namespace Classes
         {
             CanSplit = false;
             Gioco.Iniziato = true;
+            this.ProssimaScelta = "";
             PassaMano();
             Giocatore g = Gioco.Giocatori.Where(q => q.Id == Gioco.IdGiocatoreMano).FirstOrDefault();
             if (g != null && g.Punteggio == 21)
