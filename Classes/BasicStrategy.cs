@@ -109,6 +109,26 @@ namespace Classes
     }
 
     [Serializable]
+    public class BasicStrategy124 : BasicStrategy
+    {
+        public override double Puntata(Giocatore giocatore, double puntataMinima, double puntataBase, double Conteggio)
+        {
+            if (giocatore.Risultato == Giocatore.EnumRisultato.Perso)
+                return puntataBase;
+            if (giocatore.Risultato == Giocatore.EnumRisultato.Pari)
+                return giocatore.PuntataPrecedente == 0 ? puntataBase : giocatore.PuntataPrecedente;
+            else
+            {
+                if (giocatore.PuntataPrecedente == puntataBase || giocatore.PuntataPrecedente == puntataBase * 2)
+                    return giocatore.PuntataPrecedente * 2;
+                else
+                    return puntataBase;
+            }
+        }
+
+    }
+
+    [Serializable]
     public class BasicStrategyDeviation : StrategiaGiocatore
     {
         public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, double conteggio)

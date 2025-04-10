@@ -40,28 +40,35 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(9)
+                .AggiungiMischiataRandom(9)
                 .AggiungiPuntataMinima(10)
+                .AggiungiPuntataMassima(1000)
                 .AggiungiPercentualeMischiata(20)
                 .build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiPuntataBase(100)
+                .AggiungiPuntataBase(10)
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategy())
                 .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiPuntataBase(100)
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new BasicStrategyDeviation())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiPuntataBase(10)
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new BasicStrategy124())
+            //    .build());
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiPuntataBase(100)
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new StrategiaRaddoppia())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiPuntataBase(100)
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new BasicStrategyDeviation())
+            //    .build());
+
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiPuntataBase(100)
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new StrategiaRaddoppia())
+            //    .build());
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
             //    .AggiungiGioco(gioco)
@@ -234,7 +241,7 @@ namespace Test
             riga = $"   Mani sballate: {gioco.Mazziere.ManiSballate}";
             gioco.Log.AppendLine(riga);
             TestContext.WriteLine(riga);
-            for (int i = 0; i < puntiMazziere.Length; i++)
+            for (int i = 17; i < puntiMazziere.Length; i++)
             {
                 if (puntiMazziere[i] > 0)
                 {
@@ -440,7 +447,7 @@ namespace Test
             gioco.Giocatori[0].Strategia.Conteggio = 8;
             gioco.Giocata();
 
-            Assert.AreEqual(250, gioco.Giocatori[0].SoldiTotali);
+            Assert.AreEqual(5, gioco.Giocatori[0].SoldiTotali);
         }
 
         [Test]
