@@ -41,6 +41,7 @@ namespace Test
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(true)
                 .AggiungiMischiataRandom(9)
+                .AggiungiSecondaCartaInizialeMazziere(false)
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
                 .AggiungiPercentualeMischiata(20)

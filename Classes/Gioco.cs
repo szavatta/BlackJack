@@ -70,9 +70,16 @@ namespace Classes
                 return this;
             }
 
+            public GiocoBuilder AggiungiSecondaCartaInizialeMazziere(bool sec)
+            {
+                gioco.SecondaCartaInizialeMazziere = sec;
+                return this;
+            }
+
+
             public Gioco build()
             {
-                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata);
+                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere);
             }
 
         }
@@ -94,10 +101,11 @@ namespace Classes
         public List<Giocatore> GiocatoriSplit { get; set; }
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
+        public bool SecondaCartaInizialeMazziere { get; set; }
         DateTime DataCreazione { get; set; }
         public StringBuilder Log { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -111,6 +119,7 @@ namespace Classes
             PuntataMinima = puntataMinima;
             PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
+            SecondaCartaInizialeMazziere = secondaCartaInizialeMazziere;
             Log = new StringBuilder();
             Log.AppendLine("Inizio partita");
             Mazzo.CreaMazzo(this);
@@ -145,6 +154,9 @@ namespace Classes
 
             if (isInGioco)
             {
+                if (!SecondaCartaInizialeMazziere)
+                    Mazziere.Chiama();
+
                 while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
                 {
                     Mazziere.Chiama();
@@ -333,7 +345,8 @@ namespace Classes
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             Mazziere.Chiama();
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
-            Mazziere.Chiama();
+            if (SecondaCartaInizialeMazziere)
+                Mazziere.Chiama();
 
             //if (Mazziere.HasBlackJack())
             //    Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
