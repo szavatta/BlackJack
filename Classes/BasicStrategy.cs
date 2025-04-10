@@ -206,7 +206,8 @@ namespace Classes
                 return Giocatore.Puntata.Stai;
             }
 
-            if (pg == 16 && pm == 9 && conteggio < 4
+            if (giocatore.Carte.Count > 2
+                || pg == 16 && pm == 9 && conteggio < 4
                 || pg == 16 && pm == 10 && conteggio < 0
                 || pg == 16 && pm == 11 && conteggio < 3
                 || pg == 15 && pm == 10 && conteggio < 4
