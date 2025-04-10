@@ -40,7 +40,7 @@ namespace Classes
             else
                 Strategia = strategia;
 
-            gioco.Log.AppendLine($"Aggiunto giocatore {Nome} strategia {strategia.ToString().Replace("Classes.", "")}");
+            gioco.Log.AppendLine($"Aggiunto giocatore {Nome} strategia {strategia?.ToString().Replace("Classes.", "")}");
         }
 
         public enum EnumRisultato

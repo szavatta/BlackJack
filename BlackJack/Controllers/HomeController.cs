@@ -277,7 +277,11 @@ namespace BlackJack.Controllers
                 });
             }
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
-            Giocatore giocatore = GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiNome(nome).build();
+            Giocatore giocatore = GiocatoreBuilder.Init()
+                .AggiungiStrategia(new BasicStrategyDeviation())
+                .AggiungiGioco(gioco)
+                .AggiungiNome(nome)
+                .build();
             giocatore.Id = idGiocatore;
             gioco.Giocatori.Add(giocatore);
 
