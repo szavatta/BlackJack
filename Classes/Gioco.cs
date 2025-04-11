@@ -313,7 +313,7 @@ namespace Classes
             Log.AppendLine("");
             Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
 
-            if (Mazzo.Carte.Count <= (52 * NumMazziIniziali) * PercMischiata / 100)
+            if (Mazzo.Carte.Count <= (Mazzo.NumCarteSingoloMazzo * NumMazziIniziali) * PercMischiata / 100)
                 Mazzo.CreaMazzo(this);
 
             foreach (Giocatore g in Giocatori)

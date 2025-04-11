@@ -12,7 +12,7 @@ namespace Classes
         public decimal TrueCount { get; set; }
         public decimal GetTrueCount(int NumCarte)
         {
-            decimal ret = Math.Round((decimal)(Conteggio / ((NumCarte / 52) == 0 ? 1 : ((decimal)NumCarte / 52))),2);
+            decimal ret = Math.Round((decimal)(Conteggio / ((NumCarte / Mazzo.NumCarteSingoloMazzo) == 0 ? 1 : ((decimal)NumCarte / Mazzo.NumCarteSingoloMazzo))),2);
             return ret;
         }
 

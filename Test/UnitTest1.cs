@@ -39,18 +39,18 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata(9)
+                .AggiungiMischiata()
                 .AggiungiSecondaCartaInizialeMazziere(true)
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
                 .AggiungiPercentualeMischiata(20)
                 .build();
 
-            gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiPuntataBase(10)
-                .AggiungiGioco(gioco)
-                .AggiungiStrategia(new BasicStrategy())
-                .build());
+            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
+            //    .AggiungiPuntataBase(10)
+            //    .AggiungiGioco(gioco)
+            //    .AggiungiStrategia(new BasicStrategy())
+            //    .build());
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
             //    .AggiungiPuntataBase(10)
@@ -58,11 +58,11 @@ namespace Test
             //    .AggiungiStrategia(new BasicStrategy124())
             //    .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiPuntataBase(100)
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new BasicStrategyDeviation())
-            //    .build());
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiPuntataBase(100)
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategyDeviation())
+                .build());
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()
             //    .AggiungiPuntataBase(100)
@@ -503,7 +503,7 @@ namespace Test
                 .AggiungiPercentualeMischiata(0)
                 .build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiGioco(gioco).AggiungiStrategia(new StrategiaPunteggio(17)).build());
-            for (int i = 0; i < 52; i++)
+            for (int i = 0; i < gioco.Mazzo.NumCarte; i++)
             {
                 gioco.Giocatori[0].Chiama();
             }
