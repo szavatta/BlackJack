@@ -19,7 +19,7 @@ namespace Classes
             Carte = new List<Carta>();
         }
 
-        public Puntata Scelta()
+        public Giocata Scelta()
         {
             return this.Strategia.Strategy(this);
         }

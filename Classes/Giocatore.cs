@@ -131,10 +131,10 @@ namespace Classes
             Gioco.Log.AppendLine($"{Nome} punta {PuntataCorrente}");
         }
 
-        public Puntata Scelta()
+        public Giocata Scelta()
         {
             if (Carte.Count < 2)
-                return Puntata.Chiama;
+                return Giocata.Chiama;
             else
                 return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
         }
@@ -154,7 +154,7 @@ namespace Classes
                 Gioco.Mazziere.CartaCoperta = false;
                 if (Gioco.Giocatori.Where(q => q.HaSballato() == false).Count() > 0)
                 {
-                    while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Puntata.Chiama)
+                    while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Giocata.Chiama)
                     {
                         Gioco.Mazziere.Chiama();
                     }

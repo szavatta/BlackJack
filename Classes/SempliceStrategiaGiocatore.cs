@@ -6,12 +6,12 @@ namespace Classes
 {
     public class SempliceStrategiaGiocatore : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Giocata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             if (giocatore.Punteggio < 17)
-                return Giocatore.Puntata.Chiama;
+                return Giocatore.Giocata.Chiama;
             else
-                return Giocatore.Puntata.Stai;
+                return Giocatore.Giocata.Stai;
         }
 
         public override decimal Puntata(Giocatore giocatore, decimal puntataMinima, decimal puntataBase, decimal Conteggio)

@@ -152,7 +152,7 @@ namespace Classes
                 if (!SecondaCartaInizialeMazziere)
                     Mazziere.Chiama();
 
-                while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
+                while (Mazziere.Scelta() == Mazziere.Giocata.Chiama)
                 {
                     Mazziere.Chiama();
                 }
@@ -187,21 +187,21 @@ namespace Classes
                     Giocatori[i].Assicurazione();
                 }
                 
-                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
+                while (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Dividi)
                 {
                     Dividi(i);
                 }
 
-                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
+                while (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Chiama)
                 {
                     Giocatori[i].Chiama();
                 }
 
-                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Raddoppia)
                 {
                     Raddoppia(i);
                 }
-                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Stai && Giocatori[i].Punteggio <= 21)
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Stai && Giocatori[i].Punteggio <= 21)
                 {
                     Log.AppendLine($"{Giocatori[i].Nome} sta");
                 }

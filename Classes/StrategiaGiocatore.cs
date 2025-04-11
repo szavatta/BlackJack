@@ -17,7 +17,7 @@ namespace Classes
         }
 
 
-        public abstract Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio);
+        public abstract Giocatore.Giocata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio);
         public abstract bool Assicurazione(Giocatore giocatore, decimal conteggio);
         public abstract decimal Puntata(Giocatore giocatore, decimal puntataMinima, decimal puntataBase, decimal Conteggio);
         public virtual int Conta(Carta carta)
