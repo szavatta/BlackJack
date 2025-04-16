@@ -139,24 +139,29 @@ namespace Classes
         {
             GiocataIniziale();
 
-            bool isInGioco = false;
-            for (int i = 0; i < Giocatori.Count(); i++)
+            if (!Mazziere.HasBlackJack())
             {
-                GiocataGiocatore(i);
-                if (!Giocatori[i].HaSballato())
-                    isInGioco = true;
-            }
-
-            if (isInGioco)
-            {
-                if (!SecondaCartaInizialeMazziere)
-                    Mazziere.Chiama();
-
-                while (Mazziere.Scelta() == Mazziere.Giocata.Chiama)
+                bool isInGioco = false;
+                for (int i = 0; i < Giocatori.Count(); i++)
                 {
-                    Mazziere.Chiama();
+                    GiocataGiocatore(i);
+                    if (!Giocatori[i].HaSballato())
+                        isInGioco = true;
+                }
+
+                if (isInGioco)
+                {
+                    if (!SecondaCartaInizialeMazziere)
+                        Mazziere.Chiama();
+
+                    while (Mazziere.Scelta() == Mazziere.Giocata.Chiama)
+                    {
+                        Mazziere.Chiama();
+                    }
                 }
             }
+            else
+                Giocatori.ForEach(q => q.Stai());
 
             TerminaMano();
             try

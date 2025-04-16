@@ -79,7 +79,7 @@ namespace Classes
             if (!SceltaAssicurazione &&
                 Carte.Count == 2 &&
                 GiocatoreSplit == null &&
-                Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)
+                Gioco.Mazziere.Carte.Count > 0 && Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)
             {
                 if (Strategia.Assicurazione(this, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count)))
                     return "Assicurazione SI";
