@@ -45,27 +45,8 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
             //ViewBag.IdGiocatore = HttpContext.Session.GetString("IdGiocatore");
             ViewBag.IdGiocatore = HttpContext.Request.Cookies["idGiocatore"];
-            gioco.Giocatori.ForEach(q => q.ProssimaScelta = ProssimaScelta(q));
 
             return View(gioco);
-        }
-
-        private string ProssimaScelta(Giocatore giocatore)
-        {
-            if (!giocatore.SceltaAssicurazione &&
-                giocatore.Carte.Count == 2 &&
-                giocatore.GiocatoreSplit == null &&
-                giocatore.Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)
-            {
-                if (giocatore.Strategia.Assicurazione(giocatore, giocatore.Strategia.GetTrueCount(giocatore.Gioco.Mazzo.Carte.Count)))
-                    return "Assicurazione SI";
-                else
-                    return "Assicurazione NO";
-            }
-            else
-            {
-                return giocatore.Scelta().ToString();
-            }
         }
 
         public JsonResult GetPartite()
@@ -110,10 +91,10 @@ namespace BlackJack.Controllers
                 .build();
 
             //gioco.Mazzo.Carte.Clear();
-            gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
-            gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
-            gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;
-            gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Quattro)}.png";
+            //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
+            //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
+            //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;
+            //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Quattro)}.png";
 
             //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
             //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
@@ -131,9 +112,9 @@ namespace BlackJack.Controllers
             //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
             //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Otto;
             //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
-            //gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Jack;
+            //gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Due;
             //gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[4].Seme)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
-            //gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Jack;
+            //gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Tre;
             //gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[5].Seme)}-{((int)gioco.Mazzo.Carte[5].Numero)}.png";
             //gioco.Mazzo.Carte[6].Numero = Carta.NumeroCarta.Cinque;
             //gioco.Mazzo.Carte[6].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[6].Seme)}-{((int)gioco.Mazzo.Carte[6].Numero)}.png";
@@ -178,7 +159,6 @@ namespace BlackJack.Controllers
                     gioco.Giocatori[0].Stai();
             }
 
-            giocatore.ProssimaScelta = ProssimaScelta(giocatore);
             return Json(new { gioco = JsonGioco(gioco), puntata = pok });
         }
 
@@ -202,8 +182,6 @@ namespace BlackJack.Controllers
             else if (giocatore.Punteggio >= 21)
                 giocatore.Stai();
 
-            giocatore.ProssimaScelta = ProssimaScelta(giocatore);
-
             return Json(new { gioco = JsonGioco(gioco) });
         }
 
@@ -213,7 +191,6 @@ namespace BlackJack.Controllers
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
             string scelta = giocatore.Scelta().ToString();
             giocatore.Stai();
-            giocatore.ProssimaScelta = ProssimaScelta(giocatore);
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
@@ -236,7 +213,6 @@ namespace BlackJack.Controllers
                 if (giocatore.Punteggio >= 21)
                     giocatore.Stai();
             }
-            giocatore.ProssimaScelta = ProssimaScelta(giocatore);
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
@@ -255,7 +231,6 @@ namespace BlackJack.Controllers
             {
                 giocatore.Raddoppia();
             }
-            giocatore.ProssimaScelta = ProssimaScelta(giocatore);
 
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
@@ -283,7 +258,6 @@ namespace BlackJack.Controllers
             string scelta = giocatore.Scelta().ToString();
             giocatore.Split();
             Giocatore gsplit = gioco.Giocatori.SkipWhile(q => q.Id != idGiocatore).Skip(1).FirstOrDefault();
-            giocatore.ProssimaScelta = ProssimaScelta(giocatore);
 
             return Json(new { gioco = JsonGioco(gioco), idGiocatore = gsplit.Id, scelta = scelta });
         }

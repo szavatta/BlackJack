@@ -69,7 +69,27 @@ namespace Classes
             if (g != null && g.Punteggio == 21)
                 g.Stai();
 
+            ProssimaScelta = ProxScelta();
+
             return this;
+        }
+
+        private string ProxScelta()
+        {
+            if (!SceltaAssicurazione &&
+                Carte.Count == 2 &&
+                GiocatoreSplit == null &&
+                Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)
+            {
+                if (Strategia.Assicurazione(this, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count)))
+                    return "Assicurazione SI";
+                else
+                    return "Assicurazione NO";
+            }
+            else
+            {
+                return Scelta().ToString();
+            }
         }
 
         public Giocatore Punta(decimal puntata)
@@ -109,6 +129,9 @@ namespace Classes
             Chiama();
             if (Punteggio >= 21)
                 Stai();
+
+            ProssimaScelta = ProxScelta();
+            clone.ProssimaScelta = ProxScelta();
 
             return this;
         }
@@ -185,6 +208,8 @@ namespace Classes
 
             //if (Punteggio >= 21)
             //    Stai();
+
+            ProssimaScelta = ProxScelta();
 
             return carta;
         }
