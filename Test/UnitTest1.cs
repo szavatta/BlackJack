@@ -40,7 +40,7 @@ namespace Test
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
                 .AggiungiMischiata(9)
-                .AggiungiSecondaCartaInizialeMazziere(true)
+                .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
                 .AggiungiPercentualeMischiata(20)
@@ -475,7 +475,7 @@ namespace Test
         [Test]
         public void TestAssicurazione3()
         {
-            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiPuntataMinima(5).AggiungiSecondaCartaInizialeMazziere().AggiungiMazzi(0).build();
 
             gioco.Giocatori.Add(GiocatoreBuilder.Init().AggiungiStrategia(new BasicStrategy()).AggiungiGioco(gioco).build());
 
@@ -493,6 +493,7 @@ namespace Test
 
             Assert.AreEqual(200, gioco.Giocatori[0].SoldiTotali);
         }
+
         [Test]
         public void TestConteggio()
         {
