@@ -17,7 +17,7 @@ namespace Classes
         public int Punteggio => CalcolaPunteggio();
         public int ManiSballate { get; set; }
 
-        public enum Puntata
+        public enum Giocata
         {
             Chiama = 0,
             Stai = 1,
