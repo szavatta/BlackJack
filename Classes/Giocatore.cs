@@ -105,6 +105,7 @@ namespace Classes
                 }
             }
             Chiama();
+            clone.Chiama();
             if (Punteggio >= 21)
                 Stai();
 
