@@ -46,9 +46,10 @@ namespace Classes
                 return this;
             }
 
-            public GiocoBuilder AggiungiMischiata(bool mischia)
+            public GiocoBuilder AggiungiMischiata(int? random = null)
             {
-                gioco.Mischia = mischia;
+                gioco.Mischia = true;
+                gioco.RandomMischiata = random;
                 return this;
             }
 
@@ -58,21 +59,15 @@ namespace Classes
                 return this;
             }
 
-            public GiocoBuilder AggiungiMischiataRandom(int? random)
-            {
-                gioco.RandomMischiata = random;
-                return this;
-            }
-
             public GiocoBuilder AggiungiPercentualeMischiata(int? perc)
             {
                 gioco.PercMischiata = perc > 5 ? perc : 5;
                 return this;
             }
 
-            public GiocoBuilder AggiungiSecondaCartaInizialeMazziere(bool sec)
+            public GiocoBuilder AggiungiSecondaCartaInizialeMazziere()
             {
-                gioco.SecondaCartaInizialeMazziere = sec;
+                gioco.SecondaCartaInizialeMazziere = true;
                 return this;
             }
 
@@ -144,24 +139,29 @@ namespace Classes
         {
             GiocataIniziale();
 
-            bool isInGioco = false;
-            for (int i = 0; i < Giocatori.Count(); i++)
+            if (!Mazziere.HasBlackJack())
             {
-                GiocataGiocatore(i);
-                if (!Giocatori[i].HaSballato())
-                    isInGioco = true;
-            }
-
-            if (isInGioco)
-            {
-                if (!SecondaCartaInizialeMazziere)
-                    Mazziere.Chiama();
-
-                while (Mazziere.Scelta() == Mazziere.Puntata.Chiama)
+                bool isInGioco = false;
+                for (int i = 0; i < Giocatori.Count(); i++)
                 {
-                    Mazziere.Chiama();
+                    GiocataGiocatore(i);
+                    if (!Giocatori[i].HaSballato())
+                        isInGioco = true;
+                }
+
+                if (isInGioco)
+                {
+                    if (!SecondaCartaInizialeMazziere)
+                        Mazziere.Chiama();
+
+                    while (Mazziere.Scelta() == Mazziere.Giocata.Chiama)
+                    {
+                        Mazziere.Chiama();
+                    }
                 }
             }
+            else
+                Giocatori.ForEach(q => q.Stai());
 
             TerminaMano();
             try
@@ -192,21 +192,21 @@ namespace Classes
                     Giocatori[i].Assicurazione();
                 }
                 
-                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Dividi)
+                while (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Dividi)
                 {
                     Dividi(i);
                 }
 
-                while (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Chiama)
+                while (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Chiama)
                 {
                     Giocatori[i].Chiama();
                 }
 
-                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Raddoppia)
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Raddoppia)
                 {
                     Raddoppia(i);
                 }
-                if (Giocatori[i].Scelta() == GiocatoreSemplice.Puntata.Stai && Giocatori[i].Punteggio <= 21)
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Stai && Giocatori[i].Punteggio <= 21)
                 {
                     Log.AppendLine($"{Giocatori[i].Nome} sta");
                 }
@@ -318,7 +318,7 @@ namespace Classes
             Log.AppendLine("");
             Giocatori.RemoveAll(q => q.GiocatoreSplit != null);
 
-            if (Mazzo.Carte.Count <= (52 * NumMazziIniziali) * PercMischiata / 100)
+            if (Mazzo.Carte.Count <= (Mazzo.NumCarteSingoloMazzo * NumMazziIniziali) * PercMischiata / 100)
                 Mazzo.CreaMazzo(this);
 
             foreach (Giocatore g in Giocatori)

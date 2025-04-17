@@ -47,6 +47,7 @@
                     <input type='button' value='Assicurazione SI' class='btnAssicurazione btn btn-info d-none' scelta="1"/>
                     <input type='button' value='Assicurazione NO' class='btnAssicurazione btn btn-info d-none' scelta="0"/>
                 </div>
+                <div class="strategia"></div>
                 <div class="fiches-giocatore d-flex flex-wrap justify-content-center mt-2 d-none">
                     <img src="~/Fiches/1.png" valore="1" />
                     <img src="~/Fiches/5.png" valore="5" />
@@ -435,6 +436,11 @@
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
             div.find(".numerrori").text(errori);
+            if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Punteggio <= 21) {
+                div.find(".strategia").html(giocatore.ProssimaScelta != "" ? 
+                        "Prossima scelta da strategia: <b>" + giocatore.ProssimaScelta + "</b>" : 
+                        "");
+            }
 
             if (giocatore.Carte.length == 0) {
                 div.find(".errore").text("");
@@ -454,6 +460,7 @@
                     div.find(".txtPuntata").removeClass("d-none");
                     div.find(".btnPunta").removeClass("d-none");
                     div.find(".btnEsci").removeClass("d-none");
+                    div.find(".strategia").addClass("d-none");
                     div.find(".fiches-giocatore").removeClass("d-none");
                 } else {
                     if (giocatore.SceltaAssicurazione == false && partita.Mazziere.Carte.length > 0 && partita.Mazziere.Carte[0].Numero == 1) {
@@ -466,6 +473,7 @@
                     div.find(".txtPuntata").addClass("d-none");
                     div.find(".btnPunta").addClass("d-none");
                     div.find(".btnEsci").addClass("d-none");
+                    div.find(".strategia").removeClass("d-none");
                     div.find(".fiches-giocatore").addClass("d-none");
                     div.find(".btnContinua").addClass("d-none");
                 }
@@ -533,6 +541,7 @@
         if (!partita.Mazziere.CartaCoperta) {
             VisualizzaVincitori(partita);
             $(".btnNuovaMano").removeClass("d-none");
+            $(".strategia").addClass("d-none");
             //    if (GetStop() == false) {
             //        SetStop(true);
             //        setTimeout(function () {

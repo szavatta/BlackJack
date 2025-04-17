@@ -59,8 +59,7 @@ namespace BlackJack.Controllers
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata(true)
-                //.AggiungiMischiataRandom(9)
+                .AggiungiMischiata()
                 .AggiungiPuntataMinima(5)
                 .AggiungiPercentualeMischiata(50)
                 .build();

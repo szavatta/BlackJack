@@ -8,7 +8,7 @@ namespace Classes
     [Serializable]
     public class BasicStrategy : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Giocata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             int pg= giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
@@ -29,7 +29,7 @@ namespace Classes
                     || giocatore.Carte[0].Numero == Carta.NumeroCarta.Due && mazziere.Carte[0].Numero >= Carta.NumeroCarta.Due && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sette
                     )
                 {
-                    return Giocatore.Puntata.Dividi;
+                    return Giocatore.Giocata.Dividi;
                 }
             }
 
@@ -40,7 +40,7 @@ namespace Classes
                     || pg == 18 && pm >= 7 && pm <= 8
                     )
                 {
-                    return Giocatore.Puntata.Stai;
+                    return Giocatore.Giocata.Stai;
                 }
 
                 if (pg == 19 && pm == 6
@@ -52,10 +52,10 @@ namespace Classes
                         || pg == 13 && pm >= 5 && pm <= 6
                         )
                 {
-                    return Giocatore.Puntata.Raddoppia;
+                    return Giocatore.Giocata.Raddoppia;
                 }
                 
-                return Giocatore.Puntata.Chiama;
+                return Giocatore.Giocata.Chiama;
                 
             }
 
@@ -67,7 +67,7 @@ namespace Classes
                 || pg == 12 && pm >= 4 && pm <= 6
                 )
             {
-                return Giocatore.Puntata.Stai;
+                return Giocatore.Giocata.Stai;
             }
 
             if (pg == 11 
@@ -75,10 +75,10 @@ namespace Classes
                 || pg == 9 && pm >= 3 && pm <= 6
                 )
             {
-                return Giocatore.Puntata.Raddoppia;
+                return Giocatore.Giocata.Raddoppia;
             }
             
-            return Giocatore.Puntata.Chiama;
+            return Giocatore.Giocata.Chiama;
             
         }
 
@@ -131,7 +131,7 @@ namespace Classes
     [Serializable]
     public class BasicStrategyDeviation : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Giocata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             int pg = giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
@@ -155,7 +155,7 @@ namespace Classes
                     || giocatore.Carte[0].Numero == Carta.NumeroCarta.Due && mazziere.Carte[0].Numero >= Carta.NumeroCarta.Due && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sette
                     )
                 {
-                    return Giocatore.Puntata.Dividi;
+                    return Giocatore.Giocata.Dividi;
                 }
             }
 
@@ -169,7 +169,7 @@ namespace Classes
                     || pg == 19 && pm == 6 && conteggio <= 0
                     || pg == 18 && pm >= 7 && pm <= 8)
                 {
-                    return Giocatore.Puntata.Stai;
+                    return Giocatore.Giocata.Stai;
                 }
 
                 if (pg == 19 && pm == 4 && conteggio >= 3
@@ -182,10 +182,10 @@ namespace Classes
                         || pg <= 14 && pg >= 13 && pm >= 5 && pm <= 6
                         )
                 {
-                    return Giocatore.Puntata.Raddoppia;
+                    return Giocatore.Giocata.Raddoppia;
                 }
 
-                return Giocatore.Puntata.Chiama;
+                return Giocatore.Giocata.Chiama;
 
             }
 
@@ -203,10 +203,11 @@ namespace Classes
                 || pg == 15 && pm == 10 && conteggio >= 4
                 || pg == 15 && pm == 11 && conteggio >= 5)
             {
-                return Giocatore.Puntata.Stai;
+                return Giocatore.Giocata.Stai;
             }
 
-            if (pg == 16 && pm == 9 && conteggio < 4
+            if (giocatore.Carte.Count > 2
+                || pg == 16 && pm == 9 && conteggio < 4
                 || pg == 16 && pm == 10 && conteggio < 0
                 || pg == 16 && pm == 11 && conteggio < 3
                 || pg == 15 && pm == 10 && conteggio < 4
@@ -225,10 +226,10 @@ namespace Classes
                 || pg == 8 && pm != 6
                 || pg < 8)
             {
-                return Giocatore.Puntata.Chiama;
+                return Giocatore.Giocata.Chiama;
             }
 
-            return Giocatore.Puntata.Raddoppia;
+            return Giocatore.Giocata.Raddoppia;
 
         }
 
@@ -261,7 +262,7 @@ namespace Classes
     [Serializable]
     public class BasicStrategy2 : StrategiaGiocatore
     {
-        public override Giocatore.Puntata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
+        public override Giocatore.Giocata Strategy(Giocatore giocatore, Mazziere mazziere, decimal conteggio)
         {
             int pg = giocatore.Punteggio;
             int pm = mazziere.Carte.First().Valore;
@@ -284,7 +285,7 @@ namespace Classes
                     || giocatore.Carte[0].Numero == Carta.NumeroCarta.Due && mazziere.Carte[0].Numero >= Carta.NumeroCarta.Quattro && mazziere.Carte[0].Numero <= Carta.NumeroCarta.Sette
                     )
                 {
-                    return Giocatore.Puntata.Dividi;
+                    return Giocatore.Giocata.Dividi;
                 }
 
             }
@@ -297,7 +298,7 @@ namespace Classes
                     || pg == 19 && pm == 6 && conteggio < 0
                     || pg == 18 && pm >= 7 && pm <= 8)
                 {
-                    return Giocatore.Puntata.Stai;
+                    return Giocatore.Giocata.Stai;
                 }
                 else if (
                            pg == 19 && pm == 4 && conteggio >= 3
@@ -310,11 +311,11 @@ namespace Classes
                         || pg <= 14 && pg >= 13 && pm >= 5 && pm <= 6
                         )
                 {
-                    return Giocatore.Puntata.Raddoppia;
+                    return Giocatore.Giocata.Raddoppia;
                 }
                 else
                 {
-                    return Giocatore.Puntata.Chiama;
+                    return Giocatore.Giocata.Chiama;
                 }
             }
 
@@ -332,7 +333,7 @@ namespace Classes
                 || pg == 15 && pm == 10 && conteggio >= 4
                 || pg == 15 && pm == 11 && conteggio >= 5)
             {
-                return Giocatore.Puntata.Stai;
+                return Giocatore.Giocata.Stai;
             }
             if (pg == 16 && pm == 9 && conteggio < 4
                 || pg == 16 && pm == 10 && conteggio < 0
@@ -352,11 +353,11 @@ namespace Classes
                 || pg == 8 && pm == 6 && conteggio < 2
                 || pg <= 8)
             {
-                return Giocatore.Puntata.Chiama;
+                return Giocatore.Giocata.Chiama;
             }
             else
             {
-                return Giocatore.Puntata.Raddoppia;
+                return Giocatore.Giocata.Raddoppia;
             }
         }
 

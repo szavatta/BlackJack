@@ -51,12 +51,12 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.Where(q => q.Nome == "On line").FirstOrDefault();
             Giocatore giocatore = gioco.Giocatori.First();
 
-            Giocatore.Puntata? puntata = GiocatoreSemplice.Puntata.Chiama;
+            Giocatore.Giocata? puntata = GiocatoreSemplice.Giocata.Chiama;
             if (giocatore.Carte.Count > 0 && gioco.Mazziere.Carte.Count > 0)
                 puntata = giocatore.Strategia.Strategy(giocatore, gioco.Mazziere, gioco.Mazzo.Carte.Count);
 
             return Json(new { 
-                operazione = gioco.Mazziere.Carte.Count + giocatore.Carte.Count >= 3 ? Enum.GetName(typeof(Giocatore.Puntata), puntata) : "Seleziona carta",
+                operazione = gioco.Mazziere.Carte.Count + giocatore.Carte.Count >= 3 ? Enum.GetName(typeof(Giocatore.Giocata), puntata) : "Seleziona carta",
                 puntimiei = giocatore.Punteggio,
                 puntimazziere = gioco.Mazziere.Punteggio,
                 numcarte = gioco.Mazzo.Carte.Count

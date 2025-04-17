@@ -24,6 +24,7 @@ namespace Classes
         public decimal PuntataPrecedente { get; set; }
         public bool SceltaAssicurazione { get; set; }
         public decimal PuntataBase { get; set; }
+        public string ProssimaScelta { get; set; }
 
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, decimal soldi = 0, string nome = "", decimal puntataBase = 1) : base(gioco)
@@ -62,12 +63,33 @@ namespace Classes
         {
             CanSplit = false;
             Gioco.Iniziato = true;
+            this.ProssimaScelta = "";
             PassaMano();
             Giocatore g = Gioco.Giocatori.Where(q => q.Id == Gioco.IdGiocatoreMano).FirstOrDefault();
             if (g != null && g.Punteggio == 21)
                 g.Stai();
 
+            ProssimaScelta = ProxScelta();
+
             return this;
+        }
+
+        private string ProxScelta()
+        {
+            if (!SceltaAssicurazione &&
+                Carte.Count == 2 &&
+                GiocatoreSplit == null &&
+                Gioco.Mazziere.Carte.Count > 0 && Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)
+            {
+                if (Strategia.Assicurazione(this, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count)))
+                    return "Assicurazione SI";
+                else
+                    return "Assicurazione NO";
+            }
+            else
+            {
+                return Scelta().ToString();
+            }
         }
 
         public Giocatore Punta(decimal puntata)
@@ -109,6 +131,9 @@ namespace Classes
             if (Punteggio >= 21)
                 Stai();
 
+            ProssimaScelta = ProxScelta();
+            clone.ProssimaScelta = ProxScelta();
+
             return this;
         }
 
@@ -130,10 +155,10 @@ namespace Classes
             Gioco.Log.AppendLine($"{Nome} punta {PuntataCorrente}");
         }
 
-        public Puntata Scelta()
+        public Giocata Scelta()
         {
             if (Carte.Count < 2)
-                return Puntata.Chiama;
+                return Giocata.Chiama;
             else
                 return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
         }
@@ -153,7 +178,7 @@ namespace Classes
                 Gioco.Mazziere.CartaCoperta = false;
                 if (Gioco.Giocatori.Where(q => q.HaSballato() == false).Count() > 0)
                 {
-                    while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Puntata.Chiama)
+                    while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Giocata.Chiama)
                     {
                         Gioco.Mazziere.Chiama();
                     }
@@ -184,6 +209,8 @@ namespace Classes
 
             //if (Punteggio >= 21)
             //    Stai();
+
+            ProssimaScelta = ProxScelta();
 
             return carta;
         }
