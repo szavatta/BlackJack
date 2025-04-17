@@ -455,12 +455,12 @@
             //} else if (giocatore.Risultato == 1) {
             //    div.addClass("back-red");
             //}
+            div.find(".strategia").addClass("d-none");
             if (giocatore.Id == $("#IdGiocatore").val() || giocatore.GiocatoreSplit != null && giocatore.GiocatoreSplit.Id == $("#IdGiocatore").val()) {
                 if (giocatore.PuntataCorrente == 0) {
                     div.find(".txtPuntata").removeClass("d-none");
                     div.find(".btnPunta").removeClass("d-none");
                     div.find(".btnEsci").removeClass("d-none");
-                    div.find(".strategia").addClass("d-none");
                     div.find(".fiches-giocatore").removeClass("d-none");
                 } else {
                     if (giocatore.SceltaAssicurazione == false && partita.Mazziere.Carte.length > 0 && partita.Mazziere.Carte[0].Numero == 1) {
@@ -473,7 +473,6 @@
                     div.find(".txtPuntata").addClass("d-none");
                     div.find(".btnPunta").addClass("d-none");
                     div.find(".btnEsci").addClass("d-none");
-                    div.find(".strategia").removeClass("d-none");
                     div.find(".fiches-giocatore").addClass("d-none");
                     div.find(".btnContinua").addClass("d-none");
                 }
@@ -482,6 +481,7 @@
                         div.find(".btnStai").removeClass("d-none");
                         div.find(".btnChiama").removeClass("d-none");
                         div.find(".btnContinua").addClass("d-none");
+                        div.find(".strategia").removeClass("d-none");
                     } else {
                         div.find(".btnStai").addClass("d-none");
                         div.find(".btnChiama").addClass("d-none");
