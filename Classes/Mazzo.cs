@@ -29,13 +29,13 @@ namespace Classes
             var rnd = new Random();
             Retro = (EnumRetro)Math.Round(rnd.NextDouble(), 0);
 
-            for (int j = 0; j < gioco.NumMazziIniziali; j++)
+            for (int mazzo = 0; mazzo < gioco.NumMazziIniziali; mazzo++)
             {
-                for (int i = 1; i <= 4; i++)
+                for (int seme = 1; seme <= 4; seme++)
                 {
-                    for (int ii = 1; ii <= 13; ii++)
+                    for (int numero = 1; numero <= 13; numero++)
                     {
-                        Carte.Add(new Carta((Carta.NumeroCarta)ii, (Carta.SemeCarta)i));
+                        Carte.Add(new Carta((Carta.NumeroCarta)numero, (Carta.SemeCarta)seme));
                     }
                 }
             }
@@ -51,6 +51,7 @@ namespace Classes
 
             gioco.Log.AppendLine($"Nuovo mazzo di {Carte.Count} carte{(gioco.Mischia ? " mischiate" : "")}");
         }
+
         public Carta PescaCarta()
         {
             Carta carta = Carte.FirstOrDefault();

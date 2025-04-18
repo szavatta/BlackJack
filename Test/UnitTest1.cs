@@ -39,7 +39,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata(9)
+                .AggiungiMischiata()
                 .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
@@ -109,6 +109,9 @@ namespace Test
             List<decimal> vcons = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             List<decimal> pcons = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             List<decimal> nblackjack = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> ppair = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> cpair = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> mpair = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             int[] puntiMazziere = new int[30];
             int maxsplit = 0;
             int numass = 0;
@@ -142,6 +145,16 @@ namespace Test
 
                     if (gioco.Giocatori[x].HasBlackJack())
                         nblackjack[x]++;
+
+                    if (gioco.Giocatori[x].Carte[0].Numero == gioco.Giocatori[x].Carte[1].Numero)
+                    {
+                        if (gioco.Giocatori[x].Carte[0].Seme == gioco.Giocatori[x].Carte[1].Seme)
+                            ppair[x]++;
+                        else if (gioco.Giocatori[x].Carte[0].GetColoreSeme() == gioco.Giocatori[x].Carte[1].GetColoreSeme())
+                            cpair[x]++;
+                        else
+                            mpair[x]++;
+                    }
                 }
 
                 if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
@@ -216,6 +229,15 @@ namespace Test
                 gioco.Log.AppendLine(riga);
                 TestContext.WriteLine(riga);
                 riga = $"   Black Jack: {nblackjack[x]} ({Math.Round((decimal)nblackjack[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Perfect pair: {ppair[x]} ({Math.Round((decimal)ppair[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Color pair: {cpair[x]} ({Math.Round((decimal)cpair[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Mixed pair: {mpair[x]} ({Math.Round((decimal)mpair[x] / gioco.Giri * 100, 1)}%)";
                 gioco.Log.AppendLine(riga);
                 TestContext.WriteLine(riga);
                 if (x == 0)
@@ -577,7 +599,7 @@ namespace Test
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Due, Carta.SemeCarta.Fiori));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sette, Carta.SemeCarta.Picche));
-            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Re, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Picche));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Cuori));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Quadri));
             gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Cinque, Carta.SemeCarta.Fiori));
@@ -593,6 +615,7 @@ namespace Test
             gioco.Giocata();
 
             Assert.AreEqual(19, gioco.Giocatori[0].Punteggio);
+            Assert.AreEqual(20, gioco.Giocatori[1].Punteggio);
         }
 
         [Test]
@@ -655,7 +678,7 @@ namespace Test
             gioco.Giocata();
 
             Assert.AreEqual(21, gioco.Mazziere.Punteggio);
-            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.AreEqual(13, gioco.Giocatori[0].Punteggio);
             Assert.IsTrue(gioco.Mazziere.HasBlackJack());
             Assert.IsFalse(gioco.Giocatori[0].HasBlackJack());
             Assert.IsTrue(gioco.GiocatoriVincenti().Count() == 0);
@@ -850,7 +873,7 @@ namespace Test
             gioco.Giocata();
 
             Assert.AreEqual(21, gioco.Mazziere.Punteggio);
-            Assert.AreEqual(21, gioco.Giocatori[0].Punteggio);
+            Assert.AreEqual(12, gioco.Giocatori[0].Punteggio);
             Assert.IsTrue(gioco.Mazziere.HasBlackJack());
             Assert.False(gioco.Giocatori[0].HasBlackJack());
 

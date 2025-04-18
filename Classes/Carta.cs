@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Security.AccessControl;
 
 namespace Classes
 {
@@ -52,6 +53,13 @@ namespace Classes
         public byte[] Immagine { get; set; }
         public string ImmagineBase64 { get; set; }
 
+        public ColoreSeme GetColoreSeme()
+        {
+            var coloreSeme = ColoreSeme.Rosso;
+            if (Seme == SemeCarta.Picche || Seme == SemeCarta.Fiori)
+                coloreSeme = ColoreSeme.Nero;
+            return coloreSeme;
+        }
         public byte[] GetImmagine()
         {
             byte[] ret = null;
@@ -80,6 +88,13 @@ namespace Classes
             Fiori = 3,
             Picche = 4
         }
+
+        public enum ColoreSeme
+        {
+            Nero = 1,
+            Rosso = 2
+        }
+
         private int GetValore()
         {
             if ((int)Numero == 1)
