@@ -201,6 +201,8 @@ namespace BlackJack.Controllers
             else if (giocatore.Punteggio >= 21)
                 giocatore.Stai();
 
+            giocatore.ProssimaScelta = giocatore.ProxScelta();
+
             return Json(new { gioco = JsonGioco(gioco) });
         }
 
