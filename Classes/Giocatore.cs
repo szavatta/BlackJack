@@ -74,7 +74,7 @@ namespace Classes
             return this;
         }
 
-        private string ProxScelta()
+        public string ProxScelta()
         {
             if (!SceltaAssicurazione &&
                 Carte.Count == 2 &&

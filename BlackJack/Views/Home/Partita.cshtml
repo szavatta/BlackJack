@@ -468,6 +468,7 @@
                         //ShowConfirmSiNo("Assicurazione?", () => Assicurazione(partita.Id, giocatore.Id, 1), () => Assicurazione(partita.Id, giocatore.Id, 0));
                         assicurazione = true;
                         div.find(".btnAssicurazione").removeClass("d-none");
+                        div.find(".strategia").removeClass("d-none");
                     } else {
                         div.find(".btnAssicurazione").addClass("d-none");
                     }
