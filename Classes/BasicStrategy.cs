@@ -45,16 +45,27 @@ namespace Classes
 
                 if (pg == 19 && pm == 6
                         || pg == 18 && pm <= 6
-                        || pg == 17 && pm >= 3 && pm <= 6
+                        )
+                {
+                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                        return Giocatore.Giocata.Raddoppia;
+                    else
+                        return Giocatore.Giocata.Stai;
+                }
+
+                if (pg == 17 && pm >= 3 && pm <= 6
                         || pg == 16 && pm >= 4 && pm <= 6
                         || pg == 15 && pm >= 4 && pm <= 6
                         || pg == 14 && pm >= 5 && pm <= 6
                         || pg == 13 && pm >= 5 && pm <= 6
                         )
                 {
-                    return Giocatore.Giocata.Raddoppia;
+                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                        return Giocatore.Giocata.Raddoppia;
+                    else
+                        return Giocatore.Giocata.Chiama;
                 }
-                
+
                 return Giocatore.Giocata.Chiama;
                 
             }
@@ -173,17 +184,29 @@ namespace Classes
                 }
 
                 if (pg == 19 && pm == 4 && conteggio >= 3
-                        || pg == 19 && pm == 5 && conteggio >= 1
-                        || pg == 19 && pm == 6 && conteggio > 0
-                        || pg == 18 && pm <= 6
-                        || pg == 17 && pm >= 3 && pm <= 6
-                        || pg == 17 && pm == 2 && conteggio >= 1
-                        || pg <= 16 && pg >= 15 && pm >= 4 && pm <= 6
-                        || pg <= 14 && pg >= 13 && pm >= 5 && pm <= 6
-                        )
+                    || pg == 19 && pm == 5 && conteggio >= 1
+                    || pg == 19 && pm == 6 && conteggio > 0
+                    || pg == 18 && pm <= 6
+                    )
                 {
-                    return Giocatore.Giocata.Raddoppia;
+                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                        return Giocatore.Giocata.Raddoppia;
+                    else
+                        return Giocatore.Giocata.Stai;
                 }
+
+                if (pg == 17 && pm >= 3 && pm <= 6
+                    || pg == 17 && pm == 2 && conteggio >= 1
+                    || pg <= 16 && pg >= 15 && pm >= 4 && pm <= 6
+                    || pg <= 14 && pg >= 13 && pm >= 5 && pm <= 6
+                    )
+                {
+                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                        return Giocatore.Giocata.Raddoppia;
+                    else
+                        return Giocatore.Giocata.Chiama;
+                }
+
 
                 return Giocatore.Giocata.Chiama;
 
@@ -229,7 +252,10 @@ namespace Classes
                 return Giocatore.Giocata.Chiama;
             }
 
-            return Giocatore.Giocata.Raddoppia;
+            if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                return Giocatore.Giocata.Raddoppia;
+            else
+                return Giocatore.Giocata.Chiama;
 
         }
 

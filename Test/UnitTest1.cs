@@ -39,11 +39,12 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata()
+                .AggiungiMischiata(1)
                 .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
                 .AggiungiPercentualeMischiata(20)
+                //.AggiungiRaddoppiaNonDisponibile()
                 .build();
 
             //gioco.Giocatori.Add(GiocatoreBuilder.Init()

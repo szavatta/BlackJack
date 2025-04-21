@@ -53,9 +53,12 @@ namespace Classes
 
         public Giocatore Raddoppia()
         {
-            PuntataCorrente *= 2;
-            Chiama();
-            Stai();
+            if (!Gioco.RaddoppiaNonDisponibile)
+            {
+                PuntataCorrente *= 2;
+                Chiama();
+                Stai();
+            }
             return this;
         }
 

@@ -494,7 +494,7 @@
                     div.find(".btnStai").addClass("d-none");
                     div.find(".btnChiama").addClass("d-none");
                 }
-                if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Carte.length == 2 && !assicurazione) {
+                if (partita.RaddoppiaNonDisponibile == false && giocatore.Id == partita.IdGiocatoreMano && giocatore.Carte.length == 2 && !assicurazione) {
                     div.find(".btnRaddoppia").removeClass("d-none");
                 } else {
                     div.find(".btnRaddoppia").addClass("d-none");
