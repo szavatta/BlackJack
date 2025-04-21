@@ -44,62 +44,14 @@ namespace Test
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
                 .AggiungiPercentualeMischiata(20)
-                //.AggiungiRaddoppiaNonDisponibile()
                 .build();
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiPuntataBase(10)
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new BasicStrategy())
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiPuntataBase(10)
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new BasicStrategy124())
-            //    .build());
-
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
-                .AggiungiPuntataBase(100)
+                .AggiungiPuntataBase(10)
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategyDeviation())
                 .build());
 
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiPuntataBase(100)
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaRaddoppia())
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new BasicStrategyS17())
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new BasicStrategy2())
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaPunteggio(16))
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaConteggio(17))
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new StrategiaConteggio(18))
-            //    .build());
-
-            //gioco.Giocatori.Add(GiocatoreBuilder.Init()
-            //    .AggiungiGioco(gioco)
-            //    .AggiungiStrategia(new SempliceStrategiaGiocatore())
-            //    .build());
 
             //gioco.Giocatori.ForEach(q => q.SoldiTotali = 100);
             //gioco.Mazziere.SoldiTotali = 100;
