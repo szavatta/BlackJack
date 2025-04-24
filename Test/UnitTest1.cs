@@ -39,7 +39,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata(1)
+                .AggiungiMischiata(12)
                 .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
@@ -65,6 +65,10 @@ namespace Test
             List<decimal> ppair = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             List<decimal> cpair = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             List<decimal> mpair = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> tarr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> varr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> parr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> rarr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             int[] puntiMazziere = new int[30];
             int maxsplit = 0;
             int numass = 0;
@@ -79,6 +83,27 @@ namespace Test
 
                 for (int x = 0; x < gioco.Giocatori.Count(q => q.GiocatoreSplit == null); x++)
                 {
+                    if (gioco.Giocatori[x].GiocatoreSplit == null && gioco.Giocatori[x].Carte[0].Valore + gioco.Giocatori[x].Carte[1].Valore == 16 && gioco.Mazziere.Carte[0].Valore >= 9
+                        || gioco.Giocatori[x].Carte[0].Valore + gioco.Giocatori[x].Carte[1].Valore == 15 && gioco.Mazziere.Carte[0].Valore == 10)
+                    {
+                        //Arresa
+                        tarr[x]++;
+                        if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Vinto)
+                        {
+                            varr[x]++;
+                            rarr[x] += (gioco.Giocatori[x].PuntataCorrente * 2 - gioco.Giocatori[x].PuntataCorrente / 2);
+                        }
+                        else if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Perso)
+                        {
+                            parr[x]++;
+                            rarr[x] -= gioco.Giocatori[x].PuntataCorrente / 2;
+                        }
+                        else
+                        {
+                            rarr[x] += (gioco.Giocatori[x].PuntataCorrente - gioco.Giocatori[x].PuntataCorrente / 2);
+                        }
+                    }
+
                     if (gioco.Giocatori[x].SoldiTotali > max[x]) max[x] = gioco.Giocatori[x].SoldiTotali;
                     if (gioco.Giocatori[x].SoldiTotali < min[x]) min[x] = gioco.Giocatori[x].SoldiTotali;
                     if (gioco.Giocatori[x].Risultato == Giocatore.EnumRisultato.Vinto)
@@ -191,6 +216,18 @@ namespace Test
                 gioco.Log.AppendLine(riga);
                 TestContext.WriteLine(riga);
                 riga = $"   Mixed pair: {mpair[x]} ({Math.Round((decimal)mpair[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Giri con arresa: {tarr[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Vinto con arresa: {varr[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Perso con arresa: {parr[x]}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   Vincita con arresa: {rarr[x]}";
                 gioco.Log.AppendLine(riga);
                 TestContext.WriteLine(riga);
                 if (x == 0)
@@ -830,6 +867,27 @@ namespace Test
             Assert.IsTrue(gioco.Mazziere.HasBlackJack());
             Assert.False(gioco.Giocatori[0].HasBlackJack());
 
+        }
+
+        [Test]
+        public void TestArresa()
+        {
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiNumeroGiocatori(0).AggiungiPuntataMinima(10).AggiungiArresaDisponibile().AggiungiSecondaCartaInizialeMazziere().AggiungiMazzi(0).build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiPuntataBase(10)
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategyDeviation())
+                .build());
+
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Dieci, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Asso, Carta.SemeCarta.Picche));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Sei, Carta.SemeCarta.Quadri));
+            gioco.Mazzo.Carte.Add(new Carta(Carta.NumeroCarta.Otto, Carta.SemeCarta.Fiori));
+            gioco.Giocata();
+
+            Assert.IsTrue(gioco.Giocatori[0].IsArreso);
+            Assert.AreEqual(-5, gioco.Giocatori[0].SoldiTotali);
+            Assert.AreEqual(5, gioco.Mazziere.SoldiTotali);
         }
     }
 

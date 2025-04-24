@@ -16,13 +16,15 @@ namespace Classes
         public decimal SoldiTotali { get; set; }
         public int Punteggio => CalcolaPunteggio();
         public int ManiSballate { get; set; }
+        public bool IsArreso { get; set; }
 
         public enum Giocata
         {
             Chiama = 0,
             Stai = 1,
             Raddoppia = 2,
-            Dividi = 3
+            Dividi = 3,
+            Arresa = 4
         }
 
         public GiocatoreSemplice(Gioco gioco)

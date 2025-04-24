@@ -87,6 +87,7 @@ namespace BlackJack.Controllers
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome(nome)
                 .AggiungiMazzi(6)
+                .AggiungiArresaDisponibile()
                 .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiMischiata()
                 .build();
@@ -125,6 +126,15 @@ namespace BlackJack.Controllers
             //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso;
             //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
             //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Tre;
+            //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
+            //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Dieci;
+            //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
+
+            //gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Dieci; //righe di test per l'arresa
+            //gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[0].Seme)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
+            //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Dieci;
+            //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[1].Seme)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
+            //gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Sei;
             //gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[2].Seme)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
             //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Dieci;
             //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)gioco.Mazzo.Carte[3].Seme)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
@@ -256,6 +266,15 @@ namespace BlackJack.Controllers
             return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
         }
 
+        public JsonResult Arresa(string id, string idGiocatore)
+        {
+            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+            gioco.Iniziato = true;
+            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+            giocatore.Arresa();
+
+            return Json(new { gioco = JsonGioco(gioco) });
+        }
         public JsonResult Esci(string id, string idGiocatore)
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);

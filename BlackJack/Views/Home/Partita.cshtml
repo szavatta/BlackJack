@@ -43,6 +43,7 @@
                     <input type='button' value='Esci' class='btnEsci btn btn-info d-none' />
                     <input type='button' value='Raddoppia' class='btnRaddoppia btn btn-info d-none' />
                     <input type='button' value='Dividi' class='btnSplit btn btn-info d-none' />
+                    <input type='button' value='Arresa' class='btnArresa btn btn-info d-none' />
                     <input type='button' value='Nuova mano' class='btnNuovaMano btn btn-info d-none' />
                     <input type='button' value='Assicurazione SI' class='btnAssicurazione btn btn-info d-none' scelta="1"/>
                     <input type='button' value='Assicurazione NO' class='btnAssicurazione btn btn-info d-none' scelta="0"/>
@@ -162,6 +163,53 @@
                                         errori++;
                                         $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
                                     }
+                                    let partita = JSON.parse(ret.gioco);
+                                    DisegnaTavolo(partita);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log(jqXHR);
+                                }
+                            });
+                        });
+                    } else {
+                        if (idPartita == "test" && ret.scelta != "Raddoppia") {
+                            errori++;
+                            $("[idgiocatore='" + idGiocatore + "']").find(".errore").text(" - Scelta corretta: " + ret.scelta);
+                        }
+                        let partita = JSON.parse(ret.gioco);
+                        DisegnaTavolo(partita);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
+        });
+
+        $(document).on("click", ".btnArresa", function () {
+            let idGiocatore = $(this).closest(".giocatore").attr("idGiocatore");
+            let puntata = $(this).parent().find(".txtPuntata").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Arresa",
+                data: {
+                    id: idPartita,
+                    idGiocatore: idGiocatore,
+                    puntata: puntata
+                },
+                success: function (ret) {
+                    if (ret.scelta == "?") {
+                        ShowConfirm("Confermi l'arresa?", function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Home/Arresa",
+                                data: {
+                                    id: idPartita,
+                                    idGiocatore: idGiocatore,
+                                    puntata: puntata
+                                },
+                                success: function (ret) {
                                     let partita = JSON.parse(ret.gioco);
                                     DisegnaTavolo(partita);
                                 },
@@ -499,6 +547,12 @@
                 } else {
                     div.find(".btnRaddoppia").addClass("d-none");
                 }
+                if (partita.ArresaDisponibile && giocatore.Id == partita.IdGiocatoreMano && giocatore.Carte.length == 2 && !assicurazione) {
+                    div.find(".btnArresa").removeClass("d-none");
+                } else {
+                    div.find(".btnArresa").addClass("d-none");
+                }
+
                 if (giocatore.Id == partita.IdGiocatoreMano && giocatore.CanSplit == true && !assicurazione) {
                     div.find(".btnSplit").removeClass("d-none");
                 } else {

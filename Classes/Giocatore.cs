@@ -55,6 +55,8 @@ namespace Classes
         {
             if (!Gioco.RaddoppiaNonDisponibile)
             {
+                Gioco.Log.AppendLine($"{Nome} si arrende");
+
                 PuntataCorrente *= 2;
                 Chiama();
                 Stai();
@@ -62,6 +64,18 @@ namespace Classes
             return this;
         }
 
+        public Giocatore Arresa()
+        {
+            if (Gioco.ArresaDisponibile)
+            {
+                IsArreso = true;
+                SoldiTotali -= PuntataCorrente / 2;
+                Gioco.Mazziere.SoldiTotali += PuntataCorrente / 2;
+                //PuntataCorrente = 0;
+                Stai();
+            }
+            return this;
+        }
         public Giocatore Stai()
         {
             CanSplit = false;
@@ -179,7 +193,7 @@ namespace Classes
             {
                 Gioco.IdGiocatoreMano = null;
                 Gioco.Mazziere.CartaCoperta = false;
-                if (Gioco.Giocatori.Where(q => q.HaSballato() == false).Count() > 0)
+                if (Gioco.Giocatori.Where(q => q.HaSballato() == false && !q.IsArreso).Count() > 0)
                 {
                     while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Giocata.Chiama)
                     {

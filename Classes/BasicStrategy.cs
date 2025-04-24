@@ -70,6 +70,13 @@ namespace Classes
                 
             }
 
+            if (giocatore.Carte.Count == 2 && giocatore.Gioco.ArresaDisponibile)
+            {
+                if (pg == 16 && pm >= 9
+                    || pg == 15 && pm == 10)
+                    return Giocatore.Giocata.Arresa;
+            }
+
             if (pg >= 17
                 || pg == 16 && pm <= 6
                 || pg == 15 && pm <= 6
@@ -210,6 +217,13 @@ namespace Classes
 
                 return Giocatore.Giocata.Chiama;
 
+            }
+
+            if (giocatore.Gioco.ArresaDisponibile)
+            {
+                if (pg == 16 && pm >= 9
+                    || pg == 15 && pm == 10)
+                    return Giocatore.Giocata.Arresa;
             }
 
             if (pg >= 17

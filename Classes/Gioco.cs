@@ -52,6 +52,12 @@ namespace Classes
                 return this;
             }
 
+            public GiocoBuilder AggiungiArresaDisponibile()
+            {
+                gioco.ArresaDisponibile = true;
+                return this;
+            }
+
             public GiocoBuilder AggiungiMischiata(int? random = null)
             {
                 gioco.Mischia = true;
@@ -80,7 +86,7 @@ namespace Classes
 
             public Gioco build()
             {
-                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere, gioco.RaddoppiaNonDisponibile);
+                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere, gioco.RaddoppiaNonDisponibile, gioco.ArresaDisponibile);
             }
 
         }
@@ -93,6 +99,7 @@ namespace Classes
         public decimal? PuntataMassima { get; set; }
         public bool Mischia { get; set; }
         public bool RaddoppiaNonDisponibile { get; set; }
+        public bool ArresaDisponibile { get; set; }
         public int? RandomMischiata { get; set; }
         public int? PercMischiata { get; set; }
 
@@ -107,7 +114,7 @@ namespace Classes
         DateTime DataCreazione { get; set; }
         public StringBuilder Log { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true, bool raddoppiaNonDisponibile = false)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true, bool raddoppiaNonDisponibile = false, bool arresaDisponibile = false)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -117,6 +124,7 @@ namespace Classes
             Mazzo = new Mazzo();
             Mischia = mischia;
             RaddoppiaNonDisponibile = raddoppiaNonDisponibile;
+            ArresaDisponibile = arresaDisponibile;
             RandomMischiata = randomMischiata;
             PercMischiata = percMischiata ?? 20;
             PuntataMinima = puntataMinima;
@@ -153,7 +161,7 @@ namespace Classes
                 for (int i = 0; i < Giocatori.Count(); i++)
                 {
                     GiocataGiocatore(i);
-                    if (!Giocatori[i].HaSballato())
+                    if (!Giocatori[i].HaSballato() && !Giocatori[i].IsArreso)
                         isInGioco = true;
                 }
 
@@ -199,7 +207,10 @@ namespace Classes
                 {
                     Giocatori[i].Assicurazione();
                 }
-                
+
+                if (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Arresa)
+                    Giocatori[i].Arresa();
+
                 while (Giocatori[i].Scelta() == GiocatoreSemplice.Giocata.Dividi)
                 {
                     Dividi(i);
@@ -278,8 +289,11 @@ namespace Classes
             foreach (var giocatore in GiocatoriPerdenti())
             {
                 giocatore.ManiPerse++;
-                Mazziere.SoldiTotali += giocatore.PuntataCorrente;
-                giocatore.SoldiTotali -= giocatore.PuntataCorrente;
+                if (!giocatore.IsArreso)
+                {
+                    Mazziere.SoldiTotali += giocatore.PuntataCorrente;
+                    giocatore.SoldiTotali -= giocatore.PuntataCorrente;
+                }
                 Log.AppendLine($"{giocatore.Nome} perde, nuovo saldo {giocatore.SoldiTotali}");
                 Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
                 Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
@@ -337,6 +351,7 @@ namespace Classes
                 g.PuntataCorrente = 0;
                 g.PuntataAssicurazione= 0;
                 g.SceltaAssicurazione = false;
+                g.IsArreso = false;
                 //g.Risultato = Giocatore.EnumRisultato.Pari;
             }
             Mazzo.Scarti.AddRange(Mazziere.Carte);
@@ -367,9 +382,10 @@ namespace Classes
         public List<Giocatore> GiocatoriVincenti()
         {
             var ret = Giocatori.Where(q =>
+                !q.IsArreso &&
                 q.PuntataCorrente > 0 && 
                 q.Punteggio <= 21 && (q.Punteggio > Mazziere.Punteggio || Mazziere.Punteggio > 21) ||
-                q.HasBlackJack() && !Mazziere.HasBlackJack()
+                (q.HasBlackJack() && !Mazziere.HasBlackJack())
                 ).ToList();
 
             return ret;
@@ -378,9 +394,10 @@ namespace Classes
         public List<Giocatore> GiocatoriPari()
         {
             var ret = Giocatori.Where(q =>
+                !q.IsArreso && (
                 q.PuntataCorrente == 0 || 
                 q.Punteggio == Mazziere.Punteggio && q.Punteggio <= 21 &&
-                !(q.HasBlackJack() ^ Mazziere.HasBlackJack())
+                !(q.HasBlackJack() ^ Mazziere.HasBlackJack()))
                 ).ToList();
 
             return ret;
@@ -389,10 +406,11 @@ namespace Classes
         public List<Giocatore> GiocatoriPerdenti()
         {
             var ret = Giocatori.Where(q =>
-                q.PuntataCorrente > 0 && 
+                q.IsArreso ||
+                (q.PuntataCorrente > 0 && 
                 (q.Punteggio > 21 || 
                 (q.Punteggio < Mazziere.Punteggio && Mazziere.Punteggio <= 21) ||
-                !q.HasBlackJack() && Mazziere.HasBlackJack())
+                !q.HasBlackJack() && Mazziere.HasBlackJack()))
                 ).ToList();
 
             return ret;
