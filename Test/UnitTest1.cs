@@ -39,7 +39,7 @@ namespace Test
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiMazzi(6)
-                .AggiungiMischiata(12)
+                .AggiungiMischiata()
                 .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiPuntataMinima(10)
                 .AggiungiPuntataMassima(1000)
@@ -69,6 +69,11 @@ namespace Test
             List<decimal> varr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             List<decimal> parr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             List<decimal> rarr = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> seme = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> scala = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> tris = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> scalac = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
+            List<decimal> trisc = new List<decimal> { 0, 0, 0, 0, 0, 0, 0 };
             int[] puntiMazziere = new int[30];
             int maxsplit = 0;
             int numass = 0;
@@ -76,8 +81,9 @@ namespace Test
             decimal vass = 0;
             decimal pass = 0;
             List<Result> report = new List<Result>();
+            int vincita21e3 = 0;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 gioco.Giocata();
 
@@ -133,6 +139,33 @@ namespace Test
                         else
                             mpair[x]++;
                     }
+                    if (gioco.Giocatori[x].Is21e3numero() && gioco.Giocatori[x].Is21e3colore())
+                    { //Tris stesso seme paga 100 volte
+                        trisc[x]++;
+                        vincita21e3 += 100;
+                    }
+                    else if (gioco.Giocatori[x].Is21e3scala() && gioco.Giocatori[x].Is21e3colore())
+                    { //Scala stesso seme paga 40 volte
+                        scalac[x]++;
+                        vincita21e3 += 40;
+                    }
+                    else if (gioco.Giocatori[x].Is21e3numero())
+                    { //Tris paga 30 volte
+                        tris[x]++;
+                        vincita21e3 += 30;
+                    }
+                    else if (gioco.Giocatori[x].Is21e3scala())
+                    { //Scala paga 10 volte
+                        scala[x]++;
+                        vincita21e3 += 10;
+                    }
+                    else if (gioco.Giocatori[x].Is21e3colore())
+                    { //Colore paga 5 volte
+                        seme[x]++;
+                        vincita21e3 += 5;
+                    }
+                    else
+                        vincita21e3 -= 1;
                 }
 
                 if (gioco.Giocatori.Where(q => q.GiocatoreSplit != null).Count() > maxsplit)
@@ -218,6 +251,24 @@ namespace Test
                 riga = $"   Mixed pair: {mpair[x]} ({Math.Round((decimal)mpair[x] / gioco.Giri * 100, 1)}%)";
                 gioco.Log.AppendLine(riga);
                 TestContext.WriteLine(riga);
+                riga = $"   21+3 Colore: {seme[x]} ({Math.Round((decimal)seme[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   21+3 Scala: {scala[x]} ({Math.Round((decimal)scala[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   21+3 Tris: {tris[x]} ({Math.Round((decimal)tris[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   21+3 Scala colore: {scalac[x]} ({Math.Round((decimal)scalac[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   21+3 Tris colore: {trisc[x]} ({Math.Round((decimal)trisc[x] / gioco.Giri * 100, 1)}%)";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
+                riga = $"   21+3 Vincita totale puntando 1 al giro: {vincita21e3}";
+                gioco.Log.AppendLine(riga);
+                TestContext.WriteLine(riga);
                 riga = $"   Giri con arresa: {tarr[x]}";
                 gioco.Log.AppendLine(riga);
                 TestContext.WriteLine(riga);
@@ -271,6 +322,7 @@ namespace Test
             TestContext.WriteLine(riga);
 
         }
+
 
         [Test]
         public void TestGiocate2()

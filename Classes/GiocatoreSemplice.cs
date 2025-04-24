@@ -99,6 +99,23 @@ namespace Classes
             Carte.Add(carta);
             return this;
         }
+
+        //21+3
+        public bool Is21e3colore()
+        {
+            return Carte[0].Seme == Carte[1].Seme && Carte[1].Seme == this.Gioco.Mazziere.Carte[0].Seme;
+        }
+        public bool Is21e3numero()
+        {
+            return Carte[0].Numero == Carte[1].Numero && Carte[1].Numero == this.Gioco.Mazziere.Carte[0].Numero;
+        }
+        public bool Is21e3scala()
+        {
+            var numeri = new List<int> { (int)Carte[0].Numero, (int)Carte[1].Numero, (int)this.Gioco.Mazziere.Carte[0].Numero };
+            numeri.Sort(); // Ordina i numeri in ordine crescente
+
+            return numeri[1] == numeri[0] + 1 && numeri[2] == numeri[1] + 1;
+        }
     }
 }
 
