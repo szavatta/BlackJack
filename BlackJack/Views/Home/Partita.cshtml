@@ -482,7 +482,7 @@
                 .css({'top' : (div.position().top + 10) + 'px'})
                 .html(giocatore.Punteggio);
             div.find(".cassa-giocatore").html("Cassa: " + giocatore.SoldiTotali + " - Puntata: " + giocatore.PuntataCorrente);
-            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "% - TrueCount: " + giocatore.Strategia.TrueCount);
+            div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%<br>RunningCount: " + giocatore.Strategia.Conteggio + " - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
             div.find(".numerrori").text(errori);
             if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Punteggio <= 21) {

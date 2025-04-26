@@ -369,7 +369,7 @@ namespace Classes
             Mazziere.Chiama();
             Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Chiama());
             if (SecondaCartaInizialeMazziere)
-                Mazziere.Chiama();
+                Mazziere.Chiama(false);
 
             //if (Mazziere.HasBlackJack())
             //    Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());

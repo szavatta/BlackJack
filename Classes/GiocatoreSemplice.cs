@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -33,10 +34,20 @@ namespace Classes
             Gioco = gioco;
         }
 
-        public virtual Carta Chiama()
+        public virtual Carta Chiama(bool conta = true)
         {
+            var chiamante = new StackTrace().GetFrame(1).GetMethod();
+
             Carta carta = Gioco.Mazzo.PescaCarta();
-            Gioco.Giocatori.ForEach(q => q.Strategia.Conta(carta));
+            if (conta)
+            { 
+                Gioco.Giocatori.ForEach(q =>
+                {
+                    q.Strategia.Conta(carta);
+                    q.Strategia.TrueCount = q.Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count);
+                });
+            }
+
             Carte.Add(carta);
             Gioco.Log.AppendLine($"{Nome} pesca carta {carta} {(Nome == "Mazziere" && this.Carte.Count == 2 ? "(nascosta)" : "")}");
 

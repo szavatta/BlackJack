@@ -193,6 +193,8 @@ namespace Classes
             {
                 Gioco.IdGiocatoreMano = null;
                 Gioco.Mazziere.CartaCoperta = false;
+                if (Gioco.SecondaCartaInizialeMazziere && Gioco.Mazziere.Carte.Count == 2)
+                    Gioco.Giocatori.ForEach(q => q.Strategia.Conta(Gioco.Mazziere.Carte.Last()));
                 if (Gioco.Giocatori.Where(q => q.HaSballato() == false && !q.IsArreso).Count() > 0)
                 {
                     while (Gioco.Mazziere.Strategia.Strategy(Gioco.Mazziere) == Mazziere.Giocata.Chiama)
@@ -213,7 +215,7 @@ namespace Classes
             return giocatore;
         }
 
-        public override Carta Chiama()
+        public override Carta Chiama(bool conta = true)
         {
             Carta carta = base.Chiama();
 
@@ -221,8 +223,6 @@ namespace Classes
                 CanSplit = true;
             else
                 CanSplit = false;
-
-            Strategia.TrueCount = Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count);
 
             //if (Punteggio >= 21)
             //    Stai();
