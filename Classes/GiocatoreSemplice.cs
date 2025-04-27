@@ -49,7 +49,7 @@ namespace Classes
             }
 
             Carte.Add(carta);
-            Gioco.Log.AppendLine($"{Nome} pesca carta {carta} {(Nome == "Mazziere" && this.Carte.Count == 2 && this.Gioco.SecondaCartaInizialeMazziere ? "(nascosta)" : "")}");
+            Gioco.Log.AppendLine($"{Nome} chiama carta {carta} {(Nome == "Mazziere" && this.Carte.Count == 2 && this.Gioco.SecondaCartaInizialeMazziere ? "(nascosta)" : "")}");
 
             if (Punteggio > 21)
             {
