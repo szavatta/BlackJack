@@ -193,7 +193,7 @@ namespace Test
                     CarteGiocatore = string.Join(",", gioco.Giocatori[0].Carte),
                     CarteMazziere = string.Join(",", gioco.Mazziere.Carte),
                     Conteggio = gioco.Giocatori[0].Strategia.Conteggio,
-                    TrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count),
+                    TrueCount = gioco.Giocatori[0].Strategia.TrueCount,
                     NumCarte = gioco.Mazzo.Carte.Count
                 });
 
@@ -622,10 +622,10 @@ namespace Test
                     maxConteggio = gioco.Giocatori[0].Strategia.Conteggio;
                 if (gioco.Giocatori[0].Strategia.Conteggio < minConteggio)
                     minConteggio = gioco.Giocatori[0].Strategia.Conteggio;
-                if (gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count) > maxTrueCount)
-                    maxTrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count);
-                if (gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count) < minTrueCount)
-                    minTrueCount = gioco.Giocatori[0].Strategia.GetTrueCount(gioco.Mazzo.Carte.Count);
+                if (gioco.Giocatori[0].Strategia.TrueCount > maxTrueCount)
+                    maxTrueCount = gioco.Giocatori[0].Strategia.TrueCount;
+                if (gioco.Giocatori[0].Strategia.TrueCount < minTrueCount)
+                    minTrueCount = gioco.Giocatori[0].Strategia.TrueCount;
             }
             Assert.AreEqual(0, gioco.Giocatori[0].Strategia.Conteggio);
             Assert.AreEqual(3, maxConteggio);

@@ -203,7 +203,7 @@ namespace Classes
                 if (Giocatori[i].Carte.Count == 2 &&
                     Giocatori[i].GiocatoreSplit == null &&
                     Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso &&
-                    Giocatori[i].Strategia.Assicurazione(Giocatori[i], Giocatori[i].Strategia.GetTrueCount(Mazzo.Carte.Count))) 
+                    Giocatori[i].Strategia.Assicurazione(Giocatori[i], Giocatori[i].Strategia.TrueCount)) 
                 {
                     Giocatori[i].Assicurazione();
                 }
@@ -283,7 +283,7 @@ namespace Classes
                 giocatore.SoldiTotali += paga;
                 Log.AppendLine($"{giocatore.Nome} vince, nuovo saldo {giocatore.SoldiTotali}");
                 Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
-                Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
+                Log.AppendLine($"True count: {giocatore.Strategia.TrueCount}");
             }
 
             foreach (var giocatore in GiocatoriPerdenti())
@@ -296,14 +296,14 @@ namespace Classes
                 }
                 Log.AppendLine($"{giocatore.Nome} perde, nuovo saldo {giocatore.SoldiTotali}");
                 Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
-                Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
+                Log.AppendLine($"True count: {giocatore.Strategia.TrueCount}");
             }
 
             foreach (var giocatore in GiocatoriPari())
             {
                 Log.AppendLine($"{giocatore.Nome} pareggia, nuovo saldo {giocatore.SoldiTotali}");
                 Log.AppendLine($"Running count: {giocatore.Strategia.Conteggio}");
-                Log.AppendLine($"True count: {giocatore.Strategia.GetTrueCount(Mazzo.Carte.Count)}");
+                Log.AppendLine($"True count: {giocatore.Strategia.TrueCount}");
             }
 
             foreach (var giocatore in Giocatori.Where(q => q.GiocatoreSplit != null))

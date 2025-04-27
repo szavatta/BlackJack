@@ -36,7 +36,7 @@ namespace BlackJack.Controllers
             else if (soggetto == 1)
                 giocatore.Chiama();
             
-            return Json(new { numcarte = gioco.Mazzo.Carte.Count, truecount = giocatore.Strategia.GetTrueCount(gioco.Mazzo.Carte.Count) });
+            return Json(new { numcarte = gioco.Mazzo.Carte.Count, truecount = giocatore.Strategia.TrueCount });
         }
 
         public JsonResult NuovaMano()

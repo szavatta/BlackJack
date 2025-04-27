@@ -175,7 +175,7 @@ namespace BlackJack.Controllers
         {
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            decimal pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.GetTrueCount(gioco.Mazzo.Carte.Count));
+            decimal pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.TrueCount);
             decimal? scelta = pok != puntata ? pok : null;
             giocatore.Punta(puntata);
 

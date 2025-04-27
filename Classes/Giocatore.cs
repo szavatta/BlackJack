@@ -98,7 +98,7 @@ namespace Classes
                 GiocatoreSplit == null &&
                 Gioco.Mazziere.Carte.Count > 0 && Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)
             {
-                if (Strategia.Assicurazione(this, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count)))
+                if (Strategia.Assicurazione(this, Strategia.TrueCount))
                     return "Assicurazione SI";
                 else
                     return "Assicurazione NO";
@@ -165,7 +165,7 @@ namespace Classes
 
         public void Punta()
         {
-            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, PuntataBase, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
+            PuntataCorrente = Strategia.Puntata(this, Gioco.PuntataMinima, PuntataBase, Strategia.TrueCount);
             if (Gioco.PuntataMassima.HasValue && PuntataCorrente > Gioco.PuntataMassima)
                 PuntataCorrente = Gioco.PuntataMassima.Value;
 
@@ -177,7 +177,7 @@ namespace Classes
             if (Carte.Count < 2)
                 return Giocata.Chiama;
             else
-                return Strategia.Strategy(this, Gioco.Mazziere, Strategia.GetTrueCount(Gioco.Mazzo.Carte.Count));
+                return Strategia.Strategy(this, Gioco.Mazziere, Strategia.TrueCount);
         }
 
         public void PassaMano()
