@@ -93,7 +93,8 @@ namespace Classes
 
         public string ProxScelta()
         {
-            if (!SceltaAssicurazione &&
+            if (Gioco.SecondaCartaInizialeMazziere &&
+                !SceltaAssicurazione &&
                 Carte.Count == 2 &&
                 GiocatoreSplit == null &&
                 Gioco.Mazziere.Carte.Count > 0 && Gioco.Mazziere.Carte[0].Numero == Carta.NumeroCarta.Asso)

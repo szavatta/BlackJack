@@ -93,10 +93,10 @@ namespace BlackJack.Controllers
                 .build();
 
             //gioco.Mazzo.Carte.Clear();
-            //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
-            //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
-            //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;
-            //gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Quattro)}.png";
+            gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
+            gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
+            gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;
+            gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Quattro)}.png";
 
             //gioco.Mazzo.Carte[2].Numero = gioco.Mazzo.Carte[0].Numero; //righe di test per lo split
             //gioco.Mazzo.Carte[2].PathImage = gioco.Mazzo.Carte[0].PathImage;
