@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Test Strategy";
+}
+
+<div class="text-center row">
+    <div class="col-lg-8">
+        <div class="col-lg-12 giocatore">
+            Mazziere
+            <div class="col-lg-12 carte-mazziere d-flex justify-content-center">
+            </div>
+        </div>
+        <div class="col-lg-12 giocatore">
+            Giocatore
+            <div class="col-lg-12 carte-giocatore d-flex justify-content-center">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="mt-3">
+            BasicStrategyDeviation
+        </div>
+        <div class="mt-3">
+            True Count
+            <input type="number" " id="TrueCount" value="0" style="width: 50px;" />
+        </div>
+        <div class="mt-3">
+            Scelta:
+            <span id="Scelta" />
+        </div>
+    </div>
+    <div class="col-lg-12 carte d-flex justify-content-center">
+        @for (int i = 1; i <= 13; i++)
+        {
+            <div class="carta" valore="@(i)">
+                <img src="/Carte/4-@(i).png" title="">
+            </div>
+        }
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".carte .carta").on("mousedown", function (e) {
+            if (e.which === 1) {
+                $(".carte-giocatore").append($(this).clone());
+            } else if (e.which === 3) {
+                $(".carte-mazziere").append($(this).clone());
+            }
+            $("#Scelta").html(GetScelta());
+        });
+
+        $("#TrueCount").on("change", function () {
+            $("#Scelta").html(GetScelta());
+        });
+
+        $(".carte .carta").on("contextmenu", function (e) {
+            e.preventDefault();
+        });
+
+        $(document).on("click", ".carte-giocatore .carta,.carte-mazziere .carta", function (e) {
+            $(this).remove();
+            $("#Scelta").html(GetScelta());
+        });
+
+    })
+
+    function GetScelta() {
+
+        let giocatore = $(".carte-giocatore .carta").map(function () {
+            return $(this).attr("valore");
+        }).get();
+        let mazziere = $(".carte-mazziere .carta").map(function () {
+            return $(this).attr("valore");
+        }).get();
+
+        var scelta = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetScelta",
+            async: false,
+            data: {
+                giocatore: giocatore,
+                mazziere: mazziere,
+                trueCount: $("#TrueCount").val()
+            },
+            success: function (ret) {
+                scelta = ret;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+            }
+        });
+
+        return scelta;
+
+    }
+
+
+</script>

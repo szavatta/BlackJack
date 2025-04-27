@@ -40,6 +40,11 @@ namespace BlackJack.Controllers
             return View();
         }
 
+        public IActionResult TestStrategy()
+        {
+            return View();
+        }
+
         public IActionResult Partita(string id)
         {
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
@@ -347,5 +352,35 @@ namespace BlackJack.Controllers
             return Json(true);
         }
 
+        public JsonResult GetScelta(List<int> mazziere, List<int> giocatore, decimal trueCount)
+        {
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiSecondaCartaInizialeMazziere().AggiungiMazzi(0).build();
+            gioco.Giocatori.Add(GiocatoreBuilder.Init()
+                .AggiungiGioco(gioco)
+                .AggiungiStrategia(new BasicStrategyDeviation())
+                .build());
+
+            gioco.Giocatori.First().Strategia.TrueCount = trueCount;
+
+            foreach (var carta in mazziere)
+            {
+                gioco.Mazziere
+                    .AggiungiCarta(new Carta((Carta.NumeroCarta)carta, Carta.SemeCarta.Fiori));
+            }
+
+            foreach (var carta in giocatore)
+            {
+                gioco.Giocatori.First()
+                    .AggiungiCarta(new Carta((Carta.NumeroCarta)carta, Carta.SemeCarta.Fiori));
+            }
+
+            string scelta = "";
+            if (gioco.Giocatori.First().HaSballato())
+                scelta = "Sballato";
+            else if (giocatore.Count > 1 && mazziere.Count > 0)
+                scelta = gioco.Giocatori.First().ProxScelta();
+
+            return Json(scelta);
+        }
     }
 }
