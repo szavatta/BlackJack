@@ -2,6 +2,7 @@
 using Classes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -50,6 +52,7 @@ namespace BlackJack.Controllers
             Gioco gioco = Partite.Where(q => q.Id == id).FirstOrDefault();
             //ViewBag.IdGiocatore = HttpContext.Session.GetString("IdGiocatore");
             ViewBag.IdGiocatore = HttpContext.Request.Cookies["idGiocatore"];
+            ViewBag.Strategie = new SelectList(GetStrategie());
 
             return View(gioco);
         }
@@ -310,8 +313,11 @@ namespace BlackJack.Controllers
         }
 
 
-        public JsonResult Partecipa(string id, string nome)
+        public JsonResult Partecipa(string id, string nome, string strategia)
         {
+            if (strategia == null)
+                throw new Exception("Seleziona una strategia");
+
             string idGiocatore = HttpContext.Request.Cookies["idGiocatore"];
             //idGiocatore = HttpContext.Session.GetString("IdGiocatore");
             if (string.IsNullOrEmpty(idGiocatore))
@@ -323,9 +329,17 @@ namespace BlackJack.Controllers
                     Expires = DateTime.Now.AddDays(5)
                 });
             }
+
+            Assembly assembly = Assembly.Load("Classes");
+            var tipoClasse = assembly.GetType("Classes." + strategia);
+            if (tipoClasse == null)
+                throw new Exception($"strategia {strategia} non trovata.");
+
+            StrategiaGiocatore istanzaStrategia = (StrategiaGiocatore)Activator.CreateInstance(tipoClasse);
+
             Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
             Giocatore giocatore = GiocatoreBuilder.Init()
-                .AggiungiStrategia(new BasicStrategyDeviation())
+                .AggiungiStrategia(istanzaStrategia)
                 .AggiungiGioco(gioco)
                 .AggiungiNome(nome)
                 .AggiungiPuntataBase(gioco.PuntataMinima)
@@ -386,5 +400,27 @@ namespace BlackJack.Controllers
 
             return Json(scelta);
         }
+
+        private List<string> GetStrategie()
+        {
+            // Ottieni l'assembly corrente (oppure specificane uno)
+            Assembly assembly = typeof(StrategiaGiocatore).Assembly;
+
+            // Tipo base
+            Type tipoBase = typeof(StrategiaGiocatore);
+
+            // Filtra tutte le classi che derivano da StrategiaGiocatore
+            var strategie = assembly.GetTypes()
+                .Where(t => 
+                    t.IsClass && 
+                    !t.IsAbstract && 
+                    tipoBase.IsAssignableFrom(t) &&
+                    !t.Name.StartsWith("Test"))
+                .Select(q => q.Name)
+                .ToList();
+
+            return strategie;
+        }
+
     }
 }
