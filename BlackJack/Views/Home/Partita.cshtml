@@ -23,7 +23,7 @@
         </div>
         <div class="col-lg-2 offset-lg-1 mb-1 div-partecipa">
             <input type='text' value='' class='txtNomeGiocatore form-control ml-1 mb-1 d-none' placeholder="Nome giocatore" />
-            @Html.DropDownList("listaStrategie", (SelectList)ViewBag.Strategie, "Seleziona una strategia", new { @class = "form-select" })
+            @Html.DropDownList("listaStrategie", (SelectList)ViewBag.Strategie, "Seleziona una strategia", new { @class = "form-select d-none" })
             <input type='button' value='Partecipa' class='btnPartecipa btn btn-info w-100 d-none mt-1' />
         </div>
 
@@ -596,9 +596,11 @@
         if (!presenteg && !partita.Iniziato) {
             $(".btnPartecipa").removeClass("d-none");
             $(".txtNomeGiocatore").removeClass("d-none");
+            $("#listaStrategie").removeClass("d-none");
         } else {
             $(".btnPartecipa").addClass("d-none");
             $(".txtNomeGiocatore").addClass("d-none");
+            $("#listaStrategie").addClass("d-none");
         }
 
         //elimina i box
