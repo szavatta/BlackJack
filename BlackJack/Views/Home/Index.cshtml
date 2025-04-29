@@ -2,12 +2,30 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center row">
+<div class="row">
     <div class="col-lg-10">
 
     </div>
     <div id="div-partite" class="col-lg-2">
         <input type='text' id='txtNomePartita' value='' class='form-control w-100 mb-1' placeholder="Nome partita" />
+        <div class="form-check d-flex align-items-center mb-2">
+            <input class="form-check-input me-2" type="checkbox" checked id="ckSecondaCartaMazziere">
+            <label class="form-check-label" for="ckSecondaCartaMazziere">
+                Seconda carta mazziere
+            </label>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+            <label for="nome" class="form-label me-2 w-75">Numero mazzi</label>
+            <input type='number' id='txtNumMazzi' value='6' class='form-control flex-grow-1' />
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+            <label for="nome" class="form-label me-2 w-75">Puntata minima</label>
+            <input type='number' id='txtPuntataMinima' value='10' class='form-control flex-grow-1' />
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+            <label for="nome" class="form-label me-2 w-75">% mischiata</label>
+            <input type='number' id='txtPercMischiata' value='20' class='form-control flex-grow-1' />
+        </div>
         <input type='button' id='btnNuovaPartita' value='Nuova partita' class='btn btn-info w-100 mb-1' />
     </div>
 
@@ -21,7 +39,11 @@
                 type: "POST",
                 url: "/Home/NuovaPartita",
                 data: {
-                    nome: $("#txtNomePartita").val()
+                    nome: $("#txtNomePartita").val(),
+                    scm: $("#ckSecondaCartaMazziere").is(":checked"),
+                    numMazzi: $("#txtNumMazzi").val(),
+                    puntataMinima: $("#txtPuntataMinima").val(),
+                    percMischiata: $("#txtPercMischiata").val(),
                 },
                 success: function (id) {
                     GetPartite();

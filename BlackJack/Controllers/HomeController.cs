@@ -74,7 +74,7 @@ namespace BlackJack.Controllers
             return Json(JsonGioco(gioco));
         }
 
-        public JsonResult NuovaPartita(string nome)
+        public JsonResult NuovaPartita(string nome, bool scm = true, int puntataMinima = 10, int numMazzi = 6, int percMischiata = 20)
         {
             if (string.IsNullOrEmpty(nome))
             {
@@ -91,10 +91,11 @@ namespace BlackJack.Controllers
             Gioco gioco = Gioco.GiocoBuilder.Init()
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome(nome)
-                .AggiungiMazzi(6)
-                .AggiungiPuntataMinima(10)
-                .AggiungiSecondaCartaInizialeMazziere()
+                .AggiungiMazzi(numMazzi)
+                .AggiungiPuntataMinima(puntataMinima)
+                .AggiungiSecondaCartaInizialeMazziere(scm)
                 .AggiungiMischiata()
+                .AggiungiPercentualeMischiata(percMischiata)
                 .build();
 
             //gioco.Mazzo.Carte.Clear();

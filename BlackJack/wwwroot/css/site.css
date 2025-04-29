@@ -122,3 +122,8 @@ body {
     cursor: pointer;
     width: 50px;
 }
+
+.form-check-input {
+    width: 1.5em !important;
+    height: 1.5em !important;
+}

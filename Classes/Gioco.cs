@@ -77,9 +77,9 @@ namespace Classes
                 return this;
             }
 
-            public GiocoBuilder AggiungiSecondaCartaInizialeMazziere()
+            public GiocoBuilder AggiungiSecondaCartaInizialeMazziere(bool scm = true)
             {
-                gioco.SecondaCartaInizialeMazziere = true;
+                gioco.SecondaCartaInizialeMazziere = scm;
                 return this;
             }
 
