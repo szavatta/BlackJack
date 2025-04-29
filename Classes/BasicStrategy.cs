@@ -176,7 +176,6 @@ namespace Classes
                     return Giocatore.Giocata.Dividi;
                 }
             }
-
             if (assoConDueCarte)
             {
                 if (pg >= 20 //Asso+9
@@ -189,6 +188,7 @@ namespace Classes
                 {
                     return Giocatore.Giocata.Stai;
                 }
+
 
                 if (pg == 19 && pm == 4 && tc >= 3
                     || pg == 19 && pm == 5 && tc >= 1
@@ -219,7 +219,7 @@ namespace Classes
 
             }
 
-            if (giocatore.Gioco.ArresaDisponibile)
+            if (giocatore.Carte.Count == 2 && giocatore.Gioco.ArresaDisponibile)
             {
                 if (pg == 16 && pm >= 9
                     || pg == 15 && pm == 10)

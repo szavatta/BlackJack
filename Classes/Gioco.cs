@@ -349,6 +349,7 @@ namespace Classes
                 g.Carte = new List<Carta>();
                 g.PuntataPrecedente = g.PuntataCorrente;
                 g.PuntataCorrente = 0;
+                g.ProssimaPuntata = g.Strategia.Puntata(g, PuntataMinima, g.PuntataBase, g.Strategia.TrueCount);
                 g.PuntataAssicurazione= 0;
                 g.SceltaAssicurazione = false;
                 g.IsArreso = false;

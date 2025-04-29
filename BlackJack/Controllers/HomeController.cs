@@ -92,7 +92,7 @@ namespace BlackJack.Controllers
                 .AggiungiNumeroGiocatori(0)
                 .AggiungiNome(nome)
                 .AggiungiMazzi(6)
-                .AggiungiArresaDisponibile()
+                .AggiungiPuntataMinima(10)
                 .AggiungiSecondaCartaInizialeMazziere()
                 .AggiungiMischiata()
                 .build();
@@ -326,8 +326,10 @@ namespace BlackJack.Controllers
                 .AggiungiStrategia(new BasicStrategyDeviation())
                 .AggiungiGioco(gioco)
                 .AggiungiNome(nome)
+                .AggiungiPuntataBase(gioco.PuntataMinima)
                 .build();
             giocatore.Id = idGiocatore;
+            giocatore.ProssimaPuntata = giocatore.Strategia.Puntata(giocatore,gioco.PuntataMinima, giocatore.PuntataBase, giocatore.Strategia.TrueCount);
             gioco.Giocatori.Add(giocatore);
 
             return Json(new { json = JsonGioco(gioco), idGiocatore = idGiocatore });
@@ -354,7 +356,7 @@ namespace BlackJack.Controllers
 
         public JsonResult GetScelta(List<int> mazziere, List<int> giocatore, decimal trueCount)
         {
-            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiSecondaCartaInizialeMazziere().AggiungiMazzi(0).build();
+            Gioco gioco = Gioco.GiocoBuilder.Init().AggiungiMazzi(0).build();
             gioco.Giocatori.Add(GiocatoreBuilder.Init()
                 .AggiungiGioco(gioco)
                 .AggiungiStrategia(new BasicStrategyDeviation())

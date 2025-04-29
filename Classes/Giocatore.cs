@@ -25,6 +25,7 @@ namespace Classes
         public bool SceltaAssicurazione { get; set; }
         public decimal PuntataBase { get; set; }
         public string ProssimaScelta { get; set; }
+        public decimal ProssimaPuntata { get; set; }
 
 
         public Giocatore(Gioco gioco = null, StrategiaGiocatore strategia = null, decimal soldi = 0, string nome = "", decimal puntataBase = 1) : base(gioco)
