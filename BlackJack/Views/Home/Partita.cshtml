@@ -101,6 +101,9 @@
                     DisegnaTavolo(partita);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+                    var primaRiga = jqXHR.responseText.split('\r\n')[0];
+                    var messaggio = primaRiga.replace(/^.*?:\s*/, '');
+                    ShowMessage(messaggio);
                     console.log(jqXHR);
                 }
             });
@@ -485,7 +488,7 @@
             div.find(".perc").html("vinte: " + Math.round(giocatore.ManiVinte * 100 / partita.Giri) + "% - pari: " + Math.round(Math.abs(giocatore.ManiVinte - giocatore.ManiPerse) * 100 / partita.Giri) + "% - perse: " + Math.round(giocatore.ManiPerse * 100 / partita.Giri) + "%<br>RunningCount: " + giocatore.Strategia.Conteggio + " - TrueCount: " + giocatore.Strategia.TrueCount);
             div.find(".carte-giocatore").empty();
             div.find(".numerrori").text(errori);
-            if (giocatore.Id == partita.IdGiocatoreMano && giocatore.Punteggio <= 21) {
+            if (partita.VisualizzaSceltaStrategia && giocatore.Id == partita.IdGiocatoreMano && giocatore.Punteggio <= 21) {
                 div.find(".strategia").html(giocatore.ProssimaScelta != "" ? 
                         "Prossima scelta da strategia: <b>" + giocatore.ProssimaScelta + "</b>" : 
                         "");
@@ -511,16 +514,20 @@
                     div.find(".btnPunta").removeClass("d-none");
                     div.find(".btnEsci").removeClass("d-none");
                     div.find(".fiches-giocatore").removeClass("d-none");
-                    div.find(".strategia").removeClass("d-none").html(giocatore.ProssimaScelta != "" ?
-                        "Prossima puntata da strategia: <b>" + giocatore.ProssimaPuntata + "</b>" :
-                        "");
+                    if (partita.VisualizzaSceltaStrategia) {
+                        div.find(".strategia").removeClass("d-none").html(giocatore.ProssimaScelta != "" ?
+                            "Prossima puntata da strategia: <b>" + giocatore.ProssimaPuntata + "</b>" :
+                            "");
+                    }
 
                 } else {
                     if (partita.SecondaCartaInizialeMazziere && giocatore.SceltaAssicurazione == false && partita.Mazziere.Carte.length > 0 && partita.Mazziere.Carte[0].Numero == 1) {
                         //ShowConfirmSiNo("Assicurazione?", () => Assicurazione(partita.Id, giocatore.Id, 1), () => Assicurazione(partita.Id, giocatore.Id, 0));
                         assicurazione = true;
                         div.find(".btnAssicurazione").removeClass("d-none");
-                        div.find(".strategia").removeClass("d-none");
+                        if (partita.VisualizzaSceltaStrategia) {
+                            div.find(".strategia").removeClass("d-none");
+                        }
                     } else {
                         div.find(".btnAssicurazione").addClass("d-none");
                     }
@@ -535,7 +542,9 @@
                         div.find(".btnStai").removeClass("d-none");
                         div.find(".btnChiama").removeClass("d-none");
                         div.find(".btnContinua").addClass("d-none");
-                        div.find(".strategia").removeClass("d-none");
+                        if (partita.VisualizzaSceltaStrategia) {
+                            div.find(".strategia").removeClass("d-none");
+                        }
                     } else {
                         div.find(".btnStai").addClass("d-none");
                         div.find(".btnChiama").addClass("d-none");

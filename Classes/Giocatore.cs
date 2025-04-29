@@ -113,6 +113,10 @@ namespace Classes
 
         public Giocatore Punta(decimal puntata)
         {
+            if (puntata < Gioco.PuntataMinima)
+                throw new Exception("Puntata non accettata. Puntata minima " + Gioco.PuntataMinima);
+            if (Gioco.PuntataMassima != null && puntata > Gioco.PuntataMassima)
+                throw new Exception("Puntata non accettata. Puntata massima " + Gioco.PuntataMassima);
             Gioco.Iniziato = true;
             PuntataCorrente = puntata;
             return this;

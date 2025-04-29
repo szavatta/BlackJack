@@ -52,9 +52,9 @@ namespace Classes
                 return this;
             }
 
-            public GiocoBuilder AggiungiArresaDisponibile()
+            public GiocoBuilder AggiungiArresaDisponibile(bool arr = true)
             {
-                gioco.ArresaDisponibile = true;
+                gioco.ArresaDisponibile = arr;
                 return this;
             }
 
@@ -83,10 +83,16 @@ namespace Classes
                 return this;
             }
 
+            public GiocoBuilder AggiungiVisualizzaSceltaStrategia(bool vis = false)
+            {
+                gioco.VisualizzaSceltaStrategia = vis;
+                return this;
+            }
+
 
             public Gioco build()
             {
-                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere, gioco.RaddoppiaNonDisponibile, gioco.ArresaDisponibile);
+                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere, gioco.RaddoppiaNonDisponibile, gioco.ArresaDisponibile, gioco.VisualizzaSceltaStrategia);
             }
 
         }
@@ -111,10 +117,11 @@ namespace Classes
         public string IdGiocatoreMano { get; set; }
         public bool Iniziato { get; set; }
         public bool SecondaCartaInizialeMazziere { get; set; }
+        public bool VisualizzaSceltaStrategia { get; set; }
         DateTime DataCreazione { get; set; }
         public StringBuilder Log { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true, bool raddoppiaNonDisponibile = false, bool arresaDisponibile = false)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true, bool raddoppiaNonDisponibile = false, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = false)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -131,6 +138,7 @@ namespace Classes
             PuntataMassima = puntataMassima;
             NumMazziIniziali = numMazzi;
             SecondaCartaInizialeMazziere = secondaCartaInizialeMazziere;
+            VisualizzaSceltaStrategia = visualizzaSceltaStrategia;
             Log = new StringBuilder();
             Log.AppendLine("Inizio partita");
             Mazzo.CreaMazzo(this);
