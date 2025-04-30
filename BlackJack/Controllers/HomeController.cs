@@ -77,7 +77,7 @@ namespace BlackJack.Controllers
             return Json(JsonGioco(gioco));
         }
 
-        public JsonResult NuovaPartita(string nome, bool secondaCartaMazziere = true, int puntataMinima = 10, int puntataMassima = 1000, int numMazzi = 6, int percMischiata = 20, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = true)
+        public JsonResult NuovaPartita(string nome, bool secondaCartaMazziere = true, int puntataMinima = 10, int numMazzi = 6, int percMischiata = 20, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = true, bool raddoppioDopoSplit = true)
         {
             if (string.IsNullOrEmpty(nome))
             {
@@ -100,10 +100,24 @@ namespace BlackJack.Controllers
                 .AggiungiMischiata()
                 .AggiungiPercentualeMischiata(percMischiata)
                 .AggiungiArresaDisponibile(arresaDisponibile)
+                .AggiungiRaddoppioDopoSplit(raddoppioDopoSplit)
                 .AggiungiVisualizzaSceltaStrategia(visualizzaSceltaStrategia)
                 .build();
 
             //gioco.Mazzo.Carte.Clear();
+            gioco.Mazzo.Carte[0].Numero = Carta.NumeroCarta.Otto; //righe di test per raddoppio dopo split
+            gioco.Mazzo.Carte[0].PathImage = $"Carte/{((int)Carta.SemeCarta.Cuori)}-{((int)gioco.Mazzo.Carte[0].Numero)}.png";
+            gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Quattro;
+            gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Picche)}-{((int)gioco.Mazzo.Carte[1].Numero)}.png";
+            gioco.Mazzo.Carte[2].Numero = Carta.NumeroCarta.Otto;
+            gioco.Mazzo.Carte[2].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)gioco.Mazzo.Carte[2].Numero)}.png";
+            gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Cinque;
+            gioco.Mazzo.Carte[3].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)gioco.Mazzo.Carte[3].Numero)}.png";
+            gioco.Mazzo.Carte[4].Numero = Carta.NumeroCarta.Tre;
+            gioco.Mazzo.Carte[4].PathImage = $"Carte/{((int)Carta.SemeCarta.Cuori)}-{((int)gioco.Mazzo.Carte[4].Numero)}.png";
+            gioco.Mazzo.Carte[5].Numero = Carta.NumeroCarta.Tre;
+            gioco.Mazzo.Carte[5].PathImage = $"Carte/{((int)Carta.SemeCarta.Fiori)}-{((int)gioco.Mazzo.Carte[5].Numero)}.png";
+
             //gioco.Mazzo.Carte[1].Numero = Carta.NumeroCarta.Asso; //righe di test per l'assicurazione
             //gioco.Mazzo.Carte[1].PathImage = $"Carte/{((int)Carta.SemeCarta.Quadri)}-{((int)Carta.NumeroCarta.Asso)}.png";
             //gioco.Mazzo.Carte[3].Numero = Carta.NumeroCarta.Quattro;

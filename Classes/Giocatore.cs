@@ -54,27 +54,30 @@ namespace Classes
 
         public Giocatore Raddoppia()
         {
-            if (!Gioco.RaddoppiaNonDisponibile)
-            {
-                Gioco.Log.AppendLine($"{Nome} si arrende");
+            if (!Gioco.RaddoppiaDisponibile)
+                throw new Exception("Raddoppio non ammesso");
+            if (!Gioco.RaddoppioDopoSplit && (this.GiocatoreSplit != null || this.Gioco.Giocatori.Where(q => q.GiocatoreSplit?.Id == this.Id).FirstOrDefault() != null))
+                throw new Exception("Raddoppio dopo split non ammesso");
 
-                PuntataCorrente *= 2;
-                Chiama();
-                Stai();
-            }
+            Gioco.Log.AppendLine($"{Nome} raddoppia");
+
+            PuntataCorrente *= 2;
+            Chiama();
+            Stai();
             return this;
         }
 
         public Giocatore Arresa()
         {
-            if (Gioco.ArresaDisponibile)
-            {
-                IsArreso = true;
-                SoldiTotali -= PuntataCorrente / 2;
-                Gioco.Mazziere.SoldiTotali += PuntataCorrente / 2;
-                //PuntataCorrente = 0;
-                Stai();
-            }
+            if (!Gioco.ArresaDisponibile)
+                throw new Exception("Arresa non disponibile");
+            
+            IsArreso = true;
+            SoldiTotali -= PuntataCorrente / 2;
+            Gioco.Mazziere.SoldiTotali += PuntataCorrente / 2;
+            //PuntataCorrente = 0;
+            Stai();
+            
             return this;
         }
         public Giocatore Stai()

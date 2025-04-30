@@ -33,6 +33,10 @@
             <label class="form-check-label" for="ckArresaDisponibile">Arresa disponibile</label>
         </div>
         <div class="form-check d-flex align-items-center mb-2">
+            <input class="form-check-input me-2" type="checkbox" checked id="ckRaddoppioDopoSplit">
+            <label class="form-check-label" for="ckRaddoppioDopoSplit">Raddoppio dopo split</label>
+        </div>
+        <div class="form-check d-flex align-items-center mb-2">
             <input class="form-check-input me-2" type="checkbox" checked id="ckVisualizzaScelte">
             <label class="form-check-label" for="ckVisualizzaScelte">Visualizza scelte strategia</label>
         </div>
@@ -56,6 +60,7 @@
                     puntataMassima: $("#txtPuntataMassima").val(),
                     percMischiata: $("#txtPercMischiata").val(),
                     arresaDisponibile: $("#ckArresaDisponibile").is(":checked"),
+                    raddoppioDopoSplit: $("#ckRaddoppioDopoSplit").is(":checked"),
                     visualizzaSceltaStrategia: $("#ckVisualizzaScelte").is(":checked"),
                 },
                 success: function (id) {

@@ -47,7 +47,7 @@ namespace Classes
                         || pg == 18 && pm <= 6
                         )
                 {
-                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                    if (giocatore.Gioco.RaddoppiaDisponibile)
                         return Giocatore.Giocata.Raddoppia;
                     else
                         return Giocatore.Giocata.Stai;
@@ -60,7 +60,7 @@ namespace Classes
                         || pg == 13 && pm >= 5 && pm <= 6
                         )
                 {
-                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                    if (giocatore.Gioco.RaddoppiaDisponibile)
                         return Giocatore.Giocata.Raddoppia;
                     else
                         return Giocatore.Giocata.Chiama;
@@ -196,7 +196,7 @@ namespace Classes
                     || pg == 18 && pm <= 6
                     )
                 {
-                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                    if (giocatore.Gioco.RaddoppiaDisponibile)
                         return Giocatore.Giocata.Raddoppia;
                     else
                         return Giocatore.Giocata.Stai;
@@ -208,7 +208,7 @@ namespace Classes
                     || pg <= 14 && pg >= 13 && pm >= 5 && pm <= 6
                     )
                 {
-                    if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+                    if (giocatore.Gioco.RaddoppiaDisponibile)
                         return Giocatore.Giocata.Raddoppia;
                     else
                         return Giocatore.Giocata.Chiama;
@@ -266,7 +266,7 @@ namespace Classes
                 return Giocatore.Giocata.Chiama;
             }
 
-            if (!giocatore.Gioco.RaddoppiaNonDisponibile)
+            if (giocatore.Gioco.RaddoppiaDisponibile)
                 return Giocatore.Giocata.Raddoppia;
             else
                 return Giocatore.Giocata.Chiama;

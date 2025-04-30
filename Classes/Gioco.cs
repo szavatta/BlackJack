@@ -46,9 +46,15 @@ namespace Classes
                 return this;
             }
 
-            public GiocoBuilder AggiungiRaddoppiaNonDisponibile()
+            public GiocoBuilder AggiungiRaddoppiaDisponibile(bool rad = true)
             {
-                gioco.RaddoppiaNonDisponibile = true;
+                gioco.RaddoppiaDisponibile = rad;
+                return this;
+            }
+
+            public GiocoBuilder AggiungiRaddoppioDopoSplit(bool das = true)
+            {
+                gioco.RaddoppioDopoSplit = das;
                 return this;
             }
 
@@ -92,7 +98,7 @@ namespace Classes
 
             public Gioco build()
             {
-                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere, gioco.RaddoppiaNonDisponibile, gioco.ArresaDisponibile, gioco.VisualizzaSceltaStrategia);
+                return new Gioco(numGiocatori, gioco.NumMazziIniziali, gioco.Mischia, gioco.RandomMischiata, gioco.Nome, gioco.PuntataMinima, gioco.PuntataMassima, gioco.PercMischiata, gioco.SecondaCartaInizialeMazziere, gioco.RaddoppiaDisponibile, gioco.ArresaDisponibile, gioco.VisualizzaSceltaStrategia, gioco.RaddoppioDopoSplit);
             }
 
         }
@@ -104,7 +110,8 @@ namespace Classes
         public decimal PuntataMinima { get; set; }
         public decimal? PuntataMassima { get; set; }
         public bool Mischia { get; set; }
-        public bool RaddoppiaNonDisponibile { get; set; }
+        public bool RaddoppiaDisponibile { get; set; } = true;
+        public bool RaddoppioDopoSplit { get; set; }
         public bool ArresaDisponibile { get; set; }
         public int? RandomMischiata { get; set; }
         public int? PercMischiata { get; set; }
@@ -121,7 +128,7 @@ namespace Classes
         DateTime DataCreazione { get; set; }
         public StringBuilder Log { get; set; }
 
-        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true, bool raddoppiaNonDisponibile = false, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = false)
+        public Gioco(int giocatori, int numMazzi=6, bool mischia=true, int? randomMischiata = null, string nome = null, decimal puntataMinima = 5, decimal? puntataMassima = null, int? percMischiata = null, bool secondaCartaInizialeMazziere = true, bool raddoppiaDisponibile = true, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = false, bool raddoppioDopoSplit = true)
         {
             GiocatoriSplit = new List<Giocatore>();
             Mazziere = new Mazziere(this);
@@ -130,7 +137,8 @@ namespace Classes
             DataCreazione = DateTime.Now;
             Mazzo = new Mazzo();
             Mischia = mischia;
-            RaddoppiaNonDisponibile = raddoppiaNonDisponibile;
+            RaddoppiaDisponibile = raddoppiaDisponibile;
+            RaddoppioDopoSplit = raddoppioDopoSplit;
             ArresaDisponibile = arresaDisponibile;
             RandomMischiata = randomMischiata;
             PercMischiata = percMischiata ?? 20;
