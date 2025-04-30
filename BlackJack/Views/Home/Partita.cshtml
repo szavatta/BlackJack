@@ -184,6 +184,8 @@
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+                    var err = JSON.parse(jqXHR.responseText);
+                    ShowMessage(err.error);
                     console.log(jqXHR);
                 }
             });

@@ -77,7 +77,7 @@ namespace BlackJack.Controllers
             return Json(JsonGioco(gioco));
         }
 
-        public JsonResult NuovaPartita(string nome, bool secondaCartaMazziere = true, int puntataMinima = 10, int numMazzi = 6, int percMischiata = 20, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = true, bool raddoppioDopoSplit = true)
+        public JsonResult NuovaPartita(string nome, bool secondaCartaMazziere = true, int puntataMinima = 10, int puntataMassima = 1000, int numMazzi = 6, int percMischiata = 20, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = true, bool raddoppioDopoSplit = true)
         {
             if (string.IsNullOrEmpty(nome))
             {
@@ -284,20 +284,28 @@ namespace BlackJack.Controllers
 
         public JsonResult Raddoppia(string id, string idGiocatore, bool forza = false)
         {
-            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
-            gioco.Iniziato = true;
-            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            string scelta = giocatore.Scelta().ToString();
-            if (giocatore.Punteggio >= 17 && !forza)
+            try
             {
-                scelta = "?";
-            }
-            else
-            {
-                giocatore.Raddoppia();
-            }
+                Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+                gioco.Iniziato = true;
+                Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+                string scelta = giocatore.Scelta().ToString();
+                if (giocatore.Punteggio >= 17 && !forza)
+                {
+                    scelta = "?";
+                }
+                else
+                {
+                    giocatore.Raddoppia();
+                }
 
-            return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
+                return Json(new { gioco = JsonGioco(gioco), scelta = scelta });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message });
+            }
         }
 
         public JsonResult Arresa(string id, string idGiocatore)
