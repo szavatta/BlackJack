@@ -77,7 +77,7 @@ namespace BlackJack.Controllers
             return Json(JsonGioco(gioco));
         }
 
-        public JsonResult NuovaPartita(string nome, bool secondaCartaMazziere = true, int puntataMinima = 10, int numMazzi = 6, int percMischiata = 20, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = true)
+        public JsonResult NuovaPartita(string nome, bool secondaCartaMazziere = true, int puntataMinima = 10, int puntataMassima = 1000, int numMazzi = 6, int percMischiata = 20, bool arresaDisponibile = false, bool visualizzaSceltaStrategia = true)
         {
             if (string.IsNullOrEmpty(nome))
             {
@@ -95,6 +95,7 @@ namespace BlackJack.Controllers
                 .AggiungiNome(nome)
                 .AggiungiMazzi(numMazzi)
                 .AggiungiPuntataMinima(puntataMinima)
+                .AggiungiPuntataMassima(puntataMassima)
                 .AggiungiSecondaCartaInizialeMazziere(secondaCartaMazziere)
                 .AggiungiMischiata()
                 .AggiungiPercentualeMischiata(percMischiata)
@@ -183,22 +184,31 @@ namespace BlackJack.Controllers
 
         public JsonResult Punta(string id, string idGiocatore, decimal puntata)
         {
-            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
-            Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
-            decimal pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.TrueCount);
-            decimal? scelta = pok != puntata ? pok : null;
-            giocatore.Punta(puntata);
-
-            if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
+            try
             {
-                gioco.DistribuisciCarteIniziali();
-                if (gioco.Mazziere.HasBlackJack() && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
-                    gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
-                else if (gioco.Giocatori[0].Punteggio == 21 && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
-                    gioco.Giocatori[0].Stai();
+                Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+                Giocatore giocatore = gioco.Giocatori.FirstOrDefault(q => q.Id == idGiocatore);
+                decimal pok = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, gioco.PuntataMinima, giocatore.Strategia.TrueCount);
+                decimal? scelta = pok != puntata ? pok : null;
+                giocatore.Punta(puntata);
+
+                if (gioco.Giocatori.Where(q => q.PuntataCorrente > 0).Count() == gioco.Giocatori.Count())
+                {
+                    gioco.DistribuisciCarteIniziali();
+                    if (gioco.Mazziere.HasBlackJack() && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
+                        gioco.Giocatori.Where(q => q.PuntataCorrente > 0).ToList().ForEach(q => q.Stai());
+                    else if (gioco.Giocatori[0].Punteggio == 21 && gioco.Mazziere.Carte[0].Numero != Carta.NumeroCarta.Asso)
+                        gioco.Giocatori[0].Stai();
+                }
+
+                return Json(new { gioco = JsonGioco(gioco), puntata = pok });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message });
             }
 
-            return Json(new { gioco = JsonGioco(gioco), puntata = pok });
         }
 
         public JsonResult Assicurazione(string id, string idGiocatore, int scelta)
@@ -315,40 +325,48 @@ namespace BlackJack.Controllers
 
         public JsonResult Partecipa(string id, string nome, string strategia)
         {
-            if (strategia == null)
-                throw new Exception("Seleziona una strategia");
-
-            string idGiocatore = HttpContext.Request.Cookies["idGiocatore"];
-            //idGiocatore = HttpContext.Session.GetString("IdGiocatore");
-            if (string.IsNullOrEmpty(idGiocatore))
+            try
             {
-                idGiocatore = DateTime.Now.Ticks.ToString();
-                //HttpContext.Session.SetString("IdGiocatore", idGiocatore);
-                HttpContext.Response.Cookies.Append("IdGiocatore", idGiocatore, new CookieOptions()
+                if (strategia == null)
+                    throw new Exception("Seleziona una strategia");
+
+                string idGiocatore = HttpContext.Request.Cookies["idGiocatore"];
+                //idGiocatore = HttpContext.Session.GetString("IdGiocatore");
+                if (string.IsNullOrEmpty(idGiocatore))
                 {
-                    Expires = DateTime.Now.AddDays(5)
-                });
+                    idGiocatore = DateTime.Now.Ticks.ToString();
+                    //HttpContext.Session.SetString("IdGiocatore", idGiocatore);
+                    HttpContext.Response.Cookies.Append("IdGiocatore", idGiocatore, new CookieOptions()
+                    {
+                        Expires = DateTime.Now.AddDays(5)
+                    });
+                }
+
+                Assembly assembly = Assembly.Load("Classes");
+                var tipoClasse = assembly.GetType("Classes." + strategia);
+                if (tipoClasse == null)
+                    throw new Exception($"strategia {strategia} non trovata.");
+
+                StrategiaGiocatore istanzaStrategia = (StrategiaGiocatore)Activator.CreateInstance(tipoClasse);
+
+                Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
+                Giocatore giocatore = GiocatoreBuilder.Init()
+                    .AggiungiStrategia(istanzaStrategia)
+                    .AggiungiGioco(gioco)
+                    .AggiungiNome(nome)
+                    .AggiungiPuntataBase(gioco.PuntataMinima)
+                    .build();
+                giocatore.Id = idGiocatore;
+                giocatore.ProssimaPuntata = giocatore.Strategia.Puntata(giocatore, gioco.PuntataMinima, giocatore.PuntataBase, giocatore.Strategia.TrueCount);
+                gioco.Giocatori.Add(giocatore);
+
+                return Json(new { json = JsonGioco(gioco), idGiocatore = idGiocatore });
             }
-
-            Assembly assembly = Assembly.Load("Classes");
-            var tipoClasse = assembly.GetType("Classes." + strategia);
-            if (tipoClasse == null)
-                throw new Exception($"strategia {strategia} non trovata.");
-
-            StrategiaGiocatore istanzaStrategia = (StrategiaGiocatore)Activator.CreateInstance(tipoClasse);
-
-            Gioco gioco = Partite.FirstOrDefault(q => q.Id == id);
-            Giocatore giocatore = GiocatoreBuilder.Init()
-                .AggiungiStrategia(istanzaStrategia)
-                .AggiungiGioco(gioco)
-                .AggiungiNome(nome)
-                .AggiungiPuntataBase(gioco.PuntataMinima)
-                .build();
-            giocatore.Id = idGiocatore;
-            giocatore.ProssimaPuntata = giocatore.Strategia.Puntata(giocatore,gioco.PuntataMinima, giocatore.PuntataBase, giocatore.Strategia.TrueCount);
-            gioco.Giocatori.Add(giocatore);
-
-            return Json(new { json = JsonGioco(gioco), idGiocatore = idGiocatore });
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message });
+            }
         }
 
         public JsonResult NuovaMano(string id)
